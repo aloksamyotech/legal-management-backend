@@ -38,61 +38,59 @@ export const registerAdmin = async (req) => {
 };
 
 const generateAccessAndRefreshTokens = async (adminId) => {
-    try {
-      const admin = await Admin.findById(adminId);
-      const accessToken = admin.generateAccessToken();
-      const refreshToken = admin.generateRefreshToken();
-  
-      admin.refreshToken = refreshToken;
-      await admin.save({ validateBeforeSave: false });
-      return { accessToken, refreshToken };
-    } catch (error) {
-      throw new CustomError(
-        statusCodes?.internalServerError,
-        "Something went wrong while generating refresh and access tokens.",
-        errorCodes?.server_error,
-      );
-    }
-  };
-export const loginAdmin = async (req) => {
-    const { email, password } = req.body;
-  
-  
-    const admin = await Admin.findOne({ email });
-    if (!admin) {
-      throw new CustomError(
-        statusCodes?.notFound,
-        Message?.notFound,
-        errorCodes?.not_found,
-      );
-    }
-  
-    const passwordVerify = await admin.isPasswordCorrect(password);
-  
-    if (!passwordVerify) {
-      throw new CustomError(
-        statusCodes?.badRequest,
-        Message?.inValid,
-        errorCodes?.invalid_credentials,
-      );
-    }
-    const { accessToken, refreshToken } = await generateAccessAndRefreshTokens(
-        admin._id,
-      );
-    const loginadmin = await Admin.findById(admin._id).select(
-      "-password -refreshToken",
+  try {
+    const admin = await Admin.findById(adminId);
+    const accessToken = admin.generateAccessToken();
+    const refreshToken = admin.generateRefreshToken();
+
+    admin.refreshToken = refreshToken;
+    await admin.save({ validateBeforeSave: false });
+    return { accessToken, refreshToken };
+  } catch (error) {
+    throw new CustomError(
+      statusCodes?.internalServerError,
+      "Something went wrong while generating refresh and access tokens.",
+      errorCodes?.server_error,
     );
-  
-    const options = {
-      httpOnly: true,
-      secure: true,
-    };
-  
-    return {
-        accessToken,
-        refreshToken,
-      options,
-      loginadmin,
-    };
+  }
+};
+export const loginAdmin = async (req) => {
+  const { email, password } = req.body;
+
+  const admin = await Admin.findOne({ email });
+  if (!admin) {
+    throw new CustomError(
+      statusCodes?.notFound,
+      Message?.notFound,
+      errorCodes?.not_found,
+    );
+  }
+
+  const passwordVerify = await admin.isPasswordCorrect(password);
+
+  if (!passwordVerify) {
+    throw new CustomError(
+      statusCodes?.badRequest,
+      Message?.inValid,
+      errorCodes?.invalid_credentials,
+    );
+  }
+  const { accessToken, refreshToken } = await generateAccessAndRefreshTokens(
+    admin._id,
+  );
+  const loginadmin = await Admin.findById(admin._id).select(
+    "-password -refreshToken",
+  );
+
+  const options = {
+    httpOnly: true,
+    secure: true,
   };
-  
+
+  return {
+    accessToken,
+    refreshToken,
+    options,
+    loginadmin,
+  };
+};

@@ -8,14 +8,14 @@ const AdminSchema = new Schema(
       required: true,
       trim: true,
     },
-    mobileNumber:{
-        type:Number,
-        required:true,
+    mobileNumber: {
+      type: Number,
+      required: true,
     },
-    AsignRole:{
-        type:String,
-        enum:["admin", "manager","company"],
-        required:true,
+    AsignRole: {
+      type: String,
+      enum: ["admin", "manager", "company"],
+      required: true,
     },
     email: {
       type: String,
@@ -24,10 +24,10 @@ const AdminSchema = new Schema(
     },
     password: {
       type: String,
-      required: true
+      required: true,
     },
-    companyId:{
-      Type:mongoose.Types.ObjectId,
+    companyId: {
+      Type: mongoose.Types.ObjectId,
     },
     refreshToken: {
       type: String,

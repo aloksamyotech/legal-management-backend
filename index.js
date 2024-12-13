@@ -6,7 +6,7 @@ import logger from './src/core/config/logger.js';
 import "dotenv/config"
 import responseInterceptor from './src/utils/responseInterceptor.js';
 
-import { userRouter } from './src/routes/routes.js';
+import { userRouter, clientRouter } from './src/routes/routes.js';
 
 const app = express();
 const PORT = (() => {
@@ -34,6 +34,7 @@ connectDB()
 app.use(responseInterceptor);
 
 app.use('/api/v1/user', userRouter)
+app.use('/api/v1/client', clientRouter)
 
 app.use(globalExceptionHandler);
 
