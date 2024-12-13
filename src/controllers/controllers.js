@@ -1,3 +1,4 @@
-import userController from "./user.js";
 
-export { userController };
+import adminController from "./admin.js"
+
+export { adminController };
