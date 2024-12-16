@@ -6,7 +6,7 @@ import logger from './src/core/config/logger.js';
 import "dotenv/config"
 import responseInterceptor from './src/utils/responseInterceptor.js';
 
-import { userRouter, clientRouter } from './src/routes/routes.js';
+import { userRouter, clientRouter, adviseRouter, caseRouter , hearingRouter} from './src/routes/routes.js';
 
 const app = express();
 const PORT = (() => {
@@ -35,6 +35,9 @@ app.use(responseInterceptor);
 
 app.use('/api/v1/user', userRouter)
 app.use('/api/v1/client', clientRouter)
+app.use('/api/v1/advise', adviseRouter)
+app.use('/api/v1/case', caseRouter)
+app.use('/api/v1/hearing', hearingRouter)
 
 app.use(globalExceptionHandler);
 

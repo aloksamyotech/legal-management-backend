@@ -73,7 +73,36 @@ export const DeleteClient = async (req) => {
         errorCodes?.not_found
       );
     }
-  
+    
     return { message: Message.Delete, client: deletedClient} ;
   };
+
+  export const UpdateClient = async (req) => {
+    const { Email } = req.body;
+    const updateData = req.body;
+    if (!Email) {
+      throw new CustomError(
+        statusCodes?.badRequest,
+        Message?.inValid,
+        errorCodes?.bad_request
+      );
+    };
+
+    const updatedClient = await Client.findOneAndUpdate(
+      { Email },
+      updateData,
+      { new: true} 
+    );
+  
+    if (!updatedClient) {
+      throw new CustomError(
+        statusCodes?.notFound,
+       Message.notUpdate,
+      errorCodes?.action_failed
+      );
+    }
+  
+    return updatedClient;
+  };
+  
   

@@ -1,3 +1,6 @@
 import userRouter from "./user.js";
 import clientRouter from "./Client.js";
-export { userRouter, clientRouter };
+import adviseRouter from "./Advise.js";
+import caseRouter from "./Case.js";
+import hearingRouter from "./Hearing.js";
+export { userRouter, clientRouter,adviseRouter,hearingRouter,caseRouter };

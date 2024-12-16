@@ -25,6 +25,7 @@ export const statusCodes = {
 };
 
 export const Message = {
+  Missing_required_field:"Required fields are missing. Please check the input.",
   notFound: "Not Found",
   registerSuccessfully: "Successfully Registered",
   inValid: "Invalid Credentials",
