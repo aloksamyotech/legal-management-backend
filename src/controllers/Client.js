@@ -14,8 +14,8 @@ const ClientDelete = async (req, res, next) => {
   res.status(statusCodes?.ok).send(ClientDelData);
 };
 const ClientUpdate = async (req, res, next) => {
-  const ClientDelData = await clientService.UpdateClient(req, res, next);
-  res.status(statusCodes?.ok).send(ClientDelData);
+  const ClientUpdateData = await clientService.UpdateClient(req, res, next);
+  res.status(statusCodes?.ok).send(ClientUpdateData);
 };
 
 export default {

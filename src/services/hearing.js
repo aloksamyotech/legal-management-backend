@@ -51,7 +51,7 @@ export const GetHearing = async (req, res) => {
   };
 
   export const GetAllHearing=async(req)=>{
-    const allhearings= await HearingModel.find();
+    const allhearings= await HearingModel?.find();
     if(!allhearings){
         throw new CustomError(
             statusCodes?.notFound,
@@ -81,8 +81,8 @@ export const GetHearing = async (req, res) => {
   };
 
   export const UpdateHearing = async (req, res) => {
-    const { id } = req.params;
-    const updateData = req.body;
+    const { id } = req?.params;
+    const updateData = req?.body;
   
     if (!id) {
       throw new CustomError(
@@ -92,7 +92,7 @@ export const GetHearing = async (req, res) => {
       );
     }
   
-    const updatedHearing = await HearingModel.findByIdAndUpdate(id, updateData, { new: true });
+    const updatedHearing = await HearingModel?.findByIdAndUpdate(id, updateData, { new: true });
   
     if (!updatedHearing) {
       throw new CustomError(
