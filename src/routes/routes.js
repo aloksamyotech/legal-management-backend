@@ -7,4 +7,5 @@ import contactRouter from "./Contact.js";
 import evidenceRouter from "./Evidence.js";
 import expenseRouter from "./Expense.js";
 import noteRouter from "./Note.js";
-export { noteRouter,userRouter, clientRouter,adviseRouter,hearingRouter,caseRouter, contactRouter, evidenceRouter,expenseRouter };
+import documentRouter from "./Document.js"
+export { noteRouter,userRouter, clientRouter,adviseRouter,hearingRouter,caseRouter, contactRouter, evidenceRouter,expenseRouter, documentRouter };

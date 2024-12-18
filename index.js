@@ -15,7 +15,9 @@ import { userRouter,
     contactRouter, 
     evidenceRouter,
     noteRouter,
-    expenseRouter} from './src/routes/routes.js';
+    expenseRouter,
+    documentRouter
+} from './src/routes/routes.js';
 
 const app = express();
 const PORT = (() => {
@@ -52,6 +54,7 @@ app.use('/api/v1/contact', contactRouter)
 app.use('/api/v1/evidence', evidenceRouter)
 app.use('/api/v1/expense', expenseRouter)
 app.use('/api/v1/note', noteRouter)
+app.use('/api/v1/document', documentRouter)
 
 app.use(globalExceptionHandler);
 

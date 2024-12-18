@@ -7,6 +7,7 @@ import evidenceController from "./Evidence.js"
 import contactController from "./Contact.js"
 import expenseController from "./Expense.js"
 import noteController from "./Note.js"
+import documentController from "./Document.js"
 export { adminController, 
     clientController,
      adviseController, 
@@ -15,5 +16,6 @@ export { adminController,
      contactController,
      evidenceController,
      expenseController,
-     noteController
+     noteController,
+     documentController
      };
