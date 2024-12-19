@@ -10,9 +10,11 @@ export const AddClient = async (req) => {
     throw new CustomError(
       statusCodes?.conflict,
       Message?.alreadyExist,
-      errorCodes?.already_exist,
+      errorCodes?.already_exist
     );
   }
+  const image = req.file ? `/uploads/${req.file.filename}` : null;
+
   const client = new Client({
     Name,
     phonenum,
@@ -22,6 +24,7 @@ export const AddClient = async (req) => {
     Email,
     address,
     country,
+    image,
   });
 
   const createdClient = await client.save();
@@ -30,7 +33,7 @@ export const AddClient = async (req) => {
     throw new CustomError(
       statusCodes?.serviceUnavailable,
       Message?.serverError,
-      errorCodes?.service_unavailable,
+      errorCodes?.service_unavailable
     );
   }
 

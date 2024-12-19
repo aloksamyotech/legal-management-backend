@@ -31,12 +31,14 @@ const ClientSchema = new Schema(
       required: true,
       unique: true,
     },
-
     address: {
       type: String,
     },
+    image: {
+      type: String, 
+    },
   },
-  { timestamps: true },
+  { timestamps: true }
 );
 
 export const Client = mongoose.model("Client", ClientSchema);
