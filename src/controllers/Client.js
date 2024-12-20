@@ -6,7 +6,10 @@ const ClientAdd = async (req, res, next) => {
 };
 const ClientFetch = async (req, res, next) => {
   const ClientData = await clientService.GetClient(req, res, next);
-  res.status(statusCodes?.found).send(ClientData);
+  res.status(statusCodes?.ok).send(ClientData);}
+const GetAllclient = async (req, res, next) => {
+  const ClientData = await clientService.GetAllClients(req, res, next);
+  res.status(statusCodes?.ok).send(ClientData);
 
 };
 const ClientDelete = async (req, res, next) => {
@@ -22,5 +25,6 @@ export default {
   ClientAdd,
   ClientFetch,
   ClientDelete,
-  ClientUpdate
+  ClientUpdate,
+  GetAllclient
 };

@@ -34,9 +34,16 @@ const ClientSchema = new Schema(
     address: {
       type: String,
     },
+    About: {
+      type: String,
+    },
     image: {
       type: String, 
     },
+    Active:{
+      type:Boolean,
+      default:true
+    }
   },
   { timestamps: true }
 );
