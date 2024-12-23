@@ -31,12 +31,21 @@ const ClientSchema = new Schema(
       required: true,
       unique: true,
     },
-
     address: {
       type: String,
     },
+    About: {
+      type: String,
+    },
+    image: {
+      type: String, 
+    },
+    Active:{
+      type:Boolean,
+      default:true
+    }
   },
-  { timestamps: true },
+  { timestamps: true }
 );
 
 export const Client = mongoose.model("Client", ClientSchema);

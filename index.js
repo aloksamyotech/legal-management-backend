@@ -4,9 +4,21 @@ import connectDB from './src/core/database/connection.js';
 import globalExceptionHandler from './src/utils/globalException.js';
 import logger from './src/core/config/logger.js';
 import "dotenv/config"
+import path from "path";
 import responseInterceptor from './src/utils/responseInterceptor.js';
 
-import { userRouter, clientRouter, adviseRouter, caseRouter , hearingRouter} from './src/routes/routes.js';
+import { userRouter,
+    advocateRouter,
+     clientRouter, 
+    adviseRouter, 
+    caseRouter , 
+    hearingRouter , 
+    contactRouter, 
+    evidenceRouter,
+    noteRouter,
+    expenseRouter,
+    documentRouter
+} from './src/routes/routes.js';
 
 const app = express();
 const PORT = (() => {
@@ -15,7 +27,8 @@ const PORT = (() => {
 })();
 
 app.use(express.json());
-
+app.use(express.urlencoded({ extended: true }));
+app.use("/uploads", express.static(path.join(process.cwd(), "uploads")));
 app.use(corsConfig);
 
 app.use((req, res, next) => {
@@ -35,9 +48,15 @@ app.use(responseInterceptor);
 
 app.use('/api/v1/user', userRouter)
 app.use('/api/v1/client', clientRouter)
+app.use('/api/v1/advocate', advocateRouter)
 app.use('/api/v1/advise', adviseRouter)
 app.use('/api/v1/case', caseRouter)
 app.use('/api/v1/hearing', hearingRouter)
+app.use('/api/v1/contact', contactRouter)
+app.use('/api/v1/evidence', evidenceRouter)
+app.use('/api/v1/expense', expenseRouter)
+app.use('/api/v1/note', noteRouter)
+app.use('/api/v1/document', documentRouter)
 
 app.use(globalExceptionHandler);
 
