@@ -8,4 +8,5 @@ import evidenceRouter from "./Evidence.js";
 import expenseRouter from "./Expense.js";
 import noteRouter from "./Note.js";
 import documentRouter from "./Document.js"
-export { noteRouter,userRouter, clientRouter,adviseRouter,hearingRouter,caseRouter, contactRouter, evidenceRouter,expenseRouter, documentRouter };
+import advocateRouter from "./Advocate.js"
+export { advocateRouter,noteRouter,userRouter, clientRouter,adviseRouter,hearingRouter,caseRouter, contactRouter, evidenceRouter,expenseRouter, documentRouter };

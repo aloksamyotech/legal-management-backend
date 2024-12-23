@@ -8,6 +8,7 @@ import path from "path";
 import responseInterceptor from './src/utils/responseInterceptor.js';
 
 import { userRouter,
+    advocateRouter,
      clientRouter, 
     adviseRouter, 
     caseRouter , 
@@ -47,6 +48,7 @@ app.use(responseInterceptor);
 
 app.use('/api/v1/user', userRouter)
 app.use('/api/v1/client', clientRouter)
+app.use('/api/v1/advocate', advocateRouter)
 app.use('/api/v1/advise', adviseRouter)
 app.use('/api/v1/case', caseRouter)
 app.use('/api/v1/hearing', hearingRouter)

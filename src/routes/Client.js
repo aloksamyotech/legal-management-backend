@@ -7,5 +7,5 @@ router.post("/addClient",upload.single("image"), asyncHandler(clientController.C
 router.get("/getClient", asyncHandler(clientController.ClientFetch));
 router.get("/getAllClient", asyncHandler(clientController.GetAllclient));
 router.delete("/deleteClient", asyncHandler(clientController.ClientDelete));
-router.put("/updateClient", asyncHandler(clientController.ClientUpdate));
+router.put("/updateClient",upload.single("image"), asyncHandler(clientController.ClientUpdate));
 export default router;

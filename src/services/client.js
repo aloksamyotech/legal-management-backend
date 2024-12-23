@@ -91,9 +91,8 @@ export const DeleteClient = async (req) => {
 };
 
 export const UpdateClient = async (req) => {
-  const { Email } = req.body;
-  const updateData = req.body;
-console.log("hihfshfhsifuhdsfishfishfidshfidsfhif",updateData)
+  const { Name, phonenum, city, state, zipcode, Email, address, country,About } =
+    req.body;
   if (!Email) {
     throw new CustomError(
       statusCodes?.badRequest,
@@ -101,7 +100,17 @@ console.log("hihfshfhsifuhdsfishfishfidshfidsfhif",updateData)
       errorCodes?.bad_request
     );
   }
-
+  const updateData = {
+    Name,
+    phonenum,
+    city,
+    state,
+    zipcode,
+    address,
+    country,
+    About,
+    image: req.file ? `/uploads/${req.file.filename}` : null,
+  };
   const updatedClient = await Client.findOneAndUpdate(
     { Email, Active: true },
     updateData,
