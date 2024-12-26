@@ -1,0 +1,11 @@
+import { Router } from "express";
+import { asyncHandler } from "../utils/asyncWrapper.js";
+import { policestationController } from "../controllers/controllers.js";
+import {upload} from "../utils/multerConfig.js";
+const router = Router();
+router.post("/addPolicestation", asyncHandler(policestationController.PolicestationAdd));
+router.get("/getPolicestation", asyncHandler(policestationController.PolicestationFetch));
+router.get("/getAllPolicestation", asyncHandler(policestationController.GetAllpolicestation));
+router.delete("/deletePolicestation", asyncHandler(policestationController.PolicestationDelete));
+router.put("/updatePolicestation",asyncHandler(policestationController.PolicestationUpdate));
+export default router;

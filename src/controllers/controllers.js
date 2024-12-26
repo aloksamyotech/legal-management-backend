@@ -9,8 +9,17 @@ import expenseController from "./Expense.js"
 import noteController from "./Note.js"
 import documentController from "./Document.js"
 import advocateController from "./Advocate.js"
+import judgeController from "./Judge.js"
+import matterController from "./Matter.js"
+import courtController from "./Court.js"
+import practiceareaController from "./practicearea.js"
+import policestationController from "./PoliceStation.js"
 export { adminController, 
     clientController,
+    policestationController,
+    courtController,
+    matterController,
+    practiceareaController,
      adviseController, 
     caseController, 
     hearingController,
@@ -19,5 +28,6 @@ export { adminController,
      expenseController,
      noteController,
      documentController,
-advocateController
+advocateController,
+judgeController
      };

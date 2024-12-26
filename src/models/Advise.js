@@ -2,12 +2,14 @@ import mongoose, { Schema } from "mongoose";
 const AdviseSchema = new Schema(
       {
         Client: {
-          type: String,
+          type: mongoose.Schema.Types.ObjectId,
+          ref:"Client",
           required: true,
           trim: true,
         },
         Advocate: {
-          type: String,
+          type: mongoose.Schema.Types.ObjectId,
+          ref:"Advocate",
           required: true, 
           trim: true,
         },
@@ -29,6 +31,15 @@ const AdviseSchema = new Schema(
           type: String,
           enum: ["Approved", "closed", "On-hold"], 
           default: "On-hold", 
+        },
+        Active:{
+          type: Boolean,
+          default:true,
+        },
+        Payment:{
+          type :String,
+          enum:["Paid","Unpaid"],
+          default: "Unpaid"
         },
         description: {
           type: String,

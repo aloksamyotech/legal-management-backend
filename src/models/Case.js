@@ -17,7 +17,7 @@ const CaseSchema = new Schema(
       required: true,
     },
     Advocate: {
-      type: String,
+      type: Schema.Types.ObjectId,
       required: true,
     },
     Matter: {

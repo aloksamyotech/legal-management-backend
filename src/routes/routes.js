@@ -9,4 +9,29 @@ import expenseRouter from "./Expense.js";
 import noteRouter from "./Note.js";
 import documentRouter from "./Document.js"
 import advocateRouter from "./Advocate.js"
-export { advocateRouter,noteRouter,userRouter, clientRouter,adviseRouter,hearingRouter,caseRouter, contactRouter, evidenceRouter,expenseRouter, documentRouter };
+import judgeRouter from "./Judge.js"
+import matterRouter from "./Matter.js"
+import courtRouter from "./Court.js"
+import practiceRouter from "./practiceArea.js"
+import policestationRouter from "./PoliceStation.js"
+import { Router } from "express";
+const router = Router();
+
+// export {policestationRouter,practiceRouter, courtRouter,matterRouter,judgeRouter,advocateRouter,noteRouter,userRouter, clientRouter,adviseRouter,hearingRouter,caseRouter, contactRouter, evidenceRouter,expenseRouter, documentRouter };
+router.use('/user', userRouter)
+router.use('/judge', judgeRouter)
+router.use('/client', clientRouter)
+router.use('/advocate', advocateRouter)
+router.use('/advise', adviseRouter)
+router.use('/case', caseRouter)
+router.use('/hearing', hearingRouter)
+router.use('/contact', contactRouter)
+router.use('/evidence', evidenceRouter)
+router.use('/expense', expenseRouter)
+router.use('/note', noteRouter)
+router.use('/matter', matterRouter)
+router.use('/document', documentRouter)
+router.use('/court', courtRouter)
+router.use('/practicearea', practiceRouter)
+router.use('/policestation', policestationRouter)
+export default router;

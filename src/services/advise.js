@@ -46,40 +46,50 @@ export const AddAdvise = async (req) => {
   };
 
 
-  export const GetAdvise=async(req)=>{
-    const advises= await Advisedb.find();
-    if(!advises){
-        throw new CustomError(
-            statusCodes?.notFound,
-            Message?.notFound,
-            errorCodes?.not_found,
-          );
+  export const GetAdvise = async () => {
+    const advises = await Advisedb.find({Active:true})
+    .populate('Client', 'Name') 
+    .populate('Advocate', 'name');
+    if (!advises || advises.length === 0) {
+      throw new CustomError(
+        statusCodes?.notFound,
+        Message?.notFound,
+        errorCodes?.not_found
+      );
     }
+  
     return advises;
-  }
+  };
 
-  export const DeleteAdvise =async(req)=>{
-        const {id}=req.params;
-         if (!id) {
-          throw new CustomError(
-            statusCodes?.badRequest,
-            Message?.inValid,
-            errorCodes?.bad_request
-          );
-        }
-    
-        const deletedAdvise = await Advisedb.findOneAndDelete(id);
-      
-        if (!deletedAdvise) {
-          throw new CustomError(
-            statusCodes?.notFound,
-            Message?.notDeleted,
-            errorCodes?.not_found
-          );
-        }
-        
-        return { message: Message.Delete, advise: deletedAdvise} ;
-      };
+  export const DeleteAdvise = async (req) => {
+    const { id } = req.params;
+  
+    if (!id) {
+      throw new CustomError(
+        statusCodes?.badRequest,
+        Message?.inValid,
+        errorCodes?.bad_request
+      );
+    }
+  
+  
+    const deletedAdvise = await Advisedb.findOne({ _id: id, Active: true });
+  
+    if (!deletedAdvise) {
+      throw new CustomError(
+        statusCodes?.notFound,
+        Message?.notDeleted,
+        errorCodes?.not_found
+      );
+    }
+  
+  
+    deletedAdvise.Active = false;
+    await deletedAdvise.save();
+  
+    return { message: Message.Delete, advise: deletedAdvise };
+  };
+  
       export const UpdateAdvise = async (req) => {
         const {id} = req.params;
         const updateData = req.body;
@@ -107,5 +117,30 @@ export const AddAdvise = async (req) => {
         }
       
         return updatedAdvise;
+      };
+      export const GetAdviseById = async (req) => {
+        const { id } = req.params;
+      
+        if (!id) {
+          throw new CustomError(
+            statusCodes?.badRequest,
+            Message?.inValid,
+            errorCodes?.bad_request
+          );
+        }
+      
+        const advise = await Advisedb.findById(id)
+          .populate('Client', 'Name')
+          .populate('Advocate', 'name');
+      
+        if (!advise) {
+          throw new CustomError(
+            statusCodes?.notFound,
+            Message?.notFound,
+            errorCodes?.not_found
+          );
+        }
+      
+        return advise;
       };
       
