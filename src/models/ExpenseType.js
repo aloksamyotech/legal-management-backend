@@ -1,21 +1,17 @@
 import mongoose from "mongoose";
 const { Schema } = mongoose;
-const PolicestationSchema = new Schema(
+const ExpenseTypeSchema = new Schema(
   {
     Title: {
       type: String,
       required: true,
       trim: true,
     },
-    Location: {
+
+    description: {
       type: String,
       trim: true,
     },
-    Contact: {
-      type: Number,
-      trim: true,
-    },
-
     active: {
       type: Boolean,
       default: true,
@@ -30,5 +26,6 @@ const PolicestationSchema = new Schema(
   },
 );
 
-const PolicestationModel = mongoose.model("Policestation", PolicestationSchema);
-export default PolicestationModel;
+const ExpenseTypeModel = mongoose.model("ExpenseType", ExpenseTypeSchema);
+
+export default ExpenseTypeModel;

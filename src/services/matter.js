@@ -9,7 +9,7 @@ export const AddMatter = async (req) => {
     throw new CustomError(
       statusCodes?.badRequest,
       Message?.Missing_required_field,
-      errorCodes?.bad_request
+      errorCodes?.bad_request,
     );
   }
 
@@ -24,28 +24,26 @@ export const AddMatter = async (req) => {
     throw new CustomError(
       statusCodes?.serviceUnavailable,
       Message?.notCreated,
-      errorCodes?.service_unavailable
+      errorCodes?.service_unavailable,
     );
   }
 
   return createdMatter;
 };
 
-
 export const GetAllMatters = async () => {
-  const matters = await MatterModel.find({ active: true }); 
+  const matters = await MatterModel.find({ active: true });
 
   if (!matters || matters.length === 0) {
     throw new CustomError(
       statusCodes?.notFound,
       Message?.notFound,
-      errorCodes?.not_found
+      errorCodes?.not_found,
     );
   }
 
   return matters;
 };
-
 
 export const GetMatter = async (req) => {
   const { id } = req.params;
@@ -54,7 +52,7 @@ export const GetMatter = async (req) => {
     throw new CustomError(
       statusCodes?.badRequest,
       Message?.inValid,
-      errorCodes?.bad_request
+      errorCodes?.bad_request,
     );
   }
 
@@ -64,13 +62,12 @@ export const GetMatter = async (req) => {
     throw new CustomError(
       statusCodes?.notFound,
       Message?.notFound,
-      errorCodes?.not_found
+      errorCodes?.not_found,
     );
   }
 
   return matter;
 };
-
 
 export const UpdateMatter = async (req) => {
   const { id } = req.params;
@@ -80,27 +77,26 @@ export const UpdateMatter = async (req) => {
     throw new CustomError(
       statusCodes?.badRequest,
       Message?.inValid,
-      errorCodes?.bad_request
+      errorCodes?.bad_request,
     );
   }
 
   const updatedMatter = await MatterModel.findOneAndUpdate(
     { _id: id, active: true },
     { Title, description },
-    { new: true }
+    { new: true },
   );
 
   if (!updatedMatter) {
     throw new CustomError(
       statusCodes?.notFound,
       Message?.notUpdate,
-      errorCodes?.action_failed
+      errorCodes?.action_failed,
     );
   }
 
   return updatedMatter;
 };
-
 
 export const DeleteMatter = async (req) => {
   const { id } = req.params;
@@ -109,7 +105,7 @@ export const DeleteMatter = async (req) => {
     throw new CustomError(
       statusCodes?.badRequest,
       Message?.inValid,
-      errorCodes?.bad_request
+      errorCodes?.bad_request,
     );
   }
 
@@ -119,11 +115,11 @@ export const DeleteMatter = async (req) => {
     throw new CustomError(
       statusCodes?.notFound,
       Message?.notFound,
-      errorCodes?.not_found
+      errorCodes?.not_found,
     );
   }
 
-  matter.active = false; 
+  matter.active = false;
   await matter.save();
 
   return { message: Message?.Delete, matter };

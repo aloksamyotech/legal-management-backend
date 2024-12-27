@@ -6,11 +6,11 @@ const JudgeAdd = async (req, res, next) => {
 };
 const JudgeFetch = async (req, res, next) => {
   const JudgeData = await judgeService.GetJudge(req, res, next);
-  res.status(statusCodes?.ok).send(JudgeData);}
+  res.status(statusCodes?.ok).send(JudgeData);
+};
 const GetAlljudge = async (req, res, next) => {
   const JudgeData = await judgeService.GetAllJudges(req, res, next);
   res.status(statusCodes?.ok).send(JudgeData);
-
 };
 const JudgeDelete = async (req, res, next) => {
   const JudgeDelData = await judgeService.DeleteJudge(req, res, next);
@@ -26,5 +26,5 @@ export default {
   JudgeFetch,
   JudgeDelete,
   JudgeUpdate,
-  GetAlljudge
+  GetAlljudge,
 };

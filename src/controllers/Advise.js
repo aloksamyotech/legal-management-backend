@@ -7,7 +7,6 @@ const AdviseAdd = async (req, res, next) => {
 const AdviseFetch = async (req, res, next) => {
   const AdviseData = await adviseService.GetAdvise(req, res, next);
   res.status(statusCodes?.ok).send(AdviseData);
-
 };
 const AdviseDelete = async (req, res, next) => {
   const AdviseDelData = await adviseService.DeleteAdvise(req, res, next);
@@ -27,5 +26,5 @@ export default {
   AdviseFetch,
   AdviseDelete,
   AdviseUpdate,
-  SingleAdviceFetch
+  SingleAdviceFetch,
 };

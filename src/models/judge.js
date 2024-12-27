@@ -23,12 +23,12 @@ const JudgeSchema = new Schema(
     },
     CreatedAt: {
       type: Date,
-      default: () => new Date(), 
+      default: () => new Date(),
     },
   },
   {
-    timestamps: true, 
-  }
+    timestamps: true,
+  },
 );
 
 const JudgeModel = mongoose.model("Judge", JudgeSchema);

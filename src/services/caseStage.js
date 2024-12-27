@@ -1,9 +1,9 @@
-import CourtModel from "../models/Court.js";
+import CaseStageModel from "../models/CaseStage.js";
 import { errorCodes, Message, statusCodes } from "../core/common/constant.js";
 import CustomError from "../utils/exception.js";
 
-export const AddCourt = async (req) => {
-  const { Title, address, description } = req.body;
+export const AddCaseStage = async (req) => {
+  const { Title, description } = req.body;
 
   if (!Title) {
     throw new CustomError(
@@ -13,15 +13,14 @@ export const AddCourt = async (req) => {
     );
   }
 
-  const newCourt = new CourtModel({
+  const newCaseStage = new CaseStageModel({
     Title,
-    address,
     description,
   });
 
-  const createdCourt = await newCourt.save();
+  const createdCaseStage = await newCaseStage.save();
 
-  if (!createdCourt) {
+  if (!createdCaseStage) {
     throw new CustomError(
       statusCodes?.serviceUnavailable,
       Message?.notCreated,
@@ -29,12 +28,13 @@ export const AddCourt = async (req) => {
     );
   }
 
-  return createdCourt;
+  return createdCaseStage;
 };
 
-export const GetAllCourts = async () => {
-  const courts = await CourtModel.find({ active: true });
-  if (!courts || courts.length === 0) {
+export const GetAllCaseStages = async () => {
+  const caseStages = await CaseStageModel.find({ active: true });
+
+  if (!caseStages || caseStages.length === 0) {
     throw new CustomError(
       statusCodes?.notFound,
       Message?.notFound,
@@ -42,10 +42,10 @@ export const GetAllCourts = async () => {
     );
   }
 
-  return courts;
+  return caseStages;
 };
 
-export const GetCourt = async (req) => {
+export const GetCaseStage = async (req) => {
   const { id } = req.params;
 
   if (!id) {
@@ -56,9 +56,9 @@ export const GetCourt = async (req) => {
     );
   }
 
-  const court = await CourtModel.findOne({ _id: id, active: true });
+  const caseStage = await CaseStageModel.findOne({ _id: id, active: true });
 
-  if (!court) {
+  if (!caseStage) {
     throw new CustomError(
       statusCodes?.notFound,
       Message?.notFound,
@@ -66,12 +66,12 @@ export const GetCourt = async (req) => {
     );
   }
 
-  return court;
+  return caseStage;
 };
 
-export const UpdateCourt = async (req) => {
+export const UpdateCaseStage = async (req) => {
   const { id } = req.params;
-  const { Title, address, description } = req.body;
+  const { Title, description } = req.body;
 
   if (!id || !Title) {
     throw new CustomError(
@@ -81,13 +81,13 @@ export const UpdateCourt = async (req) => {
     );
   }
 
-  const updatedCourt = await CourtModel.findOneAndUpdate(
+  const updatedCaseStage = await CaseStageModel.findOneAndUpdate(
     { _id: id, active: true },
-    { Title, address, description },
+    { Title, description },
     { new: true },
   );
 
-  if (!updatedCourt) {
+  if (!updatedCaseStage) {
     throw new CustomError(
       statusCodes?.notFound,
       Message?.notUpdate,
@@ -95,10 +95,10 @@ export const UpdateCourt = async (req) => {
     );
   }
 
-  return updatedCourt;
+  return updatedCaseStage;
 };
 
-export const DeleteCourt = async (req) => {
+export const DeleteCaseStage = async (req) => {
   const { id } = req.params;
 
   if (!id) {
@@ -109,9 +109,9 @@ export const DeleteCourt = async (req) => {
     );
   }
 
-  const court = await CourtModel.findOne({ _id: id, active: true });
+  const caseStage = await CaseStageModel.findOne({ _id: id, active: true });
 
-  if (!court) {
+  if (!caseStage) {
     throw new CustomError(
       statusCodes?.notFound,
       Message?.notFound,
@@ -119,8 +119,8 @@ export const DeleteCourt = async (req) => {
     );
   }
 
-  court.active = false;
-  await court.save();
+  caseStage.active = false;
+  await caseStage.save();
 
-  return { message: Message?.Delete, court };
+  return { message: Message?.Delete, caseStage };
 };

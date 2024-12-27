@@ -13,7 +13,7 @@ const CaseSchema = new Schema(
     },
     Client: {
       type: Schema.Types.ObjectId,
-      ref: "Client", 
+      ref: "Client",
       required: true,
     },
     Advocate: {
@@ -48,7 +48,7 @@ const CaseSchema = new Schema(
       type: String,
     },
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
 const CaseModel = mongoose.model("Case", CaseSchema);

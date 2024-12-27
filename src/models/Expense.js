@@ -1,4 +1,3 @@
-
 import mongoose from "mongoose";
 
 const AttachmentSchema = new mongoose.Schema({
@@ -16,7 +15,7 @@ const ExpenseSchema = new mongoose.Schema(
     Attachment: [AttachmentSchema],
     Description: { type: String },
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
 const Expense = mongoose.model("Expense", ExpenseSchema);

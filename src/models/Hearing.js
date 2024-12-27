@@ -10,7 +10,7 @@ const HearingSchema = new Schema(
     Fee: {
       type: Number,
       required: true,
-      min: 0, 
+      min: 0,
     },
     Witness: {
       type: String,
@@ -38,14 +38,14 @@ const HearingSchema = new Schema(
       trim: true,
     },
     Case: {
-      type: mongoose.Schema.Types.ObjectId, 
-      ref: "Case", 
-      required: true, 
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Case",
+      required: true,
     },
   },
   {
-    timestamps: true, 
-  }
+    timestamps: true,
+  },
 );
 
 HearingSchema.index({ Title: 1 });

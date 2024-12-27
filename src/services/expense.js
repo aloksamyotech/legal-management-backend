@@ -10,7 +10,7 @@ export const AddExpense = async (req) => {
     throw new CustomError(
       statusCodes?.badRequest,
       Message?.Missing_required_field,
-      errorCodes?.bad_request
+      errorCodes?.bad_request,
     );
   }
 
@@ -36,7 +36,7 @@ export const AddExpense = async (req) => {
     throw new CustomError(
       statusCodes?.serviceUnavailable,
       Message?.notCreated,
-      errorCodes?.service_unavailable
+      errorCodes?.service_unavailable,
     );
   }
 
@@ -50,7 +50,7 @@ export const GetExpense = async () => {
     throw new CustomError(
       statusCodes?.notFound,
       Message?.notFound,
-      errorCodes?.not_found
+      errorCodes?.not_found,
     );
   }
 
@@ -64,7 +64,7 @@ export const GetExpenseById = async (req) => {
     throw new CustomError(
       statusCodes?.badRequest,
       Message?.inValid,
-      errorCodes?.bad_request
+      errorCodes?.bad_request,
     );
   }
 
@@ -74,7 +74,7 @@ export const GetExpenseById = async (req) => {
     throw new CustomError(
       statusCodes?.notFound,
       Message?.notFound,
-      errorCodes?.not_found
+      errorCodes?.not_found,
     );
   }
 
@@ -89,7 +89,7 @@ export const UpdateExpense = async (req) => {
     throw new CustomError(
       statusCodes?.badRequest,
       Message?.inValid,
-      errorCodes?.bad_request
+      errorCodes?.bad_request,
     );
   }
 
@@ -104,17 +104,15 @@ export const UpdateExpense = async (req) => {
     updateData.Attachment = files;
   }
 
-  const updatedExpense = await ExpenseModel.findByIdAndUpdate(
-    id,
-    updateData,
-    { new: true }
-  );
+  const updatedExpense = await ExpenseModel.findByIdAndUpdate(id, updateData, {
+    new: true,
+  });
 
   if (!updatedExpense) {
     throw new CustomError(
       statusCodes?.notFound,
       Message?.notUpdate,
-      errorCodes?.action_failed
+      errorCodes?.action_failed,
     );
   }
 
@@ -128,7 +126,7 @@ export const DeleteExpense = async (req) => {
     throw new CustomError(
       statusCodes?.badRequest,
       Message?.inValid,
-      errorCodes?.bad_request
+      errorCodes?.bad_request,
     );
   }
 
@@ -138,7 +136,7 @@ export const DeleteExpense = async (req) => {
     throw new CustomError(
       statusCodes?.notFound,
       Message?.notDeleted,
-      errorCodes?.not_found
+      errorCodes?.not_found,
     );
   }
 

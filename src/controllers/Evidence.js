@@ -1,4 +1,4 @@
-import * as evidenceService from "../services/evidence.js"
+import * as evidenceService from "../services/evidence.js";
 import { Message, statusCodes } from "../core/common/constant.js";
 const EvidenceAdd = async (req, res, next) => {
   const EvidenceData = await evidenceService.AddEvidence(req, res, next);
@@ -7,14 +7,17 @@ const EvidenceAdd = async (req, res, next) => {
 const EvidenceFetch = async (req, res, next) => {
   const EvidenceData = await evidenceService.GetEvidence(req, res, next);
   res.status(statusCodes?.found).send(EvidenceData);
-
 };
 const EvidenceDelete = async (req, res, next) => {
   const EvidenceDelData = await evidenceService.DeleteEvidence(req, res, next);
   res.status(statusCodes?.ok).send(EvidenceDelData);
 };
 const EvidenceUpdate = async (req, res, next) => {
-  const EvidenceUpdateData = await evidenceService.UpdateEvidence(req, res, next);
+  const EvidenceUpdateData = await evidenceService.UpdateEvidence(
+    req,
+    res,
+    next,
+  );
   res.status(statusCodes?.ok).send(EvidenceUpdateData);
 };
 
@@ -22,5 +25,5 @@ export default {
   EvidenceAdd,
   EvidenceFetch,
   EvidenceDelete,
-  EvidenceUpdate
+  EvidenceUpdate,
 };

@@ -1,11 +1,9 @@
-
 import Evidence from "../models/Evidence.js";
 import { statusCodes, Message } from "../core/common/constant.js";
 
-export const AddEvidence= async (req, res) => {
+export const AddEvidence = async (req, res) => {
   const { Title, Case, Hearing, Favor, Description } = req?.body;
 
-  
   const files = req?.files?.map((file) => ({
     name: file?.originalname,
     url: `/uploads/${file?.filename}`,
@@ -41,8 +39,17 @@ export const UpdateEvidence = async (req, res) => {
     type: file.mimetype,
   }));
 
-  const updatedData = { Title, Case, Hearing, Favor, Attachment: files, Description };
-  const updatedEvidence = await Evidence.findByIdAndUpdate(id, updatedData, { new: true });
+  const updatedData = {
+    Title,
+    Case,
+    Hearing,
+    Favor,
+    Attachment: files,
+    Description,
+  };
+  const updatedEvidence = await Evidence.findByIdAndUpdate(id, updatedData, {
+    new: true,
+  });
 
   return updatedEvidence;
 };
@@ -54,9 +61,8 @@ export const DeleteEvidence = async (req, res) => {
     throw new CustomError(
       statusCodes?.notFound,
       Message?.notDeleted,
-      errorCodes?.not_found
+      errorCodes?.not_found,
     );
   }
   return deletedEvidence;
 };
-

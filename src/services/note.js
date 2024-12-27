@@ -5,11 +5,11 @@ import CustomError from "../utils/exception.js";
 export const AddNote = async (req) => {
   const { Title, Description, CreatedAt } = req.body;
 
-  if (!Title || !Description ) {
+  if (!Title || !Description) {
     throw new CustomError(
       statusCodes?.badRequest,
       Message?.Missing_required_field,
-      errorCodes?.bad_request
+      errorCodes?.bad_request,
     );
   }
 
@@ -33,7 +33,7 @@ export const AddNote = async (req) => {
     throw new CustomError(
       statusCodes?.serviceUnavailable,
       Message?.notCreated,
-      errorCodes?.service_unavailable
+      errorCodes?.service_unavailable,
     );
   }
 
@@ -47,7 +47,7 @@ export const GetAllNotes = async () => {
     throw new CustomError(
       statusCodes?.notFound,
       Message?.notFound,
-      errorCodes?.not_found
+      errorCodes?.not_found,
     );
   }
 
@@ -61,7 +61,7 @@ export const GetNoteById = async (req) => {
     throw new CustomError(
       statusCodes?.badRequest,
       Message?.inValid,
-      errorCodes?.bad_request
+      errorCodes?.bad_request,
     );
   }
 
@@ -71,7 +71,7 @@ export const GetNoteById = async (req) => {
     throw new CustomError(
       statusCodes?.notFound,
       Message?.notFound,
-      errorCodes?.not_found
+      errorCodes?.not_found,
     );
   }
 
@@ -86,7 +86,7 @@ export const UpdateNote = async (req) => {
     throw new CustomError(
       statusCodes?.badRequest,
       Message?.inValid,
-      errorCodes?.bad_request
+      errorCodes?.bad_request,
     );
   }
 
@@ -103,14 +103,14 @@ export const UpdateNote = async (req) => {
   const updatedNote = await Note.findOneAndUpdate(
     { _id: id, Active: true },
     updateData,
-    { new: true }
+    { new: true },
   );
 
   if (!updatedNote) {
     throw new CustomError(
       statusCodes?.notFound,
       Message?.notUpdate,
-      errorCodes?.action_failed
+      errorCodes?.action_failed,
     );
   }
 
@@ -124,7 +124,7 @@ export const DeleteNote = async (req) => {
     throw new CustomError(
       statusCodes?.badRequest,
       Message?.inValid,
-      errorCodes?.bad_request
+      errorCodes?.bad_request,
     );
   }
 
@@ -134,7 +134,7 @@ export const DeleteNote = async (req) => {
     throw new CustomError(
       statusCodes?.notFound,
       Message?.notFound,
-      errorCodes?.not_found
+      errorCodes?.not_found,
     );
   }
 

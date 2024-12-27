@@ -18,21 +18,30 @@ export const AddCase = async (req) => {
     internalNote,
   } = req.body;
 
-  if (!Title || !Date || !Client || !Advocate || !Matter || !Judge || !PoliceStation || !Court || !Fir) {
+  if (
+    !Title ||
+    !Date ||
+    !Client ||
+    !Advocate ||
+    !Matter ||
+    !Judge ||
+    !PoliceStation ||
+    !Court ||
+    !Fir
+  ) {
     throw new CustomError(
       statusCodes?.badRequest,
       Message?.Missing_required_field,
-      errorCodes?.bad_request
+      errorCodes?.bad_request,
     );
   }
 
- 
   const clientExists = await ClientSch.findById(Client);
   if (!clientExists) {
     throw new CustomError(
       statusCodes?.notFound,
       "Client does not exist",
-      errorCodes?.not_found
+      errorCodes?.not_found,
     );
   }
 
@@ -56,7 +65,7 @@ export const AddCase = async (req) => {
     throw new CustomError(
       statusCodes?.serviceUnavailable,
       Message?.notCreated,
-      errorCodes?.service_unavailable
+      errorCodes?.service_unavailable,
     );
   }
 
@@ -70,7 +79,7 @@ export const GetCase = async () => {
     throw new CustomError(
       statusCodes?.notFound,
       Message?.notFound,
-      errorCodes?.not_found
+      errorCodes?.not_found,
     );
   }
 
@@ -84,7 +93,7 @@ export const UpdateCase = async (req) => {
     throw new CustomError(
       statusCodes?.badRequest,
       Message?.inValid,
-      errorCodes?.bad_request
+      errorCodes?.bad_request,
     );
   }
 
@@ -94,22 +103,22 @@ export const UpdateCase = async (req) => {
       throw new CustomError(
         statusCodes?.notFound,
         "Client does not exist",
-        errorCodes?.not_found
+        errorCodes?.not_found,
       );
     }
   }
 
-const updatedCase = await CaseModel.findOneAndUpdate(
+  const updatedCase = await CaseModel.findOneAndUpdate(
     { _id: id },
     updateData,
-    { new: true }
+    { new: true },
   ).populate("Client");
 
   if (!updatedCase) {
     throw new CustomError(
       statusCodes?.notFound,
       Message?.notUpdate,
-      errorCodes?.action_failed
+      errorCodes?.action_failed,
     );
   }
 
@@ -122,21 +131,19 @@ export const DeleteCase = async (req) => {
     throw new CustomError(
       statusCodes?.badRequest,
       Message?.inValid,
-      errorCodes?.bad_request
+      errorCodes?.bad_request,
     );
   }
 
-  
   const deletedCase = await CaseModel.findOneAndDelete({ _id: id });
 
   if (!deletedCase) {
     throw new CustomError(
       statusCodes?.notFound,
       Message?.notDeleted,
-      errorCodes?.not_found
+      errorCodes?.not_found,
     );
   }
 
   return { message: Message?.Delete, case: deletedCase };
 };
-

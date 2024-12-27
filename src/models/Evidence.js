@@ -9,10 +9,10 @@ const AttachmentSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  type:{
-    type:String,
-    required:true,
-  }
+  type: {
+    type: String,
+    required: true,
+  },
 });
 
 const EvidenceSchema = new mongoose.Schema({
@@ -32,7 +32,7 @@ const EvidenceSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  Attachment: [AttachmentSchema], 
+  Attachment: [AttachmentSchema],
   CreatedAt: {
     type: Date,
     default: Date.now,

@@ -25,7 +25,8 @@ export const statusCodes = {
 };
 
 export const Message = {
-  Missing_required_field:"Required fields are missing. Please check the input.",
+  Missing_required_field:
+    "Required fields are missing. Please check the input.",
   notFound: "Not Found",
   registerSuccessfully: "Successfully Registered",
   inValid: "Invalid Credentials",
@@ -42,7 +43,7 @@ export const Message = {
   loginError: "Login Error",
   notUpdate: "Update Failed",
   serverError: "Intrnal Server Error",
-  Delete:"Successfully Deleted",
+  Delete: "Successfully Deleted",
 };
 
 export const errorCodes = Object.freeze({

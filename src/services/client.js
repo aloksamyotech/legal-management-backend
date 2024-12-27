@@ -2,15 +2,24 @@ import { Client } from "../models/Client.js";
 import { errorCodes, Message, statusCodes } from "../core/common/constant.js";
 import CustomError from "../utils/exception.js";
 export const AddClient = async (req) => {
-  const { Name, phonenum, city, state, zipcode, Email, address, country,About } =
-    req.body;
+  const {
+    Name,
+    phonenum,
+    city,
+    state,
+    zipcode,
+    Email,
+    address,
+    country,
+    About,
+  } = req.body;
 
   const isClientAlreadyExist = await Client.exists({ Email });
   if (isClientAlreadyExist) {
     throw new CustomError(
       statusCodes?.conflict,
       Message?.alreadyExist,
-      errorCodes?.already_exist
+      errorCodes?.already_exist,
     );
   }
   const image = req.file ? `/uploads/${req.file.filename}` : null;
@@ -25,7 +34,7 @@ export const AddClient = async (req) => {
     address,
     country,
     image,
-    About
+    About,
   });
 
   const createdClient = await client.save();
@@ -34,7 +43,7 @@ export const AddClient = async (req) => {
     throw new CustomError(
       statusCodes?.serviceUnavailable,
       Message?.serverError,
-      errorCodes?.service_unavailable
+      errorCodes?.service_unavailable,
     );
   }
 
@@ -48,7 +57,7 @@ export const GetClient = async (req) => {
     throw new CustomError(
       statusCodes?.badRequest,
       Message?.inValid,
-      errorCodes?.bad_request
+      errorCodes?.bad_request,
     );
   }
 
@@ -57,7 +66,7 @@ export const GetClient = async (req) => {
     throw new CustomError(
       statusCodes?.notFound,
       Message?.notFound,
-      errorCodes?.not_found
+      errorCodes?.not_found,
     );
   }
   return client;
@@ -70,7 +79,7 @@ export const DeleteClient = async (req) => {
     throw new CustomError(
       statusCodes?.badRequest,
       Message?.inValid,
-      errorCodes?.bad_request
+      errorCodes?.bad_request,
     );
   }
 
@@ -80,7 +89,7 @@ export const DeleteClient = async (req) => {
     throw new CustomError(
       statusCodes?.notFound,
       Message?.notDeleted,
-      errorCodes?.not_found
+      errorCodes?.not_found,
     );
   }
 
@@ -91,13 +100,22 @@ export const DeleteClient = async (req) => {
 };
 
 export const UpdateClient = async (req) => {
-  const { Name, phonenum, city, state, zipcode, Email, address, country,About } =
-    req.body;
+  const {
+    Name,
+    phonenum,
+    city,
+    state,
+    zipcode,
+    Email,
+    address,
+    country,
+    About,
+  } = req.body;
   if (!Email) {
     throw new CustomError(
       statusCodes?.badRequest,
       Message?.inValid,
-      errorCodes?.bad_request
+      errorCodes?.bad_request,
     );
   }
   const updateData = {
@@ -114,14 +132,14 @@ export const UpdateClient = async (req) => {
   const updatedClient = await Client.findOneAndUpdate(
     { Email, Active: true },
     updateData,
-    { new: true }
+    { new: true },
   );
 
   if (!updatedClient) {
     throw new CustomError(
       statusCodes?.notFound,
       Message?.notUpdate,
-      errorCodes?.action_failed
+      errorCodes?.action_failed,
     );
   }
 
@@ -135,7 +153,7 @@ export const GetAllClients = async () => {
     throw new CustomError(
       statusCodes?.notFound,
       Message?.notFound,
-      errorCodes?.not_found
+      errorCodes?.not_found,
     );
   }
 

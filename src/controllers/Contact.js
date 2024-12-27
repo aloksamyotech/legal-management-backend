@@ -1,4 +1,4 @@
-import * as contactService from "../services/contact.js"
+import * as contactService from "../services/contact.js";
 import { Message, statusCodes } from "../core/common/constant.js";
 const ContactAdd = async (req, res, next) => {
   const ContactData = await contactService.AddContact(req, res, next);
@@ -7,7 +7,6 @@ const ContactAdd = async (req, res, next) => {
 const ContactFetch = async (req, res, next) => {
   const ContactData = await contactService.GetContact(req, res, next);
   res.status(statusCodes?.found).send(ContactData);
-
 };
 const ContactDelete = async (req, res, next) => {
   const ContactDelData = await contactService.DeleteContact(req, res, next);
@@ -22,5 +21,5 @@ export default {
   ContactAdd,
   ContactFetch,
   ContactDelete,
-  ContactUpdate
+  ContactUpdate,
 };

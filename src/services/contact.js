@@ -1,8 +1,6 @@
-
 import Contact from "../models/Contact.js";
 import { errorCodes, Message, statusCodes } from "../core/common/constant.js";
 import CustomError from "../utils/exception.js";
-
 
 export const AddContact = async (req) => {
   const { firstName, lastName, gender, phoneNumber, emailAddress } = req.body;
@@ -12,7 +10,7 @@ export const AddContact = async (req) => {
     throw new CustomError(
       statusCodes?.conflict,
       Message?.alreadyExist,
-      errorCodes?.already_exist
+      errorCodes?.already_exist,
     );
   }
 
@@ -33,7 +31,7 @@ export const AddContact = async (req) => {
     throw new CustomError(
       statusCodes?.serviceUnavailable,
       Message?.serverError,
-      errorCodes?.service_unavailable
+      errorCodes?.service_unavailable,
     );
   }
 
@@ -49,12 +47,11 @@ export const GetContact = async (req) => {
     throw new CustomError(
       statusCodes?.notFound,
       Message?.notFound,
-      errorCodes?.not_found
+      errorCodes?.not_found,
     );
   }
   return contact;
 };
-
 
 export const UpdateContact = async (req) => {
   const { emailAddress } = req.body;
@@ -67,20 +64,19 @@ export const UpdateContact = async (req) => {
   const updatedContact = await Contact.findOneAndUpdate(
     { emailAddress },
     updateData,
-    { new: true }
+    { new: true },
   );
 
   if (!updatedContact) {
     throw new CustomError(
       statusCodes?.notFound,
       Message?.notUpdate,
-      errorCodes?.action_failed
+      errorCodes?.action_failed,
     );
   }
 
   return updatedContact;
 };
-
 
 export const DeleteContact = async (req) => {
   const { emailAddress } = req.body;
@@ -91,7 +87,7 @@ export const DeleteContact = async (req) => {
     throw new CustomError(
       statusCodes?.notFound,
       Message?.notDeleted,
-      errorCodes?.not_found
+      errorCodes?.not_found,
     );
   }
 

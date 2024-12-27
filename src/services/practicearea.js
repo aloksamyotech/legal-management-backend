@@ -9,7 +9,7 @@ export const AddPractice = async (req) => {
     throw new CustomError(
       statusCodes?.badRequest,
       Message?.Missing_required_field,
-      errorCodes?.bad_request
+      errorCodes?.bad_request,
     );
   }
 
@@ -25,13 +25,12 @@ export const AddPractice = async (req) => {
     throw new CustomError(
       statusCodes?.serviceUnavailable,
       Message?.notCreated,
-      errorCodes?.service_unavailable
+      errorCodes?.service_unavailable,
     );
   }
 
   return createdPractice;
 };
-
 
 export const GetAllPractices = async () => {
   const practices = await PracticeModel.find({ active: true });
@@ -40,13 +39,12 @@ export const GetAllPractices = async () => {
     throw new CustomError(
       statusCodes?.notFound,
       Message?.notFound,
-      errorCodes?.not_found
+      errorCodes?.not_found,
     );
   }
 
   return practices;
 };
-
 
 export const GetPractice = async (req) => {
   const { id } = req.params;
@@ -55,7 +53,7 @@ export const GetPractice = async (req) => {
     throw new CustomError(
       statusCodes?.badRequest,
       Message?.inValid,
-      errorCodes?.bad_request
+      errorCodes?.bad_request,
     );
   }
 
@@ -65,13 +63,12 @@ export const GetPractice = async (req) => {
     throw new CustomError(
       statusCodes?.notFound,
       Message?.notFound,
-      errorCodes?.not_found
+      errorCodes?.not_found,
     );
   }
 
   return practice;
 };
-
 
 export const UpdatePractice = async (req) => {
   const { id } = req.params;
@@ -81,27 +78,26 @@ export const UpdatePractice = async (req) => {
     throw new CustomError(
       statusCodes?.badRequest,
       Message?.inValid,
-      errorCodes?.bad_request
+      errorCodes?.bad_request,
     );
   }
 
   const updatedPractice = await PracticeModel.findOneAndUpdate(
     { _id: id, active: true },
     { Title, address, description },
-    { new: true }
+    { new: true },
   );
 
   if (!updatedPractice) {
     throw new CustomError(
       statusCodes?.notFound,
       Message?.notUpdate,
-      errorCodes?.action_failed
+      errorCodes?.action_failed,
     );
   }
 
   return updatedPractice;
 };
-
 
 export const DeletePractice = async (req) => {
   const { id } = req.params;
@@ -110,7 +106,7 @@ export const DeletePractice = async (req) => {
     throw new CustomError(
       statusCodes?.badRequest,
       Message?.inValid,
-      errorCodes?.bad_request
+      errorCodes?.bad_request,
     );
   }
 
@@ -120,7 +116,7 @@ export const DeletePractice = async (req) => {
     throw new CustomError(
       statusCodes?.notFound,
       Message?.notFound,
-      errorCodes?.not_found
+      errorCodes?.not_found,
     );
   }
 

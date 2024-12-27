@@ -7,24 +7,6 @@ import "dotenv/config"
 import path from "path";
 import responseInterceptor from './src/utils/responseInterceptor.js';
 import appRouter from "./src/routes/routes.js"
-// import { 
-//     policestationRouter,
-//     practiceRouter,
-//     userRouter,
-//     courtRouter,
-//     advocateRouter,
-//     matterRouter,
-//      clientRouter, 
-//     adviseRouter, 
-//     caseRouter , 
-//     hearingRouter , 
-//     contactRouter, 
-//     evidenceRouter,
-//     noteRouter,
-//     expenseRouter,
-//     documentRouter,
-//     judgeRouter
-// } from './src/routes/routes.js';
 
 const app = express();
 const PORT = (() => {
@@ -52,23 +34,6 @@ connectDB()
 
 app.use(responseInterceptor);
 app.use('/api/v1', appRouter)
-
-// app.use('/api/v1/user', userRouter)
-// app.use('/api/v1/judge', judgeRouter)
-// app.use('/api/v1/client', clientRouter)
-// app.use('/api/v1/advocate', advocateRouter)
-// app.use('/api/v1/advise', adviseRouter)
-// app.use('/api/v1/case', caseRouter)
-// app.use('/api/v1/hearing', hearingRouter)
-// app.use('/api/v1/contact', contactRouter)
-// app.use('/api/v1/evidence', evidenceRouter)
-// app.use('/api/v1/expense', expenseRouter)
-// app.use('/api/v1/note', noteRouter)
-// app.use('/api/v1/matter', matterRouter)
-// app.use('/api/v1/document', documentRouter)
-// app.use('/api/v1/court', courtRouter)
-// app.use('/api/v1/practicearea', practiceRouter)
-// app.use('/api/v1/policestation', policestationRouter)
 
 app.use(globalExceptionHandler);
 

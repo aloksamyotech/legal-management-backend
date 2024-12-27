@@ -1,0 +1,11 @@
+import { Router } from "express";
+import { asyncHandler } from "../utils/asyncWrapper.js";
+import { tagController } from "../controllers/controllers.js";
+import { upload } from "../utils/multerConfig.js";
+const router = Router();
+router.post("/addTag", asyncHandler(tagController.TagAdd));
+router.get("/getTag", asyncHandler(tagController.TagFetch));
+router.get("/getAllTag", asyncHandler(tagController.GetAlltag));
+router.delete("/deleteTag/:id", asyncHandler(tagController.TagDelete));
+router.put("/updateTag/:id", asyncHandler(tagController.TagUpdate));
+export default router;

@@ -1,9 +1,9 @@
-import CourtModel from "../models/Court.js";
+import TagModel from "../models/Tag.js";
 import { errorCodes, Message, statusCodes } from "../core/common/constant.js";
 import CustomError from "../utils/exception.js";
 
-export const AddCourt = async (req) => {
-  const { Title, address, description } = req.body;
+export const AddTag = async (req) => {
+  const { Title, description } = req.body;
 
   if (!Title) {
     throw new CustomError(
@@ -13,15 +13,14 @@ export const AddCourt = async (req) => {
     );
   }
 
-  const newCourt = new CourtModel({
+  const newTag = new TagModel({
     Title,
-    address,
     description,
   });
 
-  const createdCourt = await newCourt.save();
+  const createdTag = await newTag.save();
 
-  if (!createdCourt) {
+  if (!createdTag) {
     throw new CustomError(
       statusCodes?.serviceUnavailable,
       Message?.notCreated,
@@ -29,12 +28,13 @@ export const AddCourt = async (req) => {
     );
   }
 
-  return createdCourt;
+  return createdTag;
 };
 
-export const GetAllCourts = async () => {
-  const courts = await CourtModel.find({ active: true });
-  if (!courts || courts.length === 0) {
+export const GetAllTags = async () => {
+  const tags = await TagModel.find({ active: true });
+
+  if (!tags || tags.length === 0) {
     throw new CustomError(
       statusCodes?.notFound,
       Message?.notFound,
@@ -42,10 +42,10 @@ export const GetAllCourts = async () => {
     );
   }
 
-  return courts;
+  return tags;
 };
 
-export const GetCourt = async (req) => {
+export const GetTag = async (req) => {
   const { id } = req.params;
 
   if (!id) {
@@ -56,9 +56,9 @@ export const GetCourt = async (req) => {
     );
   }
 
-  const court = await CourtModel.findOne({ _id: id, active: true });
+  const tag = await TagModel.findOne({ _id: id, active: true });
 
-  if (!court) {
+  if (!tag) {
     throw new CustomError(
       statusCodes?.notFound,
       Message?.notFound,
@@ -66,12 +66,12 @@ export const GetCourt = async (req) => {
     );
   }
 
-  return court;
+  return tag;
 };
 
-export const UpdateCourt = async (req) => {
+export const UpdateTag = async (req) => {
   const { id } = req.params;
-  const { Title, address, description } = req.body;
+  const { Title, description } = req.body;
 
   if (!id || !Title) {
     throw new CustomError(
@@ -81,13 +81,13 @@ export const UpdateCourt = async (req) => {
     );
   }
 
-  const updatedCourt = await CourtModel.findOneAndUpdate(
+  const updatedTag = await TagModel.findOneAndUpdate(
     { _id: id, active: true },
-    { Title, address, description },
+    { Title, description },
     { new: true },
   );
 
-  if (!updatedCourt) {
+  if (!updatedTag) {
     throw new CustomError(
       statusCodes?.notFound,
       Message?.notUpdate,
@@ -95,10 +95,10 @@ export const UpdateCourt = async (req) => {
     );
   }
 
-  return updatedCourt;
+  return updatedTag;
 };
 
-export const DeleteCourt = async (req) => {
+export const DeleteTag = async (req) => {
   const { id } = req.params;
 
   if (!id) {
@@ -109,9 +109,9 @@ export const DeleteCourt = async (req) => {
     );
   }
 
-  const court = await CourtModel.findOne({ _id: id, active: true });
+  const tag = await TagModel.findOne({ _id: id, active: true });
 
-  if (!court) {
+  if (!tag) {
     throw new CustomError(
       statusCodes?.notFound,
       Message?.notFound,
@@ -119,8 +119,8 @@ export const DeleteCourt = async (req) => {
     );
   }
 
-  court.active = false;
-  await court.save();
+  tag.active = false;
+  await tag.save();
 
-  return { message: Message?.Delete, court };
+  return { message: Message?.Delete, tag };
 };

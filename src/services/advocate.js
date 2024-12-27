@@ -1,4 +1,4 @@
-import {AdvocateSch} from "../models/Advocate.js";
+import { AdvocateSch } from "../models/Advocate.js";
 import { errorCodes, Message, statusCodes } from "../core/common/constant.js";
 import CustomError from "../utils/exception.js";
 
@@ -25,18 +25,33 @@ export const AddAdvocate = async (req) => {
     firms,
     position,
     duration,
-    About
+    About,
   } = req.body;
 
-  if (!name || !email || !phone || !city || !state || !zipCode || !country || !barNumber) {
+  if (
+    !name ||
+    !email ||
+    !phone ||
+    !city ||
+    !state ||
+    !zipCode ||
+    !country ||
+    !barNumber
+  ) {
     throw new CustomError(
       statusCodes?.badRequest,
       Message?.Missing_required_field,
-      errorCodes?.bad_request
+      errorCodes?.bad_request,
     );
   }
-  const image = req.files && req.files.image ? `/uploads/${req.files.image[0].filename}` : null;
-  const certificate = req.files && req.files.certificate ? `/uploads/${req.files.certificate[0].filename}` : null;
+  const image =
+    req.files && req.files.image
+      ? `/uploads/${req.files.image[0].filename}`
+      : null;
+  const certificate =
+    req.files && req.files.certificate
+      ? `/uploads/${req.files.certificate[0].filename}`
+      : null;
 
   const newAdvocate = new AdvocateSch({
     certificate,
@@ -71,13 +86,12 @@ export const AddAdvocate = async (req) => {
     throw new CustomError(
       statusCodes?.serviceUnavailable,
       Message?.notCreated,
-      errorCodes?.service_unavailable
+      errorCodes?.service_unavailable,
     );
   }
 
   return createdAdvocate;
 };
-
 
 export const GetAllAdvocates = async () => {
   const advocates = await AdvocateSch.find({ active: true });
@@ -86,13 +100,12 @@ export const GetAllAdvocates = async () => {
     throw new CustomError(
       statusCodes?.notFound,
       Message?.notFound,
-      errorCodes?.not_found
+      errorCodes?.not_found,
     );
   }
 
   return advocates;
 };
-
 
 export const GetAdvocateById = async (req) => {
   const { id } = req?.params;
@@ -101,7 +114,7 @@ export const GetAdvocateById = async (req) => {
     throw new CustomError(
       statusCodes?.badRequest,
       Message?.inValid,
-      errorCodes?.bad_request
+      errorCodes?.bad_request,
     );
   }
 
@@ -111,7 +124,7 @@ export const GetAdvocateById = async (req) => {
     throw new CustomError(
       statusCodes?.notFound,
       Message?.notFound,
-      errorCodes?.not_found
+      errorCodes?.not_found,
     );
   }
 
@@ -120,7 +133,8 @@ export const GetAdvocateById = async (req) => {
 
 // Update an Advocate
 export const UpdateAdvocate = async (req) => {
-  const {  certificate,
+  const {
+    certificate,
     name,
     email,
     phone,
@@ -142,17 +156,17 @@ export const UpdateAdvocate = async (req) => {
     position,
     duration,
     image,
-    About, } 
- = req?.body;
+    About,
+  } = req?.body;
 
   if (!email) {
     throw new CustomError(
       statusCodes?.badRequest,
       Message?.inValid,
-      errorCodes?.bad_request
+      errorCodes?.bad_request,
     );
   }
-  const updateData={
+  const updateData = {
     certificate,
     name,
     email,
@@ -176,25 +190,24 @@ export const UpdateAdvocate = async (req) => {
     duration,
     About,
     image: req.file ? `/uploads/${req.file.filename}` : null,
-  }
+  };
 
   const updatedAdvocate = await AdvocateSch.findOneAndUpdate(
-    {email: email, active: true },
+    { email: email, active: true },
     updateData,
-    { new: true }
+    { new: true },
   );
 
   if (!updatedAdvocate) {
     throw new CustomError(
       statusCodes?.notFound,
       Message?.notUpdate,
-      errorCodes?.action_failed
+      errorCodes?.action_failed,
     );
   }
 
   return updatedAdvocate;
 };
-
 
 export const DeleteAdvocate = async (req) => {
   const { id } = req?.params;
@@ -203,7 +216,7 @@ export const DeleteAdvocate = async (req) => {
     throw new CustomError(
       statusCodes?.badRequest,
       Message?.inValid,
-      errorCodes?.bad_request
+      errorCodes?.bad_request,
     );
   }
 
@@ -213,7 +226,7 @@ export const DeleteAdvocate = async (req) => {
     throw new CustomError(
       statusCodes?.notFound,
       Message?.notFound,
-      errorCodes?.not_found
+      errorCodes?.not_found,
     );
   }
 
