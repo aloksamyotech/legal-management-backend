@@ -3,7 +3,7 @@ import { errorCodes, Message, statusCodes } from "../core/common/constant.js";
 import CustomError from "../utils/exception.js";
 
 export const AddContact = async (req) => {
-  const { firstName, lastName, gender, phoneNumber, emailAddress } = req.body;
+  const { Name,  gender, phoneNumber, emailAddress,Message, subject } = req.body;
 
   const isContactExist = await Contact.exists({ emailAddress });
   if (isContactExist) {
@@ -17,13 +17,14 @@ export const AddContact = async (req) => {
   const avatar = req.file ? `/uploads/${req.file.filename}` : "";
 
   const contact = new Contact({
-    firstName,
-    lastName,
+    Name,
     gender,
     phoneNumber,
     emailAddress,
     avatar,
-  });
+    Message,
+    subject
+    });
 
   const createdContact = await contact.save();
 
@@ -42,7 +43,7 @@ export const AddContact = async (req) => {
 export const GetContact = async (req) => {
   const { emailAddress } = req.body;
 
-  const contact = await Contact.findOne({ emailAddress });
+  const contact = await Contact.findOne({ emailAddress, Active: true }); 
   if (!contact) {
     throw new CustomError(
       statusCodes?.notFound,
@@ -53,8 +54,9 @@ export const GetContact = async (req) => {
   return contact;
 };
 
+
 export const UpdateContact = async (req) => {
-  const { emailAddress } = req.body;
+  const {id} = req.params;
   const updateData = req.body;
 
   if (req.file) {
@@ -62,7 +64,7 @@ export const UpdateContact = async (req) => {
   }
 
   const updatedContact = await Contact.findOneAndUpdate(
-    { emailAddress },
+    { _id:id, Active: true },  
     updateData,
     { new: true },
   );
@@ -79,11 +81,11 @@ export const UpdateContact = async (req) => {
 };
 
 export const DeleteContact = async (req) => {
-  const { emailAddress } = req.body;
+  const {id } = req.params;
 
-  const deletedContact = await Contact.findOneAndDelete({ emailAddress });
-
-  if (!deletedContact) {
+  const contactToUpdate = await Contact.findOne({ _id:id, Active: true });
+  
+  if (!contactToUpdate) {
     throw new CustomError(
       statusCodes?.notFound,
       Message?.notDeleted,
@@ -91,5 +93,21 @@ export const DeleteContact = async (req) => {
     );
   }
 
-  return { message: Message?.Delete, contact: deletedContact };
+  contactToUpdate.Active = false;
+  const updatedContact = await contactToUpdate.save();
+
+  return { message: Message?.Delete, contact: updatedContact };
+};
+
+export const GetAllContact = async () => {
+  const contact = await Contact.find({ Active: true });
+
+  if (!contact || contact.length === 0) {
+    throw new CustomError(
+      statusCodes?.notFound,
+      Message?.notFound,
+      errorCodes?.not_found,
+    );
+  }
+  return contact;
 };

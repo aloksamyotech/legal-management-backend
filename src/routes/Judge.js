@@ -6,6 +6,6 @@ const router = Router();
 router.post("/addJudge", asyncHandler(judgeController.JudgeAdd));
 router.get("/getJudge", asyncHandler(judgeController.JudgeFetch));
 router.get("/getAllJudge", asyncHandler(judgeController.GetAlljudge));
-router.delete("/deleteJudge", asyncHandler(judgeController.JudgeDelete));
-router.put("/updateJudge", asyncHandler(judgeController.JudgeUpdate));
+router.delete("/deleteJudge/:id", asyncHandler(judgeController.JudgeDelete));
+router.put("/updateJudge/:id", asyncHandler(judgeController.JudgeUpdate));
 export default router;

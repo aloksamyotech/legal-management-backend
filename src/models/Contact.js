@@ -1,14 +1,11 @@
 import mongoose from "mongoose";
 
 const contactSchema = new mongoose.Schema({
-  firstName: {
+  Name: {
     type: String,
     required: true,
   },
-  lastName: {
-    type: String,
-    required: true,
-  },
+  
   gender: {
     type: String,
     enum: ["male", "female", "other"],
@@ -27,6 +24,19 @@ const contactSchema = new mongoose.Schema({
     type: String,
     default: "",
   },
+  Message:{
+    type: String
+  },
+  subject:{
+    type:String,
+
+  },
+  Active:{
+    type:Boolean,
+    default:true,
+  }
+},{
+  timestamps:true
 });
 
 const Contact = mongoose.model("Contact", contactSchema);
