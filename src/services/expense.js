@@ -44,7 +44,7 @@ export const AddExpense = async (req) => {
 };
 
 export const GetExpense = async () => {
-  const expenses = await ExpenseModel.find();
+  const expenses = await ExpenseModel.find().populate("Type", "Title");
 
   if (!expenses || expenses.length === 0) {
     throw new CustomError(

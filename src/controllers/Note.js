@@ -6,11 +6,11 @@ const NoteAdd = async (req, res, next) => {
 };
 const NoteFetch = async (req, res, next) => {
   const NoteData = await noteService.GetAllNotes(req, res, next);
-  res.status(statusCodes?.found).send(NoteData);
+  res.status(statusCodes?.ok).send(NoteData);
 };
 const NoteById = async (req, res, next) => {
   const NoteData = await noteService.GetNoteById(req, res, next);
-  res.status(statusCodes?.found).send(NoteData);
+  res.status(statusCodes?.ok).send(NoteData);
 };
 const NoteDelete = async (req, res, next) => {
   const NoteDelData = await noteService.DeleteNote(req, res, next);

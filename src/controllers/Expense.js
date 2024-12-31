@@ -6,11 +6,11 @@ const ExpenseAdd = async (req, res, next) => {
 };
 const ExpenseFetch = async (req, res, next) => {
   const ExpenseData = await expenseService.GetExpense(req, res, next);
-  res.status(statusCodes?.found).send(ExpenseData);
+  res.status(statusCodes?.ok).send(ExpenseData);
 };
 const ExpenseById = async (req, res, next) => {
   const ExpenseData = await expenseService.GetExpenseById(req, res, next);
-  res.status(statusCodes?.found).send(ExpenseData);
+  res.status(statusCodes?.ok).send(ExpenseData);
 };
 const ExpenseDelete = async (req, res, next) => {
   const ExpenseDelData = await expenseService.DeleteExpense(req, res, next);
