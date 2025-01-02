@@ -18,30 +18,11 @@ export const AddCase = async (req) => {
     internalNote,
   } = req.body;
 
-  if (
-    !Title ||
-    !Date ||
-    !Client ||
-    !Advocate ||
-    !Matter ||
-    !Judge ||
-    !PoliceStation ||
-    !Court ||
-    !Fir
-  ) {
+  if (!Title || !Date || !Client || !Advocate || !Matter || !Judge || !PoliceStation || !Court || !Fir) {
     throw new CustomError(
       statusCodes?.badRequest,
       Message?.Missing_required_field,
       errorCodes?.bad_request,
-    );
-  }
-
-  const clientExists = await ClientSch.findById(Client);
-  if (!clientExists) {
-    throw new CustomError(
-      statusCodes?.notFound,
-      "Client does not exist",
-      errorCodes?.not_found,
     );
   }
 
@@ -57,6 +38,7 @@ export const AddCase = async (req) => {
     Fir,
     description,
     internalNote,
+    Active: true,
   });
 
   const createdCase = await newCase.save();
@@ -73,7 +55,14 @@ export const AddCase = async (req) => {
 };
 
 export const GetCase = async () => {
-  const cases = await CaseModel.find().populate("Client");
+  const cases = await CaseModel.find({ Active: true }).populate([
+    { path: "Client", select: "Name" }, 
+    { path: "Advocate", select: "name" },
+    { path: "Matter", select: "Title" }, 
+        { path: "Judge", select: "Title" }, 
+    { path: "PoliceStation", select: "Title" }, 
+    { path: "Court", select: "Title"}, 
+  ]);
 
   if (!cases || cases.length === 0) {
     throw new CustomError(
@@ -85,6 +74,7 @@ export const GetCase = async () => {
 
   return cases;
 };
+
 export const UpdateCase = async (req) => {
   const { id } = req.params;
   const updateData = req.body;
@@ -97,22 +87,11 @@ export const UpdateCase = async (req) => {
     );
   }
 
-  if (updateData.Client) {
-    const clientExists = await ClientSch.findById(updateData.Client);
-    if (!clientExists) {
-      throw new CustomError(
-        statusCodes?.notFound,
-        "Client does not exist",
-        errorCodes?.not_found,
-      );
-    }
-  }
-
   const updatedCase = await CaseModel.findOneAndUpdate(
-    { _id: id },
+    { _id: id, Active: true },
     updateData,
     { new: true },
-  ).populate("Client");
+  )
 
   if (!updatedCase) {
     throw new CustomError(
@@ -124,6 +103,7 @@ export const UpdateCase = async (req) => {
 
   return updatedCase;
 };
+
 export const DeleteCase = async (req) => {
   const { id } = req.params;
 
@@ -135,7 +115,11 @@ export const DeleteCase = async (req) => {
     );
   }
 
-  const deletedCase = await CaseModel.findOneAndDelete({ _id: id });
+  const deletedCase = await CaseModel.findOneAndUpdate(
+    { _id: id, Active: true },
+    { Active: false },
+    { new: true },
+  );
 
   if (!deletedCase) {
     throw new CustomError(
@@ -146,4 +130,34 @@ export const DeleteCase = async (req) => {
   }
 
   return { message: Message?.Delete, case: deletedCase };
+};
+export const GetCaseById = async (req) => {
+  const { id } = req.params;
+
+  if (!id) {
+    throw new CustomError(
+      statusCodes?.badRequest,
+      Message?.inValid,
+      errorCodes?.bad_request
+    );
+  }
+
+  const caseData = await CaseModel.findOne({ _id: id, Active: true }).populate([
+    { path: "Client", select: "Name" },
+    { path: "Advocate", select: "name" },
+    { path: "Matter", select: "Title" },
+    { path: "Judge", select: "Title" },
+    { path: "PoliceStation", select: "Title" },
+    { path: "Court", select: "Title" },
+  ]);
+
+  if (!caseData) {
+    throw new CustomError(
+      statusCodes?.notFound,
+      Message?.notFound,
+      errorCodes?.not_found
+    );
+  }
+
+  return caseData;
 };

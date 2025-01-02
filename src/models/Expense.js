@@ -20,6 +20,7 @@ const ExpenseSchema = new mongoose.Schema(
       required: true },
     Attachment: [AttachmentSchema],
     Description: { type: String },
+    Active:{type:Boolean, default:true}
   },
   { timestamps: true },
 );

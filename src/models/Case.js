@@ -18,22 +18,27 @@ const CaseSchema = new Schema(
     },
     Advocate: {
       type: Schema.Types.ObjectId,
+      ref: "Advocate",
       required: true,
     },
     Matter: {
-      type: String,
+      type: Schema.Types.ObjectId,
+      ref: "Matter",
       required: true,
     },
     Judge: {
-      type: String,
+      type: Schema.Types.ObjectId,
+      ref: "Judge",
       required: true,
     },
     PoliceStation: {
-      type: String,
+      type: Schema.Types.ObjectId,
+      ref: "Policestation",
       required: true,
     },
     Court: {
-      type: String,
+      type: Schema.Types.ObjectId,
+      ref: "Court",
       required: true,
     },
     Fir: {
@@ -47,6 +52,10 @@ const CaseSchema = new Schema(
     internalNote: {
       type: String,
     },
+    Active:{
+      type:Boolean,
+      default:true
+    }
   },
   { timestamps: true },
 );

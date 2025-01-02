@@ -44,7 +44,7 @@ export const AddExpense = async (req) => {
 };
 
 export const GetExpense = async () => {
-  const expenses = await ExpenseModel.find().populate("Type", "Title");
+  const expenses = await ExpenseModel.find({ Active: true }).populate("Type", "Title");
 
   if (!expenses || expenses.length === 0) {
     throw new CustomError(
@@ -68,7 +68,7 @@ export const GetExpenseById = async (req) => {
     );
   }
 
-  const expense = await ExpenseModel.findById(id);
+  const expense = await ExpenseModel.findOne({ _id: id, Active: true }).populate("Type", "Title");
 
   if (!expense) {
     throw new CustomError(
@@ -93,7 +93,16 @@ export const UpdateExpense = async (req) => {
     );
   }
 
-  // Process file attachments if provided
+  const expense = await ExpenseModel.findOne({ _id: id, Active: true });
+
+  if (!expense) {
+    throw new CustomError(
+      statusCodes?.notFound,
+      Message?.notUpdate,
+      errorCodes?.not_found,
+    );
+  }
+
   const files = req.files?.map((file) => ({
     name: file?.originalname,
     url: `/uploads/${file?.filename}`,
@@ -104,7 +113,7 @@ export const UpdateExpense = async (req) => {
     updateData.Attachment = files;
   }
 
-  const updatedExpense = await ExpenseModel.findByIdAndUpdate(id, updateData, {
+  const updatedExpense = await ExpenseModel.findByIdAndUpdate({_id: id}, updateData, {
     new: true,
   });
 
@@ -119,6 +128,7 @@ export const UpdateExpense = async (req) => {
   return updatedExpense;
 };
 
+
 export const DeleteExpense = async (req) => {
   const { id } = req.params;
 
@@ -130,7 +140,11 @@ export const DeleteExpense = async (req) => {
     );
   }
 
-  const deletedExpense = await ExpenseModel.findByIdAndDelete(id);
+  const deletedExpense = await ExpenseModel.findByIdAndUpdate(
+    id,
+    { Active: false },
+    { new: true }
+  );
 
   if (!deletedExpense) {
     throw new CustomError(
