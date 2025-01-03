@@ -22,17 +22,34 @@ export const AddEvidence = async (req, res) => {
   const createdEvidence = await evidence.save();
   return createdEvidence;
 };
-
 export const GetEvidence = async (req, res) => {
-  const evidence = await Evidence.find();
+  const evidence = await Evidence.find({ Active: true });
   res?.status(statusCodes?.ok).send(evidence);
+};
+export const DeleteEvidence = async (req, res) => {
+  const { id } = req.params;
+
+  const deletedEvidence = await Evidence.findOneAndUpdate(
+    { _id: id, Active: true },
+    { Active: false },
+    { new: true }
+  );
+
+  if (!deletedEvidence) {
+    throw new CustomError(
+      statusCodes?.notFound,
+      Message?.notDeleted,
+      errorCodes?.not_found,
+    );
+  }
+
+  return deletedEvidence;
 };
 
 export const UpdateEvidence = async (req, res) => {
   const { id } = req?.params;
   const { Title, Case, Hearing, Favor, Description } = req?.body;
 
-  // Handle files
   const files = req.files?.map((file) => ({
     name: file.originalname,
     url: `/uploads/${file?.filename}`,
@@ -47,22 +64,35 @@ export const UpdateEvidence = async (req, res) => {
     Attachment: files,
     Description,
   };
-  const updatedEvidence = await Evidence.findByIdAndUpdate(id, updatedData, {
-    new: true,
-  });
 
-  return updatedEvidence;
-};
+  const updatedEvidence = await Evidence.findOneAndUpdate(
+    { _id: id, Active: true },
+    updatedData,
+    { new: true }
+  );
 
-export const DeleteEvidence = async (req, res) => {
-  const { id } = req.params;
-  const deletedEvidence = await Evidence.findByIdAndDelete(id);
-  if (!deletedEvidence) {
+  if (!updatedEvidence) {
     throw new CustomError(
       statusCodes?.notFound,
-      Message?.notDeleted,
+      Message?.notUpdate,
       errorCodes?.not_found,
     );
   }
-  return deletedEvidence;
+
+  return updatedEvidence;
+};
+export const GetEvidenceByCase = async (req, res) => {
+  const { caseId } = req.params;
+
+  const evidence = await Evidence.find({ Case: caseId, Active: true }).populate("Hearing","Title");
+
+  if (!evidence || evidence.length === 0) {
+    throw new CustomError(
+      statusCodes?.notFound,
+      Message?.notFound,
+      errorCodes?.not_found,
+    );
+  }
+
+  return evidence
 };

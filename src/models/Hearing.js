@@ -20,7 +20,7 @@ const HearingSchema = new Schema(
     JudgementStatus: {
       type: String,
       required: false,
-      enum: ["Pending", "In Progress", "delivered"],
+      enum: ["Pending", "In Progress", "Delivered"],
       default: "Pending",
     },
     Date: {
@@ -42,6 +42,10 @@ const HearingSchema = new Schema(
       ref: "Case",
       required: true,
     },
+    Active:{
+      type:Boolean,
+      default:true
+    }
   },
   {
     timestamps: true,

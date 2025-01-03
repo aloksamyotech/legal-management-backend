@@ -25,6 +25,8 @@ export const statusCodes = {
 };
 
 export const Message = {
+  CaseId_required: "No hearings found for the given Case ID",
+  Case_Hearing_NotFound: "No hearings found for the given Case ID",
   Missing_required_field:
     "Required fields are missing. Please check the input.",
   notFound: "Not Found",

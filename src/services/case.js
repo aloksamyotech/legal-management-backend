@@ -1,7 +1,9 @@
 import CaseModel from "../models/Case.js";
-import { Client as ClientSch } from "../models/Client.js";
 import { errorCodes, Message, statusCodes } from "../core/common/constant.js";
 import CustomError from "../utils/exception.js";
+import HearingModel from "../models/Hearing.js";
+import Evidence  from "../models/Evidence.js";
+import Document from "../models/Document.js";
 
 export const AddCase = async (req) => {
   const {
@@ -128,7 +130,11 @@ export const DeleteCase = async (req) => {
       errorCodes?.not_found,
     );
   }
-
+  await Promise.all([
+    HearingModel.updateMany({ Case: id, Active: true }, { Active: false }),
+    Evidence.updateMany({ Case: id, Active: true }, { Active: false }),
+    Document.updateMany({ Case: id, Active: true }, { Active: false }),
+  ]);
   return { message: Message?.Delete, case: deletedCase };
 };
 export const GetCaseById = async (req) => {

@@ -3,7 +3,7 @@ import { errorCodes, Message, statusCodes } from "../core/common/constant.js";
 import CustomError from "../utils/exception.js";
 
 export const AddDocument = async (req) => {
-  const { Title, Case, CreatedAt, Note } = req.body;
+  const { Title, Case, Note } = req.body;
 
   if (!Title || !Case || !Note) {
     throw new CustomError(
@@ -22,7 +22,6 @@ export const AddDocument = async (req) => {
   const newDocument = new Document({
     Title,
     Case,
-    CreatedAt,
     Note,
     Attachment: files || [],
     Active: true,
@@ -143,4 +142,20 @@ export const DeleteDocument = async (req) => {
   await document.save();
 
   return { message: Message?.Delete, document };
+};
+
+export const GetDocumentByCase = async (req, res) => {
+  const { caseId } = req.params;
+
+  const document = await Document.find({ Case: caseId, Active: true }).populate("Case","Title");
+
+  if (!document || document.length === 0) {
+    throw new CustomError(
+      statusCodes?.notFound,
+      Message?.notFound,
+      errorCodes?.not_found,
+    );
+  }
+
+  return document
 };

@@ -10,7 +10,11 @@ const DocumentFetch = async (req, res, next) => {
 };
 const DocumentById = async (req, res, next) => {
   const DocumentData = await documentService.GetDocumentById(req, res, next);
-  res.status(statusCodes?.found).send(DocumentData);
+  res.status(statusCodes?.ok).send(DocumentData);
+};
+const GetDocumentByCase = async (req, res, next) => {
+  const DocumentData = await documentService.GetDocumentByCase(req, res, next);
+  res.status(statusCodes?.ok).send(DocumentData);
 };
 const DocumentDelete = async (req, res, next) => {
   const DocumentDelData = await documentService.DeleteDocument(req, res, next);
@@ -31,4 +35,5 @@ export default {
   DocumentById,
   DocumentDelete,
   DocumentUpdate,
+  GetDocumentByCase
 };

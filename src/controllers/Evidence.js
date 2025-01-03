@@ -6,7 +6,11 @@ const EvidenceAdd = async (req, res, next) => {
 };
 const EvidenceFetch = async (req, res, next) => {
   const EvidenceData = await evidenceService.GetEvidence(req, res, next);
-  res.status(statusCodes?.found).send(EvidenceData);
+  res.status(statusCodes?.ok).send(EvidenceData);
+};
+const EvidencebyCaseFetch = async (req, res, next) => {
+  const EvidenceData = await evidenceService.GetEvidenceByCase(req, res, next);
+  res.status(statusCodes?.ok).send(EvidenceData);
 };
 const EvidenceDelete = async (req, res, next) => {
   const EvidenceDelData = await evidenceService.DeleteEvidence(req, res, next);
@@ -26,4 +30,5 @@ export default {
   EvidenceFetch,
   EvidenceDelete,
   EvidenceUpdate,
+  EvidencebyCaseFetch
 };
