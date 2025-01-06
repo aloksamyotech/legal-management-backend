@@ -1,4 +1,3 @@
-
 import mongoose from "mongoose";
 
 const AttachmentSchema = new mongoose.Schema({
@@ -13,15 +12,20 @@ const NoteSchema = new mongoose.Schema(
     Attachment: [AttachmentSchema],
     Description: { type: String, required: true },
     CreatedAt: {
-        type: Date,
-        default: Date.now,
-      },
+      type: Date,
+      default: Date.now,
+    },
+    Active: {
+      type: Boolean,
+      default: true,
+    },
     Active:{
-        type:Boolean,
-        default:true
+      type:Boolean,
+      Default:true,
+
     }
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
 const Note = mongoose.model("Note", NoteSchema);

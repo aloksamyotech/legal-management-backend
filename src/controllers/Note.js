@@ -1,4 +1,4 @@
-import * as noteService from "../services/note.js"
+import * as noteService from "../services/note.js";
 import { Message, statusCodes } from "../core/common/constant.js";
 const NoteAdd = async (req, res, next) => {
   const NoteData = await noteService.AddNote(req, res, next);
@@ -6,14 +6,12 @@ const NoteAdd = async (req, res, next) => {
 };
 const NoteFetch = async (req, res, next) => {
   const NoteData = await noteService.GetAllNotes(req, res, next);
-  res.status(statusCodes?.found).send(NoteData);
-
+  res.status(statusCodes?.ok).send(NoteData);
 };
 const NoteById = async (req, res, next) => {
-    const NoteData = await noteService.GetNoteById(req, res, next);
-    res.status(statusCodes?.found).send(NoteData);
-  
-  };
+  const NoteData = await noteService.GetNoteById(req, res, next);
+  res.status(statusCodes?.ok).send(NoteData);
+};
 const NoteDelete = async (req, res, next) => {
   const NoteDelData = await noteService.DeleteNote(req, res, next);
   res.status(statusCodes?.ok).send(NoteDelData);
@@ -28,5 +26,5 @@ export default {
   NoteFetch,
   NoteById,
   NoteDelete,
-  NoteUpdate
+  NoteUpdate,
 };

@@ -6,4 +6,5 @@ router.post("/addCase", asyncHandler(caseController.CaseAdd));
 router.get("/getCase", asyncHandler(caseController.CaseFetch));
 router.delete("/deleteCase/:id", asyncHandler(caseController.CaseDelete));
 router.put("/updateCase/:id", asyncHandler(caseController.CaseUpdate));
+router.get("/getCasebyid/:id", asyncHandler(caseController.GetCasebyId));
 export default router;

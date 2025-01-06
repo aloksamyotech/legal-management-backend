@@ -12,13 +12,13 @@ const DocumentSchema = new mongoose.Schema(
     Case: { type: String, required: true },
     Attachment: [AttachmentSchema],
     CreatedAt: {
-        type: Date,
-        default: Date.now,
-      },
+      type: Date,
+      default: Date.now,
+    },
     Note: { type: String, required: true },
-    Active: { type: Boolean, default: true }, 
+    Active: { type: Boolean, default: true },
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
 const Document = mongoose.model("Document", DocumentSchema);

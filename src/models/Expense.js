@@ -1,4 +1,3 @@
-
 import mongoose from "mongoose";
 
 const AttachmentSchema = new mongoose.Schema({
@@ -9,14 +8,21 @@ const AttachmentSchema = new mongoose.Schema({
 
 const ExpenseSchema = new mongoose.Schema(
   {
-    Title: { type: String, required: true },
-    Case: { type: String, required: true },
-    Type: { type: String, required: true },
-    Amount: { type: Number, required: true },
+    Title: { type: String,
+       required: true },
+    Case: { type: String, 
+      required: true },
+    Type: {
+       type: mongoose.Schema.Types.ObjectId,
+      ref:"ExpenseType",
+       required: true, },
+    Amount: { type: Number, 
+      required: true },
     Attachment: [AttachmentSchema],
     Description: { type: String },
+    Active:{type:Boolean, default:true}
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
 const Expense = mongoose.model("Expense", ExpenseSchema);

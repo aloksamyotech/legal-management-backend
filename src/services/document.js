@@ -3,13 +3,13 @@ import { errorCodes, Message, statusCodes } from "../core/common/constant.js";
 import CustomError from "../utils/exception.js";
 
 export const AddDocument = async (req) => {
-  const { Title, Case, CreatedAt, Note } = req.body;
+  const { Title, Case, Note } = req.body;
 
   if (!Title || !Case || !Note) {
     throw new CustomError(
       statusCodes?.badRequest,
       Message?.Missing_required_field,
-      errorCodes?.bad_request
+      errorCodes?.bad_request,
     );
   }
 
@@ -22,7 +22,6 @@ export const AddDocument = async (req) => {
   const newDocument = new Document({
     Title,
     Case,
-    CreatedAt,
     Note,
     Attachment: files || [],
     Active: true,
@@ -34,7 +33,7 @@ export const AddDocument = async (req) => {
     throw new CustomError(
       statusCodes?.serviceUnavailable,
       Message?.notCreated,
-      errorCodes?.service_unavailable
+      errorCodes?.service_unavailable,
     );
   }
 
@@ -48,7 +47,7 @@ export const GetAllDocuments = async () => {
     throw new CustomError(
       statusCodes?.notFound,
       Message?.notFound,
-      errorCodes?.not_found
+      errorCodes?.not_found,
     );
   }
 
@@ -62,7 +61,7 @@ export const GetDocumentById = async (req) => {
     throw new CustomError(
       statusCodes?.badRequest,
       Message?.inValid,
-      errorCodes?.bad_request
+      errorCodes?.bad_request,
     );
   }
 
@@ -72,7 +71,7 @@ export const GetDocumentById = async (req) => {
     throw new CustomError(
       statusCodes?.notFound,
       Message?.notFound,
-      errorCodes?.not_found
+      errorCodes?.not_found,
     );
   }
 
@@ -87,7 +86,7 @@ export const UpdateDocument = async (req) => {
     throw new CustomError(
       statusCodes?.badRequest,
       Message?.inValid,
-      errorCodes?.bad_request
+      errorCodes?.bad_request,
     );
   }
 
@@ -104,14 +103,14 @@ export const UpdateDocument = async (req) => {
   const updatedDocument = await Document.findOneAndUpdate(
     { _id: id, Active: true },
     updateData,
-    { new: true }
+    { new: true },
   );
 
   if (!updatedDocument) {
     throw new CustomError(
       statusCodes?.notFound,
       Message?.notUpdate,
-      errorCodes?.action_failed
+      errorCodes?.action_failed,
     );
   }
 
@@ -125,7 +124,7 @@ export const DeleteDocument = async (req) => {
     throw new CustomError(
       statusCodes?.badRequest,
       Message?.inValid,
-      errorCodes?.bad_request
+      errorCodes?.bad_request,
     );
   }
 
@@ -135,7 +134,7 @@ export const DeleteDocument = async (req) => {
     throw new CustomError(
       statusCodes?.notFound,
       Message?.notFound,
-      errorCodes?.not_found
+      errorCodes?.not_found,
     );
   }
 
@@ -143,4 +142,20 @@ export const DeleteDocument = async (req) => {
   await document.save();
 
   return { message: Message?.Delete, document };
+};
+
+export const GetDocumentByCase = async (req, res) => {
+  const { caseId } = req.params;
+
+  const document = await Document.find({ Case: caseId, Active: true }).populate("Case","Title");
+
+  if (!document || document.length === 0) {
+    throw new CustomError(
+      statusCodes?.notFound,
+      Message?.notFound,
+      errorCodes?.not_found,
+    );
+  }
+
+  return document
 };

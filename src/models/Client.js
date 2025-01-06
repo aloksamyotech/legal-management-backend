@@ -38,14 +38,14 @@ const ClientSchema = new Schema(
       type: String,
     },
     image: {
-      type: String, 
+      type: String,
     },
-    Active:{
-      type:Boolean,
-      default:true
-    }
+    Active: {
+      type: Boolean,
+      default: true,
+    },
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
 export const Client = mongoose.model("Client", ClientSchema);

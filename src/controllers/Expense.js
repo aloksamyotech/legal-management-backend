@@ -1,4 +1,4 @@
-import * as expenseService from "../services/expense.js"
+import * as expenseService from "../services/expense.js";
 import { Message, statusCodes } from "../core/common/constant.js";
 const ExpenseAdd = async (req, res, next) => {
   const ExpenseData = await expenseService.AddExpense(req, res, next);
@@ -6,14 +6,12 @@ const ExpenseAdd = async (req, res, next) => {
 };
 const ExpenseFetch = async (req, res, next) => {
   const ExpenseData = await expenseService.GetExpense(req, res, next);
-  res.status(statusCodes?.found).send(ExpenseData);
-
+  res.status(statusCodes?.ok).send(ExpenseData);
 };
 const ExpenseById = async (req, res, next) => {
-    const ExpenseData = await expenseService.GetExpenseById(req, res, next);
-    res.status(statusCodes?.found).send(ExpenseData);
-  
-  };
+  const ExpenseData = await expenseService.GetExpenseById(req, res, next);
+  res.status(statusCodes?.ok).send(ExpenseData);
+};
 const ExpenseDelete = async (req, res, next) => {
   const ExpenseDelData = await expenseService.DeleteExpense(req, res, next);
   res.status(statusCodes?.ok).send(ExpenseDelData);
@@ -28,5 +26,5 @@ export default {
   ExpenseFetch,
   ExpenseById,
   ExpenseDelete,
-  ExpenseUpdate
+  ExpenseUpdate,
 };

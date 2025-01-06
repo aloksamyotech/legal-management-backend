@@ -1,91 +1,94 @@
 import mongoose from "mongoose";
 const { Schema } = mongoose;
-const AdvocateSchema = new Schema({
+const AdvocateSchema = new Schema(
+  {
     name: {
-        type: String,
-        required: true,
-        trim: true,
+      type: String,
+      required: true,
+      trim: true,
     },
     email: {
-        type: String,
-        required: true,
-        unique: true,
-        trim: true,
+      type: String,
+      required: true,
+      unique: true,
+      trim: true,
     },
     phone: {
-        type: String,
-        required: true,
+      type: String,
+      required: true,
     },
     gender: {
-        type: String,
+      type: String,
     },
     city: {
-        type: String,
-        required: true,
+      type: String,
+      required: true,
     },
     state: {
-        type: String,
-        required: true,
+      type: String,
+      required: true,
     },
     zipCode: {
-        type: Number,
-        required: true,
+      type: Number,
+      required: true,
     },
     country: {
-        type: String,
-        required: true,
+      type: String,
+      required: true,
     },
     address: {
-        type: String,
+      type: String,
     },
     certificate: {
-        type: String,
-        trim: true,
+      type: String,
+      trim: true,
     },
     barNumber: {
-        type: String,
-        required: true,
+      type: String,
+      required: true,
     },
     lawUniversity: {
-        type: String,
+      type: String,
     },
     graduationYear: {
-        type: String,
+      type: String,
     },
     practiceArea: {
-        type: String,
+      type: String,
     },
     languages: {
-        type: String,
+      type: String,
     },
     skill: {
-        type: String,
+      type: String,
     },
     degree: {
-        type: String,
+      type: String,
     },
     notes: {
-        type: String,
+      type: String,
     },
     firms: {
-        type: String,
+      type: String,
     },
     position: {
-        type: String,
+      type: String,
     },
     duration: {
-        type: String,
+      type: String,
     },
     image: {
-        type: String,
+      type: String,
     },
     About: {
-        type: String,
+      type: String,
     },
     active: {
-        type: Boolean,
-        default: true,
+      type: Boolean,
+      default: true,
     },
-}, { timestamps: true });
+  },
+  { timestamps: true },
+);
 
-export const AdvocateSch = mongoose.model('Advocate', AdvocateSchema);
+export const AdvocateSch = mongoose.model("Advocate", AdvocateSchema);

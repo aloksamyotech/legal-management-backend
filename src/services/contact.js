@@ -1,31 +1,30 @@
-
 import Contact from "../models/Contact.js";
 import { errorCodes, Message, statusCodes } from "../core/common/constant.js";
 import CustomError from "../utils/exception.js";
 
-
 export const AddContact = async (req) => {
-  const { firstName, lastName, gender, phoneNumber, emailAddress } = req.body;
+  const { Name,  gender, phoneNumber, emailAddress,Message, subject } = req.body;
 
   const isContactExist = await Contact.exists({ emailAddress });
   if (isContactExist) {
     throw new CustomError(
       statusCodes?.conflict,
       Message?.alreadyExist,
-      errorCodes?.already_exist
+      errorCodes?.already_exist,
     );
   }
 
   const avatar = req.file ? `/uploads/${req.file.filename}` : "";
 
   const contact = new Contact({
-    firstName,
-    lastName,
+    Name,
     gender,
     phoneNumber,
     emailAddress,
     avatar,
-  });
+    Message,
+    subject
+    });
 
   const createdContact = await contact.save();
 
@@ -33,7 +32,7 @@ export const AddContact = async (req) => {
     throw new CustomError(
       statusCodes?.serviceUnavailable,
       Message?.serverError,
-      errorCodes?.service_unavailable
+      errorCodes?.service_unavailable,
     );
   }
 
@@ -44,12 +43,12 @@ export const AddContact = async (req) => {
 export const GetContact = async (req) => {
   const { emailAddress } = req.body;
 
-  const contact = await Contact.findOne({ emailAddress });
+  const contact = await Contact.findOne({ emailAddress, Active: true }); 
   if (!contact) {
     throw new CustomError(
       statusCodes?.notFound,
       Message?.notFound,
-      errorCodes?.not_found
+      errorCodes?.not_found,
     );
   }
   return contact;
@@ -57,7 +56,7 @@ export const GetContact = async (req) => {
 
 
 export const UpdateContact = async (req) => {
-  const { emailAddress } = req.body;
+  const {id} = req.params;
   const updateData = req.body;
 
   if (req.file) {
@@ -65,35 +64,50 @@ export const UpdateContact = async (req) => {
   }
 
   const updatedContact = await Contact.findOneAndUpdate(
-    { emailAddress },
+    { _id:id, Active: true },  
     updateData,
-    { new: true }
+    { new: true },
   );
 
   if (!updatedContact) {
     throw new CustomError(
       statusCodes?.notFound,
       Message?.notUpdate,
-      errorCodes?.action_failed
+      errorCodes?.action_failed,
     );
   }
 
   return updatedContact;
 };
 
-
 export const DeleteContact = async (req) => {
-  const { emailAddress } = req.body;
+  const {id } = req.params;
 
-  const deletedContact = await Contact.findOneAndDelete({ emailAddress });
-
-  if (!deletedContact) {
+  const contactToUpdate = await Contact.findOne({ _id:id, Active: true });
+  
+  if (!contactToUpdate) {
     throw new CustomError(
       statusCodes?.notFound,
       Message?.notDeleted,
-      errorCodes?.not_found
+      errorCodes?.not_found,
     );
   }
 
-  return { message: Message?.Delete, contact: deletedContact };
+  contactToUpdate.Active = false;
+  const updatedContact = await contactToUpdate.save();
+
+  return { message: Message?.Delete, contact: updatedContact };
+};
+
+export const GetAllContact = async () => {
+  const contact = await Contact.find({ Active: true });
+
+  if (!contact || contact.length === 0) {
+    throw new CustomError(
+      statusCodes?.notFound,
+      Message?.notFound,
+      errorCodes?.not_found,
+    );
+  }
+  return contact;
 };
