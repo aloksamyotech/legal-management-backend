@@ -41,7 +41,7 @@ export const AddDocument = async (req) => {
 };
 
 export const GetAllDocuments = async () => {
-  const documents = await Document.find({ Active: true });
+  const documents = await Document.find({ Active: true }).populate("Case","Title");
 
   if (!documents || documents.length === 0) {
     throw new CustomError(
@@ -65,7 +65,7 @@ export const GetDocumentById = async (req) => {
     );
   }
 
-  const document = await Document.findOne({ _id: id, Active: true });
+  const document = await Document.findOne({ _id: id, Active: true }).populate("Case","Title");
 
   if (!document) {
     throw new CustomError(
