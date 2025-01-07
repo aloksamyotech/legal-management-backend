@@ -22,9 +22,18 @@ export const AddEvidence = async (req, res) => {
   const createdEvidence = await evidence.save();
   return createdEvidence;
 };
-export const GetEvidence = async (req, res) => {
-  const evidence = await Evidence.find({ Active: true });
-  res?.status(statusCodes?.ok).send(evidence);
+export const GetEvidence = async (req) => {
+  const evidence = await Evidence?.find({ Active: true }).populate("Case",).populate("Hearing");
+
+  if (!evidence || evidence.length === 0) {
+    throw new CustomError(
+      statusCodes?.notFound,
+      Message?.notFound,
+      errorCodes?.not_found
+    );
+  }
+
+  return evidence;
 };
 export const DeleteEvidence = async (req, res) => {
   const { id } = req.params;
@@ -95,4 +104,29 @@ export const GetEvidenceByCase = async (req, res) => {
   }
 
   return evidence
+};
+export const GetEvidenceById = async (req) => {
+  const { id } = req.params;
+
+  if (!id) {
+    throw new CustomError(
+      statusCodes?.badRequest,
+      Message?.inValid,
+      errorCodes?.bad_request
+    );
+  }
+
+  const evidence = await Evidence.findOne({ _id: id, Active: true }).populate([
+    { path: "Case", select: "Title" },
+    { path: "Hearing", select: "Title" },]);
+
+  if (!evidence) {
+    throw new CustomError(
+      statusCodes?.notFound,
+      Message?.notFound,
+      errorCodes?.not_found
+    );
+  }
+
+  return evidence;
 };
