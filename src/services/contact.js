@@ -100,7 +100,7 @@ export const DeleteContact = async (req) => {
 };
 
 export const GetAllContact = async () => {
-  const contact = await Contact.find({ Active: true });
+  const contact = await Contact.find({ Active: true }).sort({ createdAt: -1 });
 
   if (!contact || contact.length === 0) {
     throw new CustomError(

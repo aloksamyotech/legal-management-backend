@@ -32,7 +32,7 @@ export const AddMatter = async (req) => {
 };
 
 export const GetAllMatters = async () => {
-  const matters = await MatterModel.find({ active: true });
+  const matters = await MatterModel.find({ active: true }).sort({ createdAt: -1 });
 
   if (!matters || matters.length === 0) {
     throw new CustomError(

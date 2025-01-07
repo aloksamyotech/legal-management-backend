@@ -33,7 +33,7 @@ export const AddCourt = async (req) => {
 };
 
 export const GetAllCourts = async () => {
-  const courts = await CourtModel.find({ active: true });
+  const courts = await CourtModel.find({ active: true }).sort({ createdAt: -1 });
   if (!courts || courts.length === 0) {
     throw new CustomError(
       statusCodes?.notFound,

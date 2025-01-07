@@ -10,7 +10,7 @@ router.post(
   asyncHandler(evidenceController.EvidenceAdd),
 );
 router.get("/getEvidence", asyncHandler(evidenceController.EvidenceFetch));
-router.get("/getEvidencebyId/:id", asyncHandler(evidenceController.EvidenceFetchId));
+router.get("/getEvidencebyId/:id", asyncHandler(evidenceController.EvidenceFetchbyId));
 router.get("/getevidencebycaseid/:caseId", asyncHandler(evidenceController.EvidencebyCaseFetch));
 router.put(
   "/updateEvidence/:id",

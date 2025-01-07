@@ -18,7 +18,8 @@ const AdviseSchema = new Schema(
       required: true,
     },
     Matter: {
-      type: String,
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Matter",
       required: true,
       trim: true,
     },

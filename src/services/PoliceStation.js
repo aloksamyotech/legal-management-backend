@@ -33,7 +33,7 @@ export const AddPolicestation = async (req) => {
 };
 
 export const GetAllPolicestations = async () => {
-  const policestations = await PolicestationModel.find({ active: true });
+  const policestations = await PolicestationModel.find({ active: true }).sort({ createdAt: -1 });
 
   if (!policestations || policestations.length === 0) {
     throw new CustomError(

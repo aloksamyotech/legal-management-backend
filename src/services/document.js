@@ -41,7 +41,7 @@ export const AddDocument = async (req) => {
 };
 
 export const GetAllDocuments = async () => {
-  const documents = await Document.find({ Active: true }).populate("Case","Title");
+  const documents = await Document.find({ Active: true }).populate("Case","Title").sort({ createdAt: -1 });
 
   if (!documents || documents.length === 0) {
     throw new CustomError(

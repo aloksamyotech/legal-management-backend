@@ -59,7 +59,7 @@ export const GetHearing = async (req, res) => {
   return hearing;
 };
 export const GetAllHearing = async (req) => {
-  const allhearings = await HearingModel?.find({ Active: true }).populate("Case","Title");
+  const allhearings = await HearingModel?.find({ Active: true }).populate("Case","Title").sort({ createdAt: -1 });
 
   if (!allhearings || allhearings.length === 0) {
     throw new CustomError(

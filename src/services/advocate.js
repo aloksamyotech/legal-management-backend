@@ -1,6 +1,7 @@
 import { AdvocateSch } from "../models/Advocate.js";
 import { errorCodes, Message, statusCodes } from "../core/common/constant.js";
 import CustomError from "../utils/exception.js";
+import CaseModel from "../models/Case.js";
 
 // Create an Advocate
 export const AddAdvocate = async (req) => {
@@ -94,7 +95,7 @@ export const AddAdvocate = async (req) => {
 };
 
 export const GetAllAdvocates = async () => {
-  const advocates = await AdvocateSch.find({ active: true });
+  const advocates = await AdvocateSch.find({ active: true }).sort({ createdAt: -1 });
 
   if (!advocates || advocates.length === 0) {
     throw new CustomError(
@@ -235,3 +236,24 @@ export const DeleteAdvocate = async (req) => {
 
   return { message: Message?.Delete, advocate };
 };
+export const GetCaseByAdvocate = async (req) => {
+  const {advocateId}=req.params
+
+    const cases = await CaseModel.find({ Advocate: advocateId, Active: true }).populate([
+      { path: "Client", select: "Name" },
+      { path: "Matter", select: "Title" },
+      { path: "Judge", select: "Title" },
+      { path: "PoliceStation", select: "Title" },
+      { path: "Court", select: "Title" },
+    ]);
+
+    if (!cases || cases.length === 0) {
+      throw new CustomError(
+        statusCodes?.notFound,
+        Message?.notFound,
+        errorCodes?.not_found,
+      );
+    }
+
+    return cases;
+  }

@@ -41,7 +41,7 @@ console.log(req.files)
 };
 
 export const GetAllNotes = async () => {
-  const notes = await Note.find({ Active: true });
+  const notes = await Note.find({ Active: true }).sort({ createdAt: -1 });
 
   if (!notes || notes.length === 0) {
     throw new CustomError(

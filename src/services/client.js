@@ -1,6 +1,7 @@
 import { Client } from "../models/Client.js";
 import { errorCodes, Message, statusCodes } from "../core/common/constant.js";
 import CustomError from "../utils/exception.js";
+import CaseModel from "../models/Case.js";
 export const AddClient = async (req) => {
   const {
     Name,
@@ -51,9 +52,9 @@ export const AddClient = async (req) => {
 };
 
 export const GetClient = async (req) => {
-  const { Email } = req.body;
+  const { id } = req.params;
 
-  if (!Email) {
+  if (!id) {
     throw new CustomError(
       statusCodes?.badRequest,
       Message?.inValid,
@@ -61,7 +62,7 @@ export const GetClient = async (req) => {
     );
   }
 
-  const client = await Client.findOne({ Email, Active: true });
+  const client = await Client.findOne({ _id:id, Active: true });
   if (!client) {
     throw new CustomError(
       statusCodes?.notFound,
@@ -73,9 +74,9 @@ export const GetClient = async (req) => {
 };
 
 export const DeleteClient = async (req) => {
-  const { Email } = req.body;
+  const { id } = req.params;
 
-  if (!Email) {
+  if (!id) {
     throw new CustomError(
       statusCodes?.badRequest,
       Message?.inValid,
@@ -83,7 +84,7 @@ export const DeleteClient = async (req) => {
     );
   }
 
-  const client = await Client.findOne({ Email, Active: true });
+  const client = await Client.findOne({ _id:id, Active: true });
 
   if (!client) {
     throw new CustomError(
@@ -147,7 +148,7 @@ export const UpdateClient = async (req) => {
 };
 
 export const GetAllClients = async () => {
-  const clients = await Client.find({ Active: true });
+  const clients = await Client.find({ Active: true }).sort({ createdAt: -1 });
 
   if (!clients || clients.length === 0) {
     throw new CustomError(
@@ -159,3 +160,24 @@ export const GetAllClients = async () => {
 
   return clients;
 };
+export const GetCaseByClient = async (req) => {
+  const {clientId}=req.params
+
+    const cases = await CaseModel.find({ Client: clientId, Active: true }).populate([
+      { path: "Advocate", select: "name" },
+      { path: "Matter", select: "Title" },
+      { path: "Judge", select: "Title" },
+      { path: "PoliceStation", select: "Title" },
+      { path: "Court", select: "Title" },
+    ]);
+
+    if (!cases || cases.length === 0) {
+      throw new CustomError(
+        statusCodes?.notFound,
+        Message?.notFound,
+        errorCodes?.not_found,
+      );
+    }
+
+    return cases;
+  }

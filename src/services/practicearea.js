@@ -33,7 +33,7 @@ export const AddPractice = async (req) => {
 };
 
 export const GetAllPractices = async () => {
-  const practices = await PracticeModel.find({ active: true });
+  const practices = await PracticeModel.find({ active: true }).sort({ createdAt: -1 });
 
   if (!practices || practices.length === 0) {
     throw new CustomError(

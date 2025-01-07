@@ -23,7 +23,7 @@ export const AddEvidence = async (req, res) => {
   return createdEvidence;
 };
 export const GetEvidence = async (req) => {
-  const evidence = await Evidence?.find({ Active: true }).populate("Case",).populate("Hearing");
+  const evidence = await Evidence?.find({ Active: true }).populate("Case",).populate("Hearing").sort({ createdAt: -1 });
 
   if (!evidence || evidence.length === 0) {
     throw new CustomError(

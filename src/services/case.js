@@ -64,7 +64,7 @@ export const GetCase = async () => {
         { path: "Judge", select: "Title" }, 
     { path: "PoliceStation", select: "Title" }, 
     { path: "Court", select: "Title"}, 
-  ]);
+  ]).sort({ createdAt: -1 });
 
   if (!cases || cases.length === 0) {
     throw new CustomError(

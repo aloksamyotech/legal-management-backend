@@ -11,10 +11,11 @@ router.post(
   ]),
   asyncHandler(advocateController.AdvocateAdd),
 );
-router.get("/getadvocate", asyncHandler(advocateController.AdvocateFetch));
+router.get("/getAdvocateById/:id", asyncHandler(advocateController.AdvocateFetch));
+router.get("/getCasebyadvocateId/:advocateId", asyncHandler(advocateController.CaseByAdvocateId));
 router.get("/getalladvocate", asyncHandler(advocateController.GetAlladvocate));
 router.delete(
-  "/deleteadvocate",
+  "/deleteadvocate/:id",
   asyncHandler(advocateController.AdvocateDelete),
 );
 router.put(

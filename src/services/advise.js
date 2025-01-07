@@ -53,9 +53,11 @@ export const AddAdvise = async (req) => {
 };
 
 export const GetAdvise = async () => {
-  const advises = await Advisedb.find({ Active: true })
+  const advises = await Advisedb.find({ Active: true }).sort({ createdAt: -1 })
     .populate("Client", "Name")
-    .populate("Advocate", "name");
+    .populate("Advocate", "name")
+    .populate("Matter", "Title");
+    
   if (!advises || advises.length === 0) {
     throw new CustomError(
       statusCodes?.notFound,
@@ -135,7 +137,8 @@ export const GetAdviseById = async (req) => {
 
   const advise = await Advisedb.findById(id)
     .populate("Client", "Name")
-    .populate("Advocate", "name");
+    .populate("Advocate", "name")
+    .populate("Matter", "Title");
 
   if (!advise) {
     throw new CustomError(

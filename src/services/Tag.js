@@ -32,7 +32,7 @@ export const AddTag = async (req) => {
 };
 
 export const GetAllTags = async () => {
-  const tags = await TagModel.find({ active: true });
+  const tags = await TagModel.find({ active: true }).sort({ createdAt: -1 });
 
   if (!tags || tags.length === 0) {
     throw new CustomError(
