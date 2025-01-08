@@ -35,5 +35,5 @@ export default {
   EvidenceFetchbyId,
   EvidenceDelete,
   EvidenceUpdate,
-  EvidencebyCaseFetch
+  EvidencebyCaseFetch,
 };

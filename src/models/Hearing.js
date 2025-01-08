@@ -42,10 +42,10 @@ const HearingSchema = new Schema(
       ref: "Case",
       required: true,
     },
-    Active:{
-      type:Boolean,
-      default:true
-    }
+    Active: {
+      type: Boolean,
+      default: true,
+    },
   },
   {
     timestamps: true,

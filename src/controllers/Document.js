@@ -35,5 +35,5 @@ export default {
   DocumentById,
   DocumentDelete,
   DocumentUpdate,
-  GetDocumentByCase
+  GetDocumentByCase,
 };

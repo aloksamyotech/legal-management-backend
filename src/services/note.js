@@ -12,7 +12,7 @@ export const AddNote = async (req) => {
       errorCodes?.bad_request,
     );
   }
-console.log(req.files)
+  console.log(req.files);
   const files = req.files?.map((file) => ({
     name: file.originalname,
     url: `/uploads/${file.filename}`,

@@ -31,5 +31,5 @@ export default {
   HearingDelete,
   HearingUpdate,
   AllHearingFetch,
-  HearingByCase
+  HearingByCase,
 };

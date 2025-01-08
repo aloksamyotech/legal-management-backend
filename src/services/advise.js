@@ -53,11 +53,12 @@ export const AddAdvise = async (req) => {
 };
 
 export const GetAdvise = async () => {
-  const advises = await Advisedb.find({ Active: true }).sort({ createdAt: -1 })
+  const advises = await Advisedb.find({ Active: true })
+    .sort({ createdAt: -1 })
     .populate("Client", "Name")
     .populate("Advocate", "name")
     .populate("Matter", "Title");
-    
+
   if (!advises || advises.length === 0) {
     throw new CustomError(
       statusCodes?.notFound,

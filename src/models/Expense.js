@@ -8,21 +8,21 @@ const AttachmentSchema = new mongoose.Schema({
 
 const ExpenseSchema = new mongoose.Schema(
   {
-    Title: { type: String,
-       required: true },
-    Case: { 
+    Title: { type: String, required: true },
+    Case: {
       type: mongoose.Schema.Types.ObjectId,
-     ref:"Case",
-      required: true },
+      ref: "Case",
+      required: true,
+    },
     Type: {
-       type: mongoose.Schema.Types.ObjectId,
-      ref:"ExpenseType",
-       required: true, },
-    Amount: { type: Number, 
-      required: true },
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "ExpenseType",
+      required: true,
+    },
+    Amount: { type: Number, required: true },
     Attachment: [AttachmentSchema],
     Description: { type: String },
-    Active:{type:Boolean, default:true}
+    Active: { type: Boolean, default: true },
   },
   { timestamps: true },
 );

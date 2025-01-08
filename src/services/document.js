@@ -41,7 +41,9 @@ export const AddDocument = async (req) => {
 };
 
 export const GetAllDocuments = async () => {
-  const documents = await Document.find({ Active: true }).populate("Case","Title").sort({ createdAt: -1 });
+  const documents = await Document.find({ Active: true })
+    .populate("Case", "Title")
+    .sort({ createdAt: -1 });
 
   if (!documents || documents.length === 0) {
     throw new CustomError(
@@ -65,7 +67,10 @@ export const GetDocumentById = async (req) => {
     );
   }
 
-  const document = await Document.findOne({ _id: id, Active: true }).populate("Case","Title");
+  const document = await Document.findOne({ _id: id, Active: true }).populate(
+    "Case",
+    "Title",
+  );
 
   if (!document) {
     throw new CustomError(
@@ -147,7 +152,10 @@ export const DeleteDocument = async (req) => {
 export const GetDocumentByCase = async (req, res) => {
   const { caseId } = req.params;
 
-  const document = await Document.find({ Case: caseId, Active: true }).populate("Case","Title");
+  const document = await Document.find({ Case: caseId, Active: true }).populate(
+    "Case",
+    "Title",
+  );
 
   if (!document || document.length === 0) {
     throw new CustomError(
@@ -157,5 +165,5 @@ export const GetDocumentByCase = async (req, res) => {
     );
   }
 
-  return document
+  return document;
 };
