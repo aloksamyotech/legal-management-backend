@@ -10,7 +10,9 @@ const ExpenseSchema = new mongoose.Schema(
   {
     Title: { type: String,
        required: true },
-    Case: { type: String, 
+    Case: { 
+      type: mongoose.Schema.Types.ObjectId,
+     ref:"Case",
       required: true },
     Type: {
        type: mongoose.Schema.Types.ObjectId,

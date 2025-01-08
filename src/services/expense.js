@@ -44,7 +44,7 @@ export const AddExpense = async (req) => {
 };
 
 export const GetExpense = async () => {
-  const expenses = await ExpenseModel.find({ Active: true }).populate("Type", "Title").sort({ createdAt: -1 });
+  const expenses = await ExpenseModel.find({ Active: true }).populate("Type", "Title").populate("Case","Title").sort({ createdAt: -1 });
 
   if (!expenses || expenses.length === 0) {
     throw new CustomError(
@@ -68,7 +68,7 @@ export const GetExpenseById = async (req) => {
     );
   }
 
-  const expense = await ExpenseModel.findOne({ _id: id, Active: true }).populate("Type", "Title");
+  const expense = await ExpenseModel.findOne({ _id: id, Active: true }).populate("Type", "Title").populate("Case","Title");
 
   if (!expense) {
     throw new CustomError(
