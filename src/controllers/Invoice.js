@@ -4,8 +4,16 @@ const InvoiceAdd = async (req, res, next) => {
   const InvoiceData = await invoiceService.AddInvoice(req, res, next);
   res.status(statusCodes?.created).send(InvoiceData);
 };
-const InvoiceFetch = async (req, res, next) => {
+const InvoiceFetchByid = async (req, res, next) => {
+  const InvoiceData = await invoiceService.GetInvoiceById(req, res, next);
+  res.status(statusCodes?.ok).send(InvoiceData);
+};
+const AllInvoiceFetch = async (req, res, next) => {
   const InvoiceData = await invoiceService.GetInvoices(req, res, next);
+  res.status(statusCodes?.ok).send(InvoiceData);
+};
+const InvoiceFetchByCase = async (req, res, next) => {
+  const InvoiceData = await invoiceService.GetInvoiceByCaseId(req, res, next);
   res.status(statusCodes?.ok).send(InvoiceData);
 };
 const InvoiceDelete = async (req, res, next) => {
@@ -19,7 +27,9 @@ const InvoiceUpdate = async (req, res, next) => {
 
 export default {
   InvoiceAdd,
-  InvoiceFetch,
+  InvoiceFetchByid,
+  AllInvoiceFetch,
+  InvoiceFetchByCase,
   InvoiceDelete,
   InvoiceUpdate,
 };
