@@ -46,26 +46,31 @@ export const AddHearing = async (req, res) => {
 export const GetHearing = async (req, res) => {
   const { id } = req.params;
 
-  const hearing = await HearingModel.findOne({ _id: id, Active: true }).populate("Case");
+  const hearing = await HearingModel.findOne({
+    _id: id,
+    Active: true,
+  }).populate("Case");
 
   if (!hearing) {
     throw new CustomError(
       statusCodes?.notFound,
       Message?.notFound,
-      errorCodes?.not_found
+      errorCodes?.not_found,
     );
   }
 
   return hearing;
 };
 export const GetAllHearing = async (req) => {
-  const allhearings = await HearingModel?.find({ Active: true }).populate("Case","Title").sort({ createdAt: -1 });
+  const allhearings = await HearingModel?.find({ Active: true })
+    .populate("Case", "Title")
+    .sort({ createdAt: -1 });
 
   if (!allhearings || allhearings.length === 0) {
     throw new CustomError(
       statusCodes?.notFound,
       Message?.notFound,
-      errorCodes?.not_found
+      errorCodes?.not_found,
     );
   }
 
@@ -77,14 +82,14 @@ export const DeleteHearing = async (req, res) => {
   const deletedHearing = await HearingModel.findByIdAndUpdate(
     id,
     { Active: false },
-    { new: true }
+    { new: true },
   );
 
   if (!deletedHearing) {
     throw new CustomError(
       statusCodes?.notFound,
       Message?.notDeleted,
-      errorCodes?.not_found
+      errorCodes?.not_found,
     );
   }
 
@@ -98,28 +103,26 @@ export const UpdateHearing = async (req, res) => {
     throw new CustomError(
       statusCodes?.badRequest,
       Message?.inValid,
-      errorCodes?.bad_request
+      errorCodes?.bad_request,
     );
   }
 
   const updatedHearing = await HearingModel?.findOneAndUpdate(
     { _id: id, Active: true },
     updateData,
-    { new: true }
+    { new: true },
   );
 
   if (!updatedHearing) {
     throw new CustomError(
       statusCodes?.notFound,
       Message?.notUpdate,
-      errorCodes?.action_failed
+      errorCodes?.action_failed,
     );
   }
 
   return updatedHearing;
 };
-
-
 
 //===========================================Get Hearing api from case==========================
 export const GetHearingsByCaseId = async (req, res) => {
@@ -129,7 +132,7 @@ export const GetHearingsByCaseId = async (req, res) => {
     throw new CustomError(
       statusCodes?.badRequest,
       Message?.CaseId_required,
-      errorCodes?.bad_request
+      errorCodes?.bad_request,
     );
   }
 

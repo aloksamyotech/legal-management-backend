@@ -62,7 +62,7 @@ export const GetClient = async (req) => {
     );
   }
 
-  const client = await Client.findOne({ _id:id, Active: true });
+  const client = await Client.findOne({ _id: id, Active: true });
   if (!client) {
     throw new CustomError(
       statusCodes?.notFound,
@@ -84,7 +84,7 @@ export const DeleteClient = async (req) => {
     );
   }
 
-  const client = await Client.findOne({ _id:id, Active: true });
+  const client = await Client.findOne({ _id: id, Active: true });
 
   if (!client) {
     throw new CustomError(
@@ -161,15 +161,18 @@ export const GetAllClients = async () => {
   return clients;
 };
 export const GetCaseByClient = async (req) => {
-  const {clientId}=req.params
+  const { clientId } = req.params;
 
-    const cases = await CaseModel.find({ Client: clientId, Active: true }).populate([
-      { path: "Advocate", select: "name" },
-      { path: "Matter", select: "Title" },
-      { path: "Judge", select: "Title" },
-      { path: "PoliceStation", select: "Title" },
-      { path: "Court", select: "Title" },
-    ]);
+  const cases = await CaseModel.find({
+    Client: clientId,
+    Active: true,
+  }).populate([
+    { path: "Advocate", select: "name" },
+    { path: "Matter", select: "Title" },
+    { path: "Judge", select: "Title" },
+    { path: "PoliceStation", select: "Title" },
+    { path: "Court", select: "Title" },
+  ]);
 
     if (!cases || cases.length === 0) {
       return {
@@ -179,6 +182,13 @@ export const GetCaseByClient = async (req) => {
         cases: [],
       };
     }
-
-    return cases;
+  if (!cases || cases.length === 0) {
+    throw new CustomError(
+      statusCodes?.notFound,
+      Message?.notFound,
+      errorCodes?.not_found,
+    );
   }
+
+  return cases;
+};

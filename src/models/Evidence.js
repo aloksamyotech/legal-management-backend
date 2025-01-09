@@ -20,12 +20,12 @@ const EvidenceSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  Case: { type: mongoose.Schema.Types.ObjectId,
-     ref: "Case", 
-     required: true },
-  Hearing: { type: mongoose.Schema.Types.ObjectId, 
-    ref: "Hearing", 
-    required: true },
+  Case: { type: mongoose.Schema.Types.ObjectId, ref: "Case", required: true },
+  Hearing: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Hearing",
+    required: true,
+  },
   Favor: {
     type: String,
     required: true,
@@ -39,10 +39,10 @@ const EvidenceSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  Active:{
-    type:Boolean,
-    default:true,
-  }
+  Active: {
+    type: Boolean,
+    default: true,
+  },
 });
 
 const Evidence = mongoose.model("Evidence", EvidenceSchema);

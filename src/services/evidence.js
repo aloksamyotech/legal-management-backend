@@ -23,13 +23,16 @@ export const AddEvidence = async (req, res) => {
   return createdEvidence;
 };
 export const GetEvidence = async (req) => {
-  const evidence = await Evidence?.find({ Active: true }).populate("Case",).populate("Hearing").sort({ createdAt: -1 });
+  const evidence = await Evidence?.find({ Active: true })
+    .populate("Case")
+    .populate("Hearing")
+    .sort({ createdAt: -1 });
 
   if (!evidence || evidence.length === 0) {
     throw new CustomError(
       statusCodes?.notFound,
       Message?.notFound,
-      errorCodes?.not_found
+      errorCodes?.not_found,
     );
   }
 
@@ -41,7 +44,7 @@ export const DeleteEvidence = async (req, res) => {
   const deletedEvidence = await Evidence.findOneAndUpdate(
     { _id: id, Active: true },
     { Active: false },
-    { new: true }
+    { new: true },
   );
 
   if (!deletedEvidence) {
@@ -77,7 +80,7 @@ export const UpdateEvidence = async (req, res) => {
   const updatedEvidence = await Evidence.findOneAndUpdate(
     { _id: id, Active: true },
     updatedData,
-    { new: true }
+    { new: true },
   );
 
   if (!updatedEvidence) {
@@ -93,7 +96,10 @@ export const UpdateEvidence = async (req, res) => {
 export const GetEvidenceByCase = async (req, res) => {
   const { caseId } = req.params;
 
-  const evidence = await Evidence.find({ Case: caseId, Active: true }).populate("Hearing","Title");
+  const evidence = await Evidence.find({ Case: caseId, Active: true }).populate(
+    "Hearing",
+    "Title",
+  );
 
   if (!evidence || evidence.length === 0) {
     return {
@@ -104,7 +110,7 @@ export const GetEvidenceByCase = async (req, res) => {
     };
   }
 
-  return evidence
+  return evidence;
 };
 export const GetEvidenceById = async (req) => {
   const { id } = req.params;
@@ -113,19 +119,20 @@ export const GetEvidenceById = async (req) => {
     throw new CustomError(
       statusCodes?.badRequest,
       Message?.inValid,
-      errorCodes?.bad_request
+      errorCodes?.bad_request,
     );
   }
 
   const evidence = await Evidence.findOne({ _id: id, Active: true }).populate([
     { path: "Case", select: "Title" },
-    { path: "Hearing", select: "Title" },]);
+    { path: "Hearing", select: "Title" },
+  ]);
 
   if (!evidence) {
     throw new CustomError(
       statusCodes?.notFound,
       Message?.notFound,
-      errorCodes?.not_found
+      errorCodes?.not_found,
     );
   }
 

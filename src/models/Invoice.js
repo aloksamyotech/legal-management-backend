@@ -11,13 +11,14 @@ const InvoiceHearing= new mongoose.Schema({
 
 const InvoiceSchema = new mongoose.Schema(
   {
-     Case: {  type: mongoose.Schema.Types.ObjectId,
-      ref: "Case",
-      required: true,},
-     Advocate: {  type: mongoose.Schema.Types.ObjectId,
+    Case: { type: mongoose.Schema.Types.ObjectId, ref: "Case", required: true },
+    Advocate: {
+      type: mongoose.Schema.Types.ObjectId,
       ref: "Advocate",
-      required: true,},
-     Client: {  type: mongoose.Schema.Types.ObjectId,
+      required: true,
+    },
+    Client: {
+      type: mongoose.Schema.Types.ObjectId,
       ref: "Client",
       required: true,},
     hearings: [InvoiceHearing],
@@ -25,15 +26,15 @@ const InvoiceSchema = new mongoose.Schema(
       type: Date,
       default: Date.now,
     },
-   TotalPrice:{
-    type:Number,
-    required:true
-   },
-   PaymentStatus:{
-    type:String,
-    enum: [ "Unpaid", "Paid"],
-    default:'Unpaid'
-   },
+    TotalPrice: {
+      type: Number,
+      required: true,
+    },
+    PaymentStatus: {
+      type: String,
+      enum: ["Unpaid", "Paid"],
+      default: "Unpaid",
+    },
     Active: { type: Boolean, default: true },
   },
   { timestamps: true },

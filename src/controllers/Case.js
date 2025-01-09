@@ -26,5 +26,5 @@ export default {
   CaseFetch,
   CaseDelete,
   CaseUpdate,
-  GetCasebyId
+  GetCasebyId,
 };

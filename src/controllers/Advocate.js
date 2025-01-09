@@ -8,7 +8,7 @@ const AdvocateFetch = async (req, res, next) => {
   const AdvocateData = await advocateService.GetAdvocateById(req, res, next);
   res.status(statusCodes?.ok).send(AdvocateData);
 };
-const CaseByAdvocateId= async (req, res, next) => {
+const CaseByAdvocateId = async (req, res, next) => {
   const AdvocateData = await advocateService.GetCaseByAdvocate(req, res, next);
   res.status(statusCodes?.ok).send(AdvocateData);
 };
@@ -35,5 +35,5 @@ export default {
   AdvocateDelete,
   AdvocateUpdate,
   GetAlladvocate,
-  CaseByAdvocateId
+  CaseByAdvocateId,
 };

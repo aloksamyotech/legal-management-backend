@@ -52,10 +52,10 @@ const CaseSchema = new Schema(
     internalNote: {
       type: String,
     },
-    Active:{
-      type:Boolean,
-      default:true
-    }
+    Active: {
+      type: Boolean,
+      default: true,
+    },
   },
   { timestamps: true },
 );

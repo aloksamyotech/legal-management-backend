@@ -11,8 +11,14 @@ router.post(
   ]),
   asyncHandler(advocateController.AdvocateAdd),
 );
-router.get("/getAdvocateById/:id", asyncHandler(advocateController.AdvocateFetch));
-router.get("/getCasebyadvocateId/:advocateId", asyncHandler(advocateController.CaseByAdvocateId));
+router.get(
+  "/getAdvocateById/:id",
+  asyncHandler(advocateController.AdvocateFetch),
+);
+router.get(
+  "/getCasebyadvocateId/:advocateId",
+  asyncHandler(advocateController.CaseByAdvocateId),
+);
 router.get("/getalladvocate", asyncHandler(advocateController.GetAlladvocate));
 router.delete(
   "/deleteadvocate/:id",

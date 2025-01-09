@@ -9,9 +9,7 @@ const AttachmentSchema = new mongoose.Schema({
 const DocumentSchema = new mongoose.Schema(
   {
     Title: { type: String, required: true },
-    Case: {  type: mongoose.Schema.Types.ObjectId,
-      ref: "Case",
-      required: true,},
+    Case: { type: mongoose.Schema.Types.ObjectId, ref: "Case", required: true },
     Attachment: [AttachmentSchema],
     CreatedAt: {
       type: Date,

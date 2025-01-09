@@ -10,7 +10,10 @@ router.post(
 );
 router.get("/getClientbyid/:id", asyncHandler(clientController.ClientFetch));
 router.get("/getAllClient", asyncHandler(clientController.GetAllclient));
-router.get("/getCaseByClient/:clientId", asyncHandler(clientController.GetCasebyClientId));
+router.get(
+  "/getCaseByClient/:clientId",
+  asyncHandler(clientController.GetCasebyClientId),
+);
 router.delete("/deleteClient/:id", asyncHandler(clientController.ClientDelete));
 router.put(
   "/updateClient",

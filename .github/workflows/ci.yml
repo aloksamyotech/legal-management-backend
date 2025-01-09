@@ -1,0 +1,42 @@
+name: CI Workflow
+
+on:
+  push:
+    branches:
+      - develop
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '14'
+
+      - name: Remove Existing Node Modules
+        run: rm -rf node_modules
+
+      - name: Set environment variables
+        run: |
+          echo "DB_URL=mongodb://127.0.0.1:27017/" >> $GITHUB_ENV
+          echo "DB_NAME=heyreach" >> $GITHUB_ENV
+          echo "PORT=7200" >> $GITHUB_ENV
+          echo "ENV=development" >> $GITHUB_ENV
+          echo "ACCESS_TOKEN_SECRET=dajsdgagasauyaywahvwtvasacxwtghvasxa" >> $GITHUB_ENV
+          echo "ACCESS_TOKEN_EXPIRY=1d" >> $GITHUB_ENV
+          echo "REFRESH_TOKEN_SECRET=ssyueduasxtsasdasxataopwadsdefwsaaw" >> $GITHUB_ENV
+          echo "REFRESH_TOKEN_EXPIRY=10d" >> $GITHUB_ENV
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run Lint Command
+        run: npm run lint
+
+      - name: Run Build Command
+        run: npm run build
