@@ -150,11 +150,12 @@ export const GetDocumentByCase = async (req, res) => {
   const document = await Document.find({ Case: caseId, Active: true }).populate("Case","Title");
 
   if (!document || document.length === 0) {
-    throw new CustomError(
-      statusCodes?.notFound,
-      Message?.notFound,
-      errorCodes?.not_found,
-    );
+    return {
+      status: statusCodes?.notFound,
+      message: Message?.notFound,
+      errorCode: errorCodes?.not_found,
+      document: [],
+    };
   }
 
   return document

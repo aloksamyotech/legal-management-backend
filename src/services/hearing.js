@@ -136,11 +136,12 @@ export const GetHearingsByCaseId = async (req, res) => {
   const hearings = await HearingModel.find({ Case: caseId, Active: true });
 
   if (!hearings || hearings.length === 0) {
-    throw new CustomError(
-      statusCodes?.notFound,
-     Message.Case_Hearing_NotFound,
-      errorCodes?.not_found
-    );
+    return {
+      status: statusCodes?.notFound,
+      message: Message?.notFound,
+      errorCode: errorCodes?.not_found,
+      hearings: [],
+    };
   }
 
   return hearings;

@@ -17,7 +17,9 @@ import policestationRouter from "./PoliceStation.js";
 import tagRouter from "./Tag.js";
 import caseStageRouter from "./CaseStage.js";
 import expenseTypeRouter from "./ExpenseType.js";
+import invoiceRouter from "./Invoice.js";
 import { Router } from "express";
+
 const router = Router();
 
 router.use("/user", userRouter);
@@ -39,4 +41,5 @@ router.use("/policestation", policestationRouter);
 router.use("/tag", tagRouter);
 router.use("/casestage", caseStageRouter);
 router.use("/expensetype", expenseTypeRouter);
+router.use("/invoice", invoiceRouter);
 export default router;

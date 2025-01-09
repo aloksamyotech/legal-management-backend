@@ -1,12 +1,12 @@
 import mongoose from "mongoose";
 
 const InvoiceHearing= new mongoose.Schema({
-  Hearing: { 
+  title: { 
     type: mongoose.Schema.Types.ObjectId,
     ref:"Hearing",
-    required: true },
-    Amount: { type: Number, required:true},
-    Note: { type: String  },
+     },
+    amount: { type: Number, required:true},
+    notes: { type: String  },
 });
 
 const InvoiceSchema = new mongoose.Schema(
@@ -20,8 +20,8 @@ const InvoiceSchema = new mongoose.Schema(
      Client: {  type: mongoose.Schema.Types.ObjectId,
       ref: "Client",
       required: true,},
-    Hearings: [InvoiceHearing],
-    CreatedAt: {
+    hearings: [InvoiceHearing],
+    date: {
       type: Date,
       default: Date.now,
     },

@@ -1,5 +1,5 @@
 import Evidence from "../models/Evidence.js";
-import { statusCodes, Message } from "../core/common/constant.js";
+import { statusCodes, Message, errorCodes } from "../core/common/constant.js";
 
 export const AddEvidence = async (req, res) => {
   const { Title, Case, Hearing, Favor, Description } = req?.body;
@@ -96,11 +96,12 @@ export const GetEvidenceByCase = async (req, res) => {
   const evidence = await Evidence.find({ Case: caseId, Active: true }).populate("Hearing","Title");
 
   if (!evidence || evidence.length === 0) {
-    throw new CustomError(
-      statusCodes?.notFound,
-      Message?.notFound,
-      errorCodes?.not_found,
-    );
+    return {
+      status: statusCodes?.notFound,
+      message: Message?.notFound,
+      errorCode: errorCodes?.not_found,
+      evidence: [],
+    };
   }
 
   return evidence
