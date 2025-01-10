@@ -9,6 +9,15 @@ const InvoiceHearing = new mongoose.Schema({
     amount: { type: Number, required: true },
     notes: { type: String },
 });
+const ExtraExpenseInvoice = new mongoose.Schema({
+   
+    title: {
+        type: String,
+        required:true,
+    },
+    amount: { type: Number, required: true },
+    notes: { type: String },
+});
 
 const InvoiceSchema = new mongoose.Schema(
     {
@@ -28,6 +37,7 @@ const InvoiceSchema = new mongoose.Schema(
             required: true,
         },
         hearings: [InvoiceHearing],
+        extraExpenses:[ExtraExpenseInvoice],
         date: {
             type: Date,
             default: Date.now,

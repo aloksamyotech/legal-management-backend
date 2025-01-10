@@ -9,6 +9,7 @@ export const AddInvoice = async (req) => {
         Advocate,
         Client,
         hearings,
+        extraExpenses,
         PaymentStatus
     } = req.body;
 
@@ -21,14 +22,20 @@ export const AddInvoice = async (req) => {
     }
 
 
-    let totalPrice = 0;
+    let HearingTotal = 0
     hearings.forEach(hearing => {
         if (hearing.amount) {
-            totalPrice += hearing.amount;
+            HearingTotal += hearing.amount;
+        }
+    });
+    let ExpenseTotal = 0
+    extraExpenses.forEach(expense => {
+        if (expense.amount) {
+            ExpenseTotal += expense.amount;
         }
     });
 
-
+    let totalPrice = HearingTotal + ExpenseTotal;
     if (totalPrice <= 0) {
         throw new CustomError(
             statusCodes?.badRequest,
@@ -45,6 +52,7 @@ export const AddInvoice = async (req) => {
         Client,
         hearings,
         TotalPrice: totalPrice,
+        extraExpenses,
         PaymentStatus
     });
 
@@ -91,8 +99,8 @@ export const GetInvoiceById = async (req) => {
         );
     }
 
-    const invoice = await Invoice.findOne({_id:id, Active:true}).populate("Case").populate("Advocate").populate("Client") .populate({
-        path: "hearings.title", 
+    const invoice = await Invoice.findOne({ _id: id, Active: true }).populate("Case").populate("Advocate").populate("Client").populate({
+        path: "hearings.title",
         model: "Hearing",
     });;
 
@@ -112,7 +120,7 @@ export const GetInvoiceById = async (req) => {
 export const UpdateInvoice = async (req) => {
     const { id } = req.params;
     const updateData = req.body;
-   
+
     if (!id) {
         throw new CustomError(
             statusCodes?.badRequest,
@@ -122,15 +130,22 @@ export const UpdateInvoice = async (req) => {
     }
 
 
-    if (updateData.hearings) {
-        let totalPrice = 0;
+    if (updateData.hearings && updateData.extraExpenses) {
+        let HearingTotal = 0;
         updateData.hearings.forEach(hearing => {
             if (hearing.amount) {
-                totalPrice += hearing.amount;
+                HearingTotal += hearing.amount;
             }
-            
-        });
 
+        });
+        let ExpenseTotal = 0;
+        updateData.extraExpenses.forEach(expense => {
+            if (expense.amount) {
+                ExpenseTotal += expense.amount;
+            }
+
+        });
+        let totalPrice = ExpenseTotal + HearingTotal;
         if (totalPrice <= 0) {
             throw new CustomError(
                 statusCodes?.badRequest,
@@ -141,7 +156,7 @@ export const UpdateInvoice = async (req) => {
         updateData.TotalPrice = totalPrice;
     }
 
-    const updatedInvoice = await Invoice.findOneAndUpdate({_id:id}, updateData, { new: true });
+    const updatedInvoice = await Invoice.findOneAndUpdate({ _id: id }, updateData, { new: true });
 
     if (!updatedInvoice) {
         throw new CustomError(
@@ -167,7 +182,11 @@ export const DeleteInvoice = async (req) => {
         );
     }
 
-    const invoice = await Invoice.findById(id);
+    const invoice = await Invoice.findByIdAndUpdate(
+        id,
+        { Active: false },
+        { new: true },
+    );
     if (!invoice) {
         throw new CustomError(
             statusCodes?.notFound,
@@ -176,8 +195,6 @@ export const DeleteInvoice = async (req) => {
         );
     }
 
-    invoice.Active = false;
-    await invoice.save();
 
     return { message: Message.Delete, invoice };
 };
