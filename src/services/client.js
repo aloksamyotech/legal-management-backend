@@ -182,13 +182,7 @@ export const GetCaseByClient = async (req) => {
         cases: [],
       };
     }
-  if (!cases || cases.length === 0) {
-    throw new CustomError(
-      statusCodes?.notFound,
-      Message?.notFound,
-      errorCodes?.not_found,
-    );
-  }
+  
 
   return cases;
 };
