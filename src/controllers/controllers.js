@@ -38,5 +38,5 @@ export {
   documentController,
   advocateController,
   judgeController,
-  invoiceController
+  invoiceController,
 };

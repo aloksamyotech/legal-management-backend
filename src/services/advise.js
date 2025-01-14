@@ -137,7 +137,7 @@ export const GetAdviseById = async (req) => {
   }
 
   const advise = await Advisedb.findById(id)
-    .populate("Client", "Name")
+    .populate("Client")
     .populate("Advocate", "name")
     .populate("Matter", "Title");
 

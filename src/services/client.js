@@ -174,15 +174,14 @@ export const GetCaseByClient = async (req) => {
     { path: "Court", select: "Title" },
   ]);
 
-    if (!cases || cases.length === 0) {
-      return {
-        status: statusCodes?.notFound,
-        message: Message?.notFound,
-        errorCode: errorCodes?.not_found,
-        cases: [],
-      };
-    }
-  
+  if (!cases || cases.length === 0) {
+    return {
+      status: statusCodes?.notFound,
+      message: Message?.notFound,
+      errorCode: errorCodes?.not_found,
+      cases: [],
+    };
+  }
 
   return cases;
 };
