@@ -4,6 +4,7 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
+    "prettier": "prettier --write .",
     "start": "node dist/index.js",
     "dev": "nodemon src/index.js",
     "build": "webpack --config webpack.config.js",
@@ -34,7 +35,7 @@
     "eslint-config-prettier": "^9.0.0",
     "eslint-plugin-prettier": "^5.0.0",
     "nodemon": "^3.0.1",
-    "prettier": "^3.0.3",
+    "prettier": "^3.4.2",
     "webpack": "^5.88.0",
     "webpack-cli": "^5.1.4",
     "webpack-node-externals": "^3.0.0"

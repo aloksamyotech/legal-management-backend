@@ -1,1008 +1,906 @@
 {
-	"info": {
-		"_postman_id": "7b75d5b9-4f7b-4637-996e-1165c0581836",
-		"name": "LMS Postman",
-		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "40360074"
-	},
-	"item": [
-		{
-			"name": "expense",
-			"item": [
-				{
-					"name": "getAllRequest",
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
-					"request": {
-						"method": "GET",
-						"header": [],
-						"body": {
-							"mode": "formdata",
-							"formdata": [
-								{
-									"key": "Title",
-									"value": "Affidavit",
-									"type": "text"
-								},
-								{
-									"key": "Case",
-									"value": "Personal Injury",
-									"type": "text"
-								},
-								{
-									"key": "Amount",
-									"value": "500",
-									"type": "text"
-								},
-								{
-									"key": "Type",
-									"value": "court expense",
-									"type": "text"
-								},
-								{
-									"key": "Description",
-									"value": "this expense for files and paper",
-									"type": "text"
-								},
-								{
-									"key": "Attachment",
-									"type": "file",
-									"src": "postman-cloud:///1efbc562-c927-45e0-a384-6c96cb98913f"
-								},
-								{
-									"key": "Attachment",
-									"type": "file",
-									"src": "postman-cloud:///1efbc3d0-4f55-4a70-9c95-920a42d28629"
-								}
-							]
-						},
-						"url": {
-							"raw": "http://localhost:7200/api/v1/expense/getAllExpense",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "7200",
-							"path": [
-								"api",
-								"v1",
-								"expense",
-								"getAllExpense"
-							],
-							"query": [
-								{
-									"key": "",
-									"value": null,
-									"disabled": true
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "New Request",
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "formdata",
-							"formdata": [
-								{
-									"key": "Title",
-									"value": "Affidavit",
-									"type": "text"
-								},
-								{
-									"key": "Case",
-									"value": "Personal Injury",
-									"type": "text"
-								},
-								{
-									"key": "Amount",
-									"value": "500",
-									"type": "text"
-								},
-								{
-									"key": "Type",
-									"value": "court expense",
-									"type": "text"
-								},
-								{
-									"key": "Description",
-									"value": "this expense for files and paper",
-									"type": "text"
-								},
-								{
-									"key": "Attachment",
-									"type": "file",
-									"src": "postman-cloud:///1efbc562-c927-45e0-a384-6c96cb98913f"
-								},
-								{
-									"key": "Attachment",
-									"type": "file",
-									"src": "postman-cloud:///1efbc3d0-4f55-4a70-9c95-920a42d28629"
-								}
-							]
-						},
-						"url": {
-							"raw": "http://localhost:7200/api/v1/expense/addExpense",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "7200",
-							"path": [
-								"api",
-								"v1",
-								"expense",
-								"addExpense"
-							],
-							"query": [
-								{
-									"key": "",
-									"value": null,
-									"disabled": true
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "getRequestById",
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
-					"request": {
-						"method": "GET",
-						"header": [],
-						"body": {
-							"mode": "formdata",
-							"formdata": [
-								{
-									"key": "Title",
-									"value": "Affidavit",
-									"type": "text"
-								},
-								{
-									"key": "Case",
-									"value": "Personal Injury",
-									"type": "text"
-								},
-								{
-									"key": "Amount",
-									"value": "500",
-									"type": "text"
-								},
-								{
-									"key": "Type",
-									"value": "court expense",
-									"type": "text"
-								},
-								{
-									"key": "Description",
-									"value": "this expense for files and paper",
-									"type": "text"
-								},
-								{
-									"key": "Attachment",
-									"type": "file",
-									"src": "postman-cloud:///1efbc562-c927-45e0-a384-6c96cb98913f"
-								},
-								{
-									"key": "Attachment",
-									"type": "file",
-									"src": "postman-cloud:///1efbc3d0-4f55-4a70-9c95-920a42d28629"
-								}
-							]
-						},
-						"url": {
-							"raw": "http://localhost:7200/api/v1/expense/getExpense/6761559f8a666eb4b35ceb36",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "7200",
-							"path": [
-								"api",
-								"v1",
-								"expense",
-								"getExpense",
-								"6761559f8a666eb4b35ceb36"
-							],
-							"query": [
-								{
-									"key": "",
-									"value": null,
-									"disabled": true
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "deleteRequestBy Id",
-					"request": {
-						"method": "DELETE",
-						"header": [],
-						"body": {
-							"mode": "formdata",
-							"formdata": [
-								{
-									"key": "Title",
-									"value": "Affidavit",
-									"type": "text"
-								},
-								{
-									"key": "Case",
-									"value": "Personal Injury",
-									"type": "text"
-								},
-								{
-									"key": "Amount",
-									"value": "500",
-									"type": "text"
-								},
-								{
-									"key": "Type",
-									"value": "court expense",
-									"type": "text"
-								},
-								{
-									"key": "Description",
-									"value": "this expense for files and paper",
-									"type": "text"
-								},
-								{
-									"key": "Attachment",
-									"type": "file",
-									"src": "postman-cloud:///1efbc562-c927-45e0-a384-6c96cb98913f"
-								},
-								{
-									"key": "Attachment",
-									"type": "file",
-									"src": "postman-cloud:///1efbc3d0-4f55-4a70-9c95-920a42d28629"
-								}
-							]
-						},
-						"url": {
-							"raw": "http://localhost:7200/api/v1/expense/deleteExpense/6761559f8a666eb4b35ceb36",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "7200",
-							"path": [
-								"api",
-								"v1",
-								"expense",
-								"deleteExpense",
-								"6761559f8a666eb4b35ceb36"
-							],
-							"query": [
-								{
-									"key": "",
-									"value": null,
-									"disabled": true
-								}
-							]
-						}
-					},
-					"response": []
-				}
-			]
-		},
-		{
-			"name": "Note",
-			"item": [
-				{
-					"name": "New Request",
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "formdata",
-							"formdata": [
-								{
-									"key": "Title",
-									"value": "Notice Board Bright",
-									"type": "text"
-								},
-								{
-									"key": "CreatedAt",
-									"value": "20/12/2024",
-									"type": "text",
-									"disabled": true
-								},
-								{
-									"key": "Description",
-									"value": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s",
-									"type": "text"
-								},
-								{
-									"key": "Attachment",
-									"type": "file",
-									"src": "postman-cloud:///1efbc562-c927-45e0-a384-6c96cb98913f"
-								}
-							]
-						},
-						"url": {
-							"raw": "http://localhost:7200/api/v1/note/addNote",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "7200",
-							"path": [
-								"api",
-								"v1",
-								"note",
-								"addNote"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "getnotebyId api",
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
-					"request": {
-						"method": "GET",
-						"header": [],
-						"body": {
-							"mode": "formdata",
-							"formdata": [
-								{
-									"key": "Title",
-									"value": "Notice Board Bright22",
-									"type": "text"
-								},
-								{
-									"key": "CreatedAt",
-									"value": "20/12/2024",
-									"type": "text",
-									"disabled": true
-								},
-								{
-									"key": "Description",
-									"value": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s",
-									"type": "text"
-								},
-								{
-									"key": "Attachment",
-									"type": "file",
-									"src": "postman-cloud:///1efbc562-c927-45e0-a384-6c96cb98913f"
-								}
-							]
-						},
-						"url": {
-							"raw": "http://localhost:7200/api/v1/note/getNote/6761715d6fbc79f0b45d0b4f",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "7200",
-							"path": [
-								"api",
-								"v1",
-								"note",
-								"getNote",
-								"6761715d6fbc79f0b45d0b4f"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "deletenotebyId api",
-					"request": {
-						"method": "DELETE",
-						"header": [],
-						"body": {
-							"mode": "formdata",
-							"formdata": [
-								{
-									"key": "Title",
-									"value": "Notice Board Bright22",
-									"type": "text"
-								},
-								{
-									"key": "CreatedAt",
-									"value": "20/12/2024",
-									"type": "text",
-									"disabled": true
-								},
-								{
-									"key": "Description",
-									"value": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s",
-									"type": "text"
-								},
-								{
-									"key": "Attachment",
-									"type": "file",
-									"src": "postman-cloud:///1efbc562-c927-45e0-a384-6c96cb98913f"
-								}
-							]
-						},
-						"url": {
-							"raw": "http://localhost:7200/api/v1/note/deleteNote/6761715d6fbc79f0b45d0b4f",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "7200",
-							"path": [
-								"api",
-								"v1",
-								"note",
-								"deleteNote",
-								"6761715d6fbc79f0b45d0b4f"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "getnote api",
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
-					"request": {
-						"method": "GET",
-						"header": [],
-						"body": {
-							"mode": "formdata",
-							"formdata": [
-								{
-									"key": "Title",
-									"value": "Notice Board Bright22",
-									"type": "text"
-								},
-								{
-									"key": "CreatedAt",
-									"value": "20/12/2024",
-									"type": "text",
-									"disabled": true
-								},
-								{
-									"key": "Description",
-									"value": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s",
-									"type": "text"
-								},
-								{
-									"key": "Attachment",
-									"type": "file",
-									"src": "postman-cloud:///1efbc562-c927-45e0-a384-6c96cb98913f"
-								}
-							]
-						},
-						"url": {
-							"raw": "http://localhost:7200/api/v1/note/getAllNote",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "7200",
-							"path": [
-								"api",
-								"v1",
-								"note",
-								"getAllNote"
-							]
-						}
-					},
-					"response": []
-				}
-			]
-		},
-		{
-			"name": "Evidence",
-			"item": [
-				{
-					"name": "http://localhost:7200/api/v1/evidence/addEvidence?Title",
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "formdata",
-							"formdata": [
-								{
-									"key": "Title",
-									"value": "Affidavitd",
-									"type": "text"
-								},
-								{
-									"key": "Case",
-									"value": "Personal injury claim2",
-									"type": "text"
-								},
-								{
-									"key": "Hearing",
-									"value": "initial",
-									"type": "text"
-								},
-								{
-									"key": "Favor",
-									"value": "jane",
-									"type": "text"
-								},
-								{
-									"key": "Description",
-									"value": "Personal Injury claim document",
-									"type": "text"
-								},
-								{
-									"key": "Attachment",
-									"type": "file",
-									"src": "postman-cloud:///1efbc3d0-4f55-4a70-9c95-920a42d28629"
-								},
-								{
-									"key": "Attachment",
-									"type": "file",
-									"src": "postman-cloud:///1efbc562-c927-45e0-a384-6c96cb98913f"
-								}
-							]
-						},
-						"url": {
-							"raw": "http://localhost:7200/api/v1/evidence/addEvidence?Title",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "7200",
-							"path": [
-								"api",
-								"v1",
-								"evidence",
-								"addEvidence"
-							],
-							"query": [
-								{
-									"key": "Title",
-									"value": null
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "http://localhost:7200/api/v1/evidence/getEvidence",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "http://localhost:7200/api/v1/evidence/getEvidence",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "7200",
-							"path": [
-								"api",
-								"v1",
-								"evidence",
-								"getEvidence"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "http://localhost:7200/api/v1/evidence/deleteEvidence/67614006a292ae93ec43cf78",
-					"request": {
-						"method": "DELETE",
-						"header": [],
-						"url": {
-							"raw": "http://localhost:7200/api/v1/evidence/deleteEvidence/67614006a292ae93ec43cf78",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "7200",
-							"path": [
-								"api",
-								"v1",
-								"evidence",
-								"deleteEvidence",
-								"67614006a292ae93ec43cf78"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "http://localhost:7200/api/v1/evidence/addEvidence?Title",
-					"request": {
-						"method": "PUT",
-						"header": [],
-						"body": {
-							"mode": "formdata",
-							"formdata": [
-								{
-									"key": "Title",
-									"value": "Affidavitd",
-									"type": "text"
-								},
-								{
-									"key": "Case",
-									"value": "Personal injury ",
-									"type": "text"
-								},
-								{
-									"key": "Hearing",
-									"value": "initial",
-									"type": "text"
-								},
-								{
-									"key": "Favor",
-									"value": "jane",
-									"type": "text"
-								},
-								{
-									"key": "Description",
-									"value": "Personal Injury claim document",
-									"type": "text"
-								},
-								{
-									"key": "Attachment",
-									"type": "file",
-									"src": "postman-cloud:///1efbc3d0-4f55-4a70-9c95-920a42d28629"
-								},
-								{
-									"key": "Attachment",
-									"type": "file",
-									"src": "postman-cloud:///1efbc562-c927-45e0-a384-6c96cb98913f"
-								}
-							]
-						},
-						"url": {
-							"raw": "http://localhost:7200/api/v1/evidence/updateEvidence/6761559f8a666eb4b35ceb36",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "7200",
-							"path": [
-								"api",
-								"v1",
-								"evidence",
-								"updateEvidence",
-								"6761559f8a666eb4b35ceb36"
-							],
-							"query": [
-								{
-									"key": "",
-									"value": null,
-									"disabled": true
-								}
-							]
-						}
-					},
-					"response": []
-				}
-			]
-		},
-		{
-			"name": "contact",
-			"item": [
-				{
-					"name": "New Request",
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "formdata",
-							"formdata": [
-								{
-									"key": "firstName",
-									"value": "Jonny",
-									"type": "text"
-								},
-								{
-									"key": "lastName",
-									"value": "Doe",
-									"type": "text"
-								},
-								{
-									"key": "gender",
-									"value": "male",
-									"type": "text"
-								},
-								{
-									"key": "phoneNumber",
-									"value": "1234567890",
-									"type": "text"
-								},
-								{
-									"key": "emailAddress",
-									"value": "ap@samyotech.com",
-									"type": "text"
-								},
-								{
-									"key": "avatar",
-									"type": "file",
-									"src": "postman-cloud:///1efbc3d0-4f55-4a70-9c95-920a42d28629"
-								}
-							]
-						},
-						"url": {
-							"raw": "http://localhost:7200/api/v1/contact/addContact",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "7200",
-							"path": [
-								"api",
-								"v1",
-								"contact",
-								"addContact"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "http://localhost:7200/api/v1/contact/getContact",
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
-					"request": {
-						"method": "GET",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"emailAddress\":\"ap@samyotech.com\"\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "http://localhost:7200/api/v1/contact/getContact",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "7200",
-							"path": [
-								"api",
-								"v1",
-								"contact",
-								"getContact"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "http://localhost:7200/api/v1/contact/deleteContact",
-					"request": {
-						"method": "DELETE",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"emailAddress\":\"ap@samyotech.com\"\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "http://localhost:7200/api/v1/contact/deleteContact",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "7200",
-							"path": [
-								"api",
-								"v1",
-								"contact",
-								"deleteContact"
-							]
-						}
-					},
-					"response": []
-				}
-			]
-		},
-		{
-			"name": "Case",
-			"item": [
-				{
-					"name": "New Request",
-					"request": {
-						"method": "GET",
-						"header": []
-					},
-					"response": []
-				},
-				{
-					"name": "http://localhost:7200/api/v1/case/addCase",
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n  \"Title\": \"Land Acquisition Dispute\",\r\n  \"Date\": \"2024-12-16\",\r\n  \"Client\": \"Robert Brown\",\r\n  \"Advocate\": \"Emily Clark\",\r\n  \"Matter\": \"Dispute over compensation for land acquisition\",\r\n  \"Judge\": \"Justice Harper\",\r\n  \"PoliceStation\": \"Downtown Police Station\",\r\n  \"Court\": \"Supreme Court\",\r\n  \"Fir\": \"FIR987654\",\r\n  \"description\": \"The client is challenging the compensation amount provided by the government for the acquisition of their farmland.\",\r\n  \"internalNote\": \"Ensure to review the latest amendments in land acquisition laws.\"\r\n}\r\n\r\n",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "http://localhost:7200/api/v1/case/addCase",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "7200",
-							"path": [
-								"api",
-								"v1",
-								"case",
-								"addCase"
-							]
-						}
-					},
-					"response": []
-				}
-			]
-		},
-		{
-			"name": "Hearing",
-			"item": [
-				{
-					"name": "http://localhost:7200/api/v1/advise/updateAdvise/675fe4c9a6c4f99b89bba481",
-					"request": {
-						"method": "PUT",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n  \"Client\": \"John1 Doeeeee\",\r\n  \"Advocate\": \"Jane Smith\",\r\n  \"Date\": \"2024-12-16T00:00:00.000Z\",\r\n  \"Matter\": \"Property Disputeddd\",\r\n  \"Fee\": 5000,\r\n  \"Status\": \"Approved\",\r\n  \"description\": \"Advice on property ownership disputedd.\",\r\n  \"internalNote\": \"Follow-up meeting scheduled for next week.\"\r\n}\r\n",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "http://localhost:7200/api/v1/advise/updateAdvise/675fe4c9a6c4f99b89bba481",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "7200",
-							"path": [
-								"api",
-								"v1",
-								"advise",
-								"updateAdvise",
-								"675fe4c9a6c4f99b89bba481"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "http://localhost:7200/api/v1/hearing/AddHearing",
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n  \"Title\": \"Hearing for Case #123\",\r\n  \"Fee\": 1000,\r\n  \"Witness\": \"John Doe\",\r\n  \"JudgementStatus\": \"Pending\",\r\n  \"Date\": \"2024-12-25T00:00:00Z\",\r\n  \"JudgementReason\": \"First hearing\",\r\n  \"Description\": \"The case will be reviewed.\",\r\n  \"Case\": \"676005a01db3d0980d762459\" \r\n}\r\n",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "http://localhost:7200/api/v1/hearing/AddHearing",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "7200",
-							"path": [
-								"api",
-								"v1",
-								"hearing",
-								"AddHearing"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "http://localhost:7200/api/v1/hearing/getallhearing",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "http://localhost:7200/api/v1/hearing/getallhearing",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "7200",
-							"path": [
-								"api",
-								"v1",
-								"hearing",
-								"getallhearing"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "http://localhost:7200/api/v1/hearing/deleteHearing/67601c7114da6a9247212475",
-					"request": {
-						"method": "DELETE",
-						"header": [],
-						"url": {
-							"raw": "http://localhost:7200/api/v1/hearing/deleteHearing/67601c7114da6a9247212475",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "7200",
-							"path": [
-								"api",
-								"v1",
-								"hearing",
-								"deleteHearing",
-								"67601c7114da6a9247212475"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "http://localhost:7200/api/v1/hearing/updateHearing/676027f33fb224e07bad86ef",
-					"request": {
-						"method": "PUT",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n  \"Title\": \"Hearing for Case #123\",\r\n  \"Fee\": 100033,\r\n  \"Witness\": \"John Doe33\",\r\n  \"JudgementStatus\": \"Pending\",\r\n  \"Date\": \"2024-12-25T00:00:00Z\",\r\n  \"JudgementReason\": \"First hearin33g\",\r\n  \"Description\": \"The case will be reviewed.\",\r\n  \"Case\": \"676005a01db3d0980d762459\" \r\n}\r\n",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "http://localhost:7200/api/v1/hearing/updateHearing/676027f33fb224e07bad86ef",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "7200",
-							"path": [
-								"api",
-								"v1",
-								"hearing",
-								"updateHearing",
-								"676027f33fb224e07bad86ef"
-							]
-						}
-					},
-					"response": []
-				}
-			]
-		}
-	]
+  "info": {
+    "_postman_id": "7b75d5b9-4f7b-4637-996e-1165c0581836",
+    "name": "LMS Postman",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "40360074"
+  },
+  "item": [
+    {
+      "name": "expense",
+      "item": [
+        {
+          "name": "getAllRequest",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "Title",
+                  "value": "Affidavit",
+                  "type": "text"
+                },
+                {
+                  "key": "Case",
+                  "value": "Personal Injury",
+                  "type": "text"
+                },
+                {
+                  "key": "Amount",
+                  "value": "500",
+                  "type": "text"
+                },
+                {
+                  "key": "Type",
+                  "value": "court expense",
+                  "type": "text"
+                },
+                {
+                  "key": "Description",
+                  "value": "this expense for files and paper",
+                  "type": "text"
+                },
+                {
+                  "key": "Attachment",
+                  "type": "file",
+                  "src": "postman-cloud:///1efbc562-c927-45e0-a384-6c96cb98913f"
+                },
+                {
+                  "key": "Attachment",
+                  "type": "file",
+                  "src": "postman-cloud:///1efbc3d0-4f55-4a70-9c95-920a42d28629"
+                }
+              ]
+            },
+            "url": {
+              "raw": "http://localhost:7200/api/v1/expense/getAllExpense",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "7200",
+              "path": ["api", "v1", "expense", "getAllExpense"],
+              "query": [
+                {
+                  "key": "",
+                  "value": null,
+                  "disabled": true
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "New Request",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "Title",
+                  "value": "Affidavit",
+                  "type": "text"
+                },
+                {
+                  "key": "Case",
+                  "value": "Personal Injury",
+                  "type": "text"
+                },
+                {
+                  "key": "Amount",
+                  "value": "500",
+                  "type": "text"
+                },
+                {
+                  "key": "Type",
+                  "value": "court expense",
+                  "type": "text"
+                },
+                {
+                  "key": "Description",
+                  "value": "this expense for files and paper",
+                  "type": "text"
+                },
+                {
+                  "key": "Attachment",
+                  "type": "file",
+                  "src": "postman-cloud:///1efbc562-c927-45e0-a384-6c96cb98913f"
+                },
+                {
+                  "key": "Attachment",
+                  "type": "file",
+                  "src": "postman-cloud:///1efbc3d0-4f55-4a70-9c95-920a42d28629"
+                }
+              ]
+            },
+            "url": {
+              "raw": "http://localhost:7200/api/v1/expense/addExpense",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "7200",
+              "path": ["api", "v1", "expense", "addExpense"],
+              "query": [
+                {
+                  "key": "",
+                  "value": null,
+                  "disabled": true
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "getRequestById",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "Title",
+                  "value": "Affidavit",
+                  "type": "text"
+                },
+                {
+                  "key": "Case",
+                  "value": "Personal Injury",
+                  "type": "text"
+                },
+                {
+                  "key": "Amount",
+                  "value": "500",
+                  "type": "text"
+                },
+                {
+                  "key": "Type",
+                  "value": "court expense",
+                  "type": "text"
+                },
+                {
+                  "key": "Description",
+                  "value": "this expense for files and paper",
+                  "type": "text"
+                },
+                {
+                  "key": "Attachment",
+                  "type": "file",
+                  "src": "postman-cloud:///1efbc562-c927-45e0-a384-6c96cb98913f"
+                },
+                {
+                  "key": "Attachment",
+                  "type": "file",
+                  "src": "postman-cloud:///1efbc3d0-4f55-4a70-9c95-920a42d28629"
+                }
+              ]
+            },
+            "url": {
+              "raw": "http://localhost:7200/api/v1/expense/getExpense/6761559f8a666eb4b35ceb36",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "7200",
+              "path": [
+                "api",
+                "v1",
+                "expense",
+                "getExpense",
+                "6761559f8a666eb4b35ceb36"
+              ],
+              "query": [
+                {
+                  "key": "",
+                  "value": null,
+                  "disabled": true
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "deleteRequestBy Id",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "Title",
+                  "value": "Affidavit",
+                  "type": "text"
+                },
+                {
+                  "key": "Case",
+                  "value": "Personal Injury",
+                  "type": "text"
+                },
+                {
+                  "key": "Amount",
+                  "value": "500",
+                  "type": "text"
+                },
+                {
+                  "key": "Type",
+                  "value": "court expense",
+                  "type": "text"
+                },
+                {
+                  "key": "Description",
+                  "value": "this expense for files and paper",
+                  "type": "text"
+                },
+                {
+                  "key": "Attachment",
+                  "type": "file",
+                  "src": "postman-cloud:///1efbc562-c927-45e0-a384-6c96cb98913f"
+                },
+                {
+                  "key": "Attachment",
+                  "type": "file",
+                  "src": "postman-cloud:///1efbc3d0-4f55-4a70-9c95-920a42d28629"
+                }
+              ]
+            },
+            "url": {
+              "raw": "http://localhost:7200/api/v1/expense/deleteExpense/6761559f8a666eb4b35ceb36",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "7200",
+              "path": [
+                "api",
+                "v1",
+                "expense",
+                "deleteExpense",
+                "6761559f8a666eb4b35ceb36"
+              ],
+              "query": [
+                {
+                  "key": "",
+                  "value": null,
+                  "disabled": true
+                }
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Note",
+      "item": [
+        {
+          "name": "New Request",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "Title",
+                  "value": "Notice Board Bright",
+                  "type": "text"
+                },
+                {
+                  "key": "CreatedAt",
+                  "value": "20/12/2024",
+                  "type": "text",
+                  "disabled": true
+                },
+                {
+                  "key": "Description",
+                  "value": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s",
+                  "type": "text"
+                },
+                {
+                  "key": "Attachment",
+                  "type": "file",
+                  "src": "postman-cloud:///1efbc562-c927-45e0-a384-6c96cb98913f"
+                }
+              ]
+            },
+            "url": {
+              "raw": "http://localhost:7200/api/v1/note/addNote",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "7200",
+              "path": ["api", "v1", "note", "addNote"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "getnotebyId api",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "Title",
+                  "value": "Notice Board Bright22",
+                  "type": "text"
+                },
+                {
+                  "key": "CreatedAt",
+                  "value": "20/12/2024",
+                  "type": "text",
+                  "disabled": true
+                },
+                {
+                  "key": "Description",
+                  "value": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s",
+                  "type": "text"
+                },
+                {
+                  "key": "Attachment",
+                  "type": "file",
+                  "src": "postman-cloud:///1efbc562-c927-45e0-a384-6c96cb98913f"
+                }
+              ]
+            },
+            "url": {
+              "raw": "http://localhost:7200/api/v1/note/getNote/6761715d6fbc79f0b45d0b4f",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "7200",
+              "path": [
+                "api",
+                "v1",
+                "note",
+                "getNote",
+                "6761715d6fbc79f0b45d0b4f"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "deletenotebyId api",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "Title",
+                  "value": "Notice Board Bright22",
+                  "type": "text"
+                },
+                {
+                  "key": "CreatedAt",
+                  "value": "20/12/2024",
+                  "type": "text",
+                  "disabled": true
+                },
+                {
+                  "key": "Description",
+                  "value": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s",
+                  "type": "text"
+                },
+                {
+                  "key": "Attachment",
+                  "type": "file",
+                  "src": "postman-cloud:///1efbc562-c927-45e0-a384-6c96cb98913f"
+                }
+              ]
+            },
+            "url": {
+              "raw": "http://localhost:7200/api/v1/note/deleteNote/6761715d6fbc79f0b45d0b4f",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "7200",
+              "path": [
+                "api",
+                "v1",
+                "note",
+                "deleteNote",
+                "6761715d6fbc79f0b45d0b4f"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "getnote api",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "Title",
+                  "value": "Notice Board Bright22",
+                  "type": "text"
+                },
+                {
+                  "key": "CreatedAt",
+                  "value": "20/12/2024",
+                  "type": "text",
+                  "disabled": true
+                },
+                {
+                  "key": "Description",
+                  "value": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s",
+                  "type": "text"
+                },
+                {
+                  "key": "Attachment",
+                  "type": "file",
+                  "src": "postman-cloud:///1efbc562-c927-45e0-a384-6c96cb98913f"
+                }
+              ]
+            },
+            "url": {
+              "raw": "http://localhost:7200/api/v1/note/getAllNote",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "7200",
+              "path": ["api", "v1", "note", "getAllNote"]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Evidence",
+      "item": [
+        {
+          "name": "http://localhost:7200/api/v1/evidence/addEvidence?Title",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "Title",
+                  "value": "Affidavitd",
+                  "type": "text"
+                },
+                {
+                  "key": "Case",
+                  "value": "Personal injury claim2",
+                  "type": "text"
+                },
+                {
+                  "key": "Hearing",
+                  "value": "initial",
+                  "type": "text"
+                },
+                {
+                  "key": "Favor",
+                  "value": "jane",
+                  "type": "text"
+                },
+                {
+                  "key": "Description",
+                  "value": "Personal Injury claim document",
+                  "type": "text"
+                },
+                {
+                  "key": "Attachment",
+                  "type": "file",
+                  "src": "postman-cloud:///1efbc3d0-4f55-4a70-9c95-920a42d28629"
+                },
+                {
+                  "key": "Attachment",
+                  "type": "file",
+                  "src": "postman-cloud:///1efbc562-c927-45e0-a384-6c96cb98913f"
+                }
+              ]
+            },
+            "url": {
+              "raw": "http://localhost:7200/api/v1/evidence/addEvidence?Title",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "7200",
+              "path": ["api", "v1", "evidence", "addEvidence"],
+              "query": [
+                {
+                  "key": "Title",
+                  "value": null
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "http://localhost:7200/api/v1/evidence/getEvidence",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:7200/api/v1/evidence/getEvidence",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "7200",
+              "path": ["api", "v1", "evidence", "getEvidence"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "http://localhost:7200/api/v1/evidence/deleteEvidence/67614006a292ae93ec43cf78",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:7200/api/v1/evidence/deleteEvidence/67614006a292ae93ec43cf78",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "7200",
+              "path": [
+                "api",
+                "v1",
+                "evidence",
+                "deleteEvidence",
+                "67614006a292ae93ec43cf78"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "http://localhost:7200/api/v1/evidence/addEvidence?Title",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "Title",
+                  "value": "Affidavitd",
+                  "type": "text"
+                },
+                {
+                  "key": "Case",
+                  "value": "Personal injury ",
+                  "type": "text"
+                },
+                {
+                  "key": "Hearing",
+                  "value": "initial",
+                  "type": "text"
+                },
+                {
+                  "key": "Favor",
+                  "value": "jane",
+                  "type": "text"
+                },
+                {
+                  "key": "Description",
+                  "value": "Personal Injury claim document",
+                  "type": "text"
+                },
+                {
+                  "key": "Attachment",
+                  "type": "file",
+                  "src": "postman-cloud:///1efbc3d0-4f55-4a70-9c95-920a42d28629"
+                },
+                {
+                  "key": "Attachment",
+                  "type": "file",
+                  "src": "postman-cloud:///1efbc562-c927-45e0-a384-6c96cb98913f"
+                }
+              ]
+            },
+            "url": {
+              "raw": "http://localhost:7200/api/v1/evidence/updateEvidence/6761559f8a666eb4b35ceb36",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "7200",
+              "path": [
+                "api",
+                "v1",
+                "evidence",
+                "updateEvidence",
+                "6761559f8a666eb4b35ceb36"
+              ],
+              "query": [
+                {
+                  "key": "",
+                  "value": null,
+                  "disabled": true
+                }
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "contact",
+      "item": [
+        {
+          "name": "New Request",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "firstName",
+                  "value": "Jonny",
+                  "type": "text"
+                },
+                {
+                  "key": "lastName",
+                  "value": "Doe",
+                  "type": "text"
+                },
+                {
+                  "key": "gender",
+                  "value": "male",
+                  "type": "text"
+                },
+                {
+                  "key": "phoneNumber",
+                  "value": "1234567890",
+                  "type": "text"
+                },
+                {
+                  "key": "emailAddress",
+                  "value": "ap@samyotech.com",
+                  "type": "text"
+                },
+                {
+                  "key": "avatar",
+                  "type": "file",
+                  "src": "postman-cloud:///1efbc3d0-4f55-4a70-9c95-920a42d28629"
+                }
+              ]
+            },
+            "url": {
+              "raw": "http://localhost:7200/api/v1/contact/addContact",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "7200",
+              "path": ["api", "v1", "contact", "addContact"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "http://localhost:7200/api/v1/contact/getContact",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"emailAddress\":\"ap@samyotech.com\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:7200/api/v1/contact/getContact",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "7200",
+              "path": ["api", "v1", "contact", "getContact"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "http://localhost:7200/api/v1/contact/deleteContact",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"emailAddress\":\"ap@samyotech.com\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:7200/api/v1/contact/deleteContact",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "7200",
+              "path": ["api", "v1", "contact", "deleteContact"]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Case",
+      "item": [
+        {
+          "name": "New Request",
+          "request": {
+            "method": "GET",
+            "header": []
+          },
+          "response": []
+        },
+        {
+          "name": "http://localhost:7200/api/v1/case/addCase",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"Title\": \"Land Acquisition Dispute\",\r\n  \"Date\": \"2024-12-16\",\r\n  \"Client\": \"Robert Brown\",\r\n  \"Advocate\": \"Emily Clark\",\r\n  \"Matter\": \"Dispute over compensation for land acquisition\",\r\n  \"Judge\": \"Justice Harper\",\r\n  \"PoliceStation\": \"Downtown Police Station\",\r\n  \"Court\": \"Supreme Court\",\r\n  \"Fir\": \"FIR987654\",\r\n  \"description\": \"The client is challenging the compensation amount provided by the government for the acquisition of their farmland.\",\r\n  \"internalNote\": \"Ensure to review the latest amendments in land acquisition laws.\"\r\n}\r\n\r\n",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:7200/api/v1/case/addCase",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "7200",
+              "path": ["api", "v1", "case", "addCase"]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Hearing",
+      "item": [
+        {
+          "name": "http://localhost:7200/api/v1/advise/updateAdvise/675fe4c9a6c4f99b89bba481",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"Client\": \"John1 Doeeeee\",\r\n  \"Advocate\": \"Jane Smith\",\r\n  \"Date\": \"2024-12-16T00:00:00.000Z\",\r\n  \"Matter\": \"Property Disputeddd\",\r\n  \"Fee\": 5000,\r\n  \"Status\": \"Approved\",\r\n  \"description\": \"Advice on property ownership disputedd.\",\r\n  \"internalNote\": \"Follow-up meeting scheduled for next week.\"\r\n}\r\n",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:7200/api/v1/advise/updateAdvise/675fe4c9a6c4f99b89bba481",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "7200",
+              "path": [
+                "api",
+                "v1",
+                "advise",
+                "updateAdvise",
+                "675fe4c9a6c4f99b89bba481"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "http://localhost:7200/api/v1/hearing/AddHearing",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"Title\": \"Hearing for Case #123\",\r\n  \"Fee\": 1000,\r\n  \"Witness\": \"John Doe\",\r\n  \"JudgementStatus\": \"Pending\",\r\n  \"Date\": \"2024-12-25T00:00:00Z\",\r\n  \"JudgementReason\": \"First hearing\",\r\n  \"Description\": \"The case will be reviewed.\",\r\n  \"Case\": \"676005a01db3d0980d762459\" \r\n}\r\n",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:7200/api/v1/hearing/AddHearing",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "7200",
+              "path": ["api", "v1", "hearing", "AddHearing"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "http://localhost:7200/api/v1/hearing/getallhearing",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:7200/api/v1/hearing/getallhearing",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "7200",
+              "path": ["api", "v1", "hearing", "getallhearing"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "http://localhost:7200/api/v1/hearing/deleteHearing/67601c7114da6a9247212475",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:7200/api/v1/hearing/deleteHearing/67601c7114da6a9247212475",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "7200",
+              "path": [
+                "api",
+                "v1",
+                "hearing",
+                "deleteHearing",
+                "67601c7114da6a9247212475"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "http://localhost:7200/api/v1/hearing/updateHearing/676027f33fb224e07bad86ef",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"Title\": \"Hearing for Case #123\",\r\n  \"Fee\": 100033,\r\n  \"Witness\": \"John Doe33\",\r\n  \"JudgementStatus\": \"Pending\",\r\n  \"Date\": \"2024-12-25T00:00:00Z\",\r\n  \"JudgementReason\": \"First hearin33g\",\r\n  \"Description\": \"The case will be reviewed.\",\r\n  \"Case\": \"676005a01db3d0980d762459\" \r\n}\r\n",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:7200/api/v1/hearing/updateHearing/676027f33fb224e07bad86ef",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "7200",
+              "path": [
+                "api",
+                "v1",
+                "hearing",
+                "updateHearing",
+                "676027f33fb224e07bad86ef"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    }
+  ]
 }
