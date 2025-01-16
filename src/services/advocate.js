@@ -136,7 +136,6 @@ export const GetAdvocateById = async (req) => {
 
 export const UpdateAdvocate = async (req) => {
   const {
-    certificate,
     name,
     email,
     phone,
@@ -157,7 +156,6 @@ export const UpdateAdvocate = async (req) => {
     firms,
     position,
     duration,
-    image,
     About,
   } = req?.body;
 
@@ -168,6 +166,14 @@ export const UpdateAdvocate = async (req) => {
       errorCodes?.bad_request,
     );
   }
+  const image =
+    req.files && req.files.image
+      ? `/uploads/${req.files.image[0].filename}`
+      : null;
+  const certificate =
+    req.files && req.files.certificate
+      ? `/uploads/${req.files.certificate[0].filename}`
+      : null;
   const updateData = {
     certificate,
     name,
@@ -191,7 +197,7 @@ export const UpdateAdvocate = async (req) => {
     position,
     duration,
     About,
-    image: req.file ? `/uploads/${req.file.filename}` : null,
+    image,
   };
 
   const updatedAdvocate = await AdvocateSch.findOneAndUpdate(
