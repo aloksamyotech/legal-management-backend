@@ -30,8 +30,8 @@ const AdviseSchema = new Schema(
     },
     Status: {
       type: String,
-      enum: ["Approved", "closed", "On-hold"],
-      default: "On-hold",
+      enum: ["Draft", "Approved", "closed", "On-hold"],
+      default: "Draft",
     },
     Active: {
       type: Boolean,
