@@ -59,7 +59,7 @@ const AdvocateSchema = new Schema(
     languages: {
       type: String,
     },
-    skill: {
+    Specialization: {
       type: String,
     },
     degree: {
