@@ -5,7 +5,6 @@ export const AddAdvise = async (req) => {
   const {
     Client,
     Advocate,
-    Date,
     Matter,
     Fee,
     Status,
@@ -16,7 +15,6 @@ export const AddAdvise = async (req) => {
   if (
     !Client ||
     !Advocate ||
-    !Date ||
     !Matter ||
     Fee === undefined ||
     !Status
@@ -31,7 +29,6 @@ export const AddAdvise = async (req) => {
   const advise = new Advisedb({
     Client,
     Advocate,
-    Date,
     Matter,
     Fee,
     Status,
@@ -151,3 +148,24 @@ export const GetAdviseById = async (req) => {
 
   return advise;
 };
+export const updatePayment=async(req)=>{
+  const { id } = req.body; 
+  const { paymentStatus } = req.body; 
+  const validStatuses = ["Paid", "Unpaid"];
+  if (!validStatuses.includes(paymentStatus)) {
+    return 
+  }
+
+  const updatedAdvise = await Advisedb.findByIdAndUpdate(
+   {_id: id},
+    { Payment: paymentStatus },
+    { new: true, runValidators: true } 
+  );
+
+  if (!updatedAdvise) {
+    return { error: "Advise not found" };
+  }
+
+  
+  return updatedAdvise ;
+}

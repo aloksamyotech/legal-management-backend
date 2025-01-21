@@ -15,7 +15,8 @@ const AdviseSchema = new Schema(
     },
     Date: {
       type: Date,
-      required: true,
+      //required: true,
+      default:Date.now()
     },
     Matter: {
       type: mongoose.Schema.Types.ObjectId,

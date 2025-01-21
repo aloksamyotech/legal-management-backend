@@ -24,6 +24,10 @@ const InvoiceUpdate = async (req, res, next) => {
   const InvoiceUpdateData = await invoiceService.UpdateInvoice(req, res, next);
   res.status(statusCodes.ok).send(InvoiceUpdateData);
 };
+const Invoicepayment = async (req, res, next) => {
+  const InvoiceUpdateData = await invoiceService.updateInvoicePayment(req, res, next);
+  res.status(statusCodes.ok).send(InvoiceUpdateData);
+};
 
 export default {
   InvoiceAdd,
@@ -32,4 +36,5 @@ export default {
   InvoiceFetchByCase,
   InvoiceDelete,
   InvoiceUpdate,
+  Invoicepayment
 };

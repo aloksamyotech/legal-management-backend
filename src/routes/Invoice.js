@@ -15,4 +15,5 @@ router.delete(
   asyncHandler(invoiceController.InvoiceDelete),
 );
 router.put("/updateInvoice/:id", asyncHandler(invoiceController.InvoiceUpdate));
+router.put("/updateInvoicePayment", asyncHandler(invoiceController.Invoicepayment));
 export default router;
