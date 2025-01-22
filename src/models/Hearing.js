@@ -42,6 +42,12 @@ const HearingSchema = new Schema(
       ref: "Case",
       required: true,
     },
+    Client: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Client",
+      required: true,
+    },
+    
     Active: {
       type: Boolean,
       default: true,

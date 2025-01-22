@@ -10,4 +10,5 @@ router.get(
 );
 router.delete("/deleteAdvise/:id", asyncHandler(adviseController.AdviseDelete));
 router.put("/updateAdvise/:id", asyncHandler(adviseController.AdviseUpdate));
+router.put("/updateAdvisepayment", asyncHandler(adviseController.AdvisepaymentUpdate));
 export default router;

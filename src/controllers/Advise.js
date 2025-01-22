@@ -16,6 +16,10 @@ const AdviseUpdate = async (req, res, next) => {
   const AdviseUpdateData = await adviseService.UpdateAdvise(req, res, next);
   res.status(statusCodes?.ok).send(AdviseUpdateData);
 };
+const AdvisepaymentUpdate = async (req, res, next) => {
+  const AdviseUpdateData = await adviseService.updatePayment(req, res, next);
+  res.status(statusCodes?.ok).send(AdviseUpdateData);
+};
 const SingleAdviceFetch = async (req, res, next) => {
   const SingleAdviseData = await adviseService.GetAdviseById(req, res, next);
   res.status(statusCodes?.ok).send(SingleAdviseData);
@@ -26,5 +30,6 @@ export default {
   AdviseFetch,
   AdviseDelete,
   AdviseUpdate,
+  AdvisepaymentUpdate,
   SingleAdviceFetch,
 };

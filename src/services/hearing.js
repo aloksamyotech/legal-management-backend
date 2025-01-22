@@ -5,6 +5,7 @@ export const AddHearing = async (req, res) => {
   const {
     Title,
     Fee,
+    Client,
     Witness,
     JudgementStatus,
     Date,
@@ -25,6 +26,7 @@ export const AddHearing = async (req, res) => {
     Title,
     Fee,
     Witness,
+    Client,
     JudgementStatus,
     Date,
     JudgementReason,
@@ -63,7 +65,7 @@ export const GetHearing = async (req, res) => {
 };
 export const GetAllHearing = async (req) => {
   const allhearings = await HearingModel?.find({ Active: true })
-    .populate("Case", "Title")
+    .populate("Case", "Title").populate("Client", "Name")
     .sort({ createdAt: -1 });
 
   if (!allhearings || allhearings.length === 0) {
