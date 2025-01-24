@@ -47,7 +47,7 @@ const HearingSchema = new Schema(
       ref: "Client",
       required: true,
     },
-    
+
     Active: {
       type: Boolean,
       default: true,

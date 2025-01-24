@@ -1,7 +1,6 @@
 import { Router } from "express";
 import { asyncHandler } from "../utils/asyncWrapper.js";
 import { judgeController } from "../controllers/controllers.js";
-import { upload } from "../utils/multerConfig.js";
 const router = Router();
 router.post("/addJudge", asyncHandler(judgeController.JudgeAdd));
 router.get("/getJudge", asyncHandler(judgeController.JudgeFetch));

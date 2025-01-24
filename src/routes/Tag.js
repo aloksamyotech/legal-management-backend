@@ -1,7 +1,6 @@
 import { Router } from "express";
 import { asyncHandler } from "../utils/asyncWrapper.js";
 import { tagController } from "../controllers/controllers.js";
-import { upload } from "../utils/multerConfig.js";
 const router = Router();
 router.post("/addTag", asyncHandler(tagController.TagAdd));
 router.get("/getTag", asyncHandler(tagController.TagFetch));

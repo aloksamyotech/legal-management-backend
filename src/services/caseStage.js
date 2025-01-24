@@ -96,8 +96,6 @@ export const UpdateCaseStage = async (req) => {
       errorCodes?.action_failed,
     );
   }
-
-  return updatedCaseStage;
 };
 
 export const DeleteCaseStage = async (req) => {

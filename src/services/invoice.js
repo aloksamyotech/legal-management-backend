@@ -258,24 +258,23 @@ export const GetInvoiceByCaseId = async (req) => {
 
   return invoice;
 };
-export const updateInvoicePayment=async(req)=>{
-  const { id } = req.body; 
-  const { paymentStatus } = req.body; 
+export const updateInvoicePayment = async (req) => {
+  const { id } = req.body;
+  const { paymentStatus } = req.body;
   const validStatuses = ["Paid", "Unpaid"];
   if (!validStatuses.includes(paymentStatus)) {
-    return 
+    return;
   }
 
   const updatedInvoice = await Invoice.findByIdAndUpdate(
-   {_id: id},
+    { _id: id },
     { PaymentStatus: paymentStatus },
-    { new: true, runValidators: true } 
+    { new: true, runValidators: true },
   );
 
   if (!updatedInvoice) {
     return { error: "Advise not found" };
   }
 
-  
-  return updatedInvoice ;
-}
+  return updatedInvoice;
+};

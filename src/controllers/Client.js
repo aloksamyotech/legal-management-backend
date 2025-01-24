@@ -1,5 +1,5 @@
 import * as clientService from "../services/client.js";
-import { Message, statusCodes } from "../core/common/constant.js";
+import { statusCodes } from "../core/common/constant.js";
 const ClientAdd = async (req, res, next) => {
   const ClientData = await clientService.AddClient(req, res, next);
   res.status(statusCodes?.created).send(ClientData);

@@ -1,7 +1,7 @@
 import HearingModel from "../models/Hearing.js";
 import { errorCodes, Message, statusCodes } from "../core/common/constant.js";
 import CustomError from "../utils/exception.js";
-export const AddHearing = async (req, res) => {
+export const AddHearing = async (req) => {
   const {
     Title,
     Fee,
@@ -45,7 +45,7 @@ export const AddHearing = async (req, res) => {
   return savedHearing;
 };
 
-export const GetHearing = async (req, res) => {
+export const GetHearing = async (req) => {
   const { id } = req.params;
 
   const hearing = await HearingModel.findOne({
@@ -63,9 +63,10 @@ export const GetHearing = async (req, res) => {
 
   return hearing;
 };
-export const GetAllHearing = async (req) => {
+export const GetAllHearing = async () => {
   const allhearings = await HearingModel?.find({ Active: true })
-    .populate("Case", "Title").populate("Client", "Name")
+    .populate("Case", "Title")
+    .populate("Client", "Name")
     .sort({ createdAt: -1 });
 
   if (!allhearings || allhearings.length === 0) {
@@ -78,7 +79,7 @@ export const GetAllHearing = async (req) => {
 
   return allhearings;
 };
-export const DeleteHearing = async (req, res) => {
+export const DeleteHearing = async (req) => {
   const { id } = req.params;
 
   const deletedHearing = await HearingModel.findByIdAndUpdate(
@@ -97,9 +98,9 @@ export const DeleteHearing = async (req, res) => {
 
   return { message: Message?.Delete, hearing: deletedHearing };
 };
-export const UpdateHearing = async (req, res) => {
-  const { id } = req?.params;
-  const updateData = req?.body;
+export const UpdateHearing = async (req) => {
+  const { id } = req.params;
+  const updateData = req.body;
 
   if (!id) {
     throw new CustomError(
@@ -127,7 +128,7 @@ export const UpdateHearing = async (req, res) => {
 };
 
 //===========================================Get Hearing api from case==========================
-export const GetHearingsByCaseId = async (req, res) => {
+export const GetHearingsByCaseId = async (req) => {
   const { caseId } = req.params;
 
   if (!caseId) {

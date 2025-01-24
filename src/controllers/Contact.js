@@ -1,5 +1,5 @@
 import * as contactService from "../services/contact.js";
-import { Message, statusCodes } from "../core/common/constant.js";
+import { statusCodes } from "../core/common/constant.js";
 const ContactAdd = async (req, res, next) => {
   const ContactData = await contactService.AddContact(req, res, next);
   res.status(statusCodes?.created).send(ContactData);

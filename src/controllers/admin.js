@@ -1,5 +1,5 @@
 import * as adminService from "../services/admin.js";
-import { Message, statusCodes } from "../core/common/constant.js";
+import { statusCodes } from "../core/common/constant.js";
 const adminRegistration = async (req, res, next) => {
   const adminData = await adminService.registerAdmin(req, res, next);
   res.status(statusCodes?.created).send(adminData);

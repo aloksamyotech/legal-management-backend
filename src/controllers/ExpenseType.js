@@ -1,5 +1,5 @@
 import * as expenseTypeService from "../services/ExpenseType.js";
-import { Message, statusCodes } from "../core/common/constant.js";
+import { statusCodes } from "../core/common/constant.js";
 const ExpenseTypeAdd = async (req, res, next) => {
   const ExpenseTypeData = await expenseTypeService.AddExpenseType(
     req,

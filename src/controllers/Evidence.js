@@ -1,5 +1,5 @@
 import * as evidenceService from "../services/evidence.js";
-import { Message, statusCodes } from "../core/common/constant.js";
+import { statusCodes } from "../core/common/constant.js";
 const EvidenceAdd = async (req, res, next) => {
   const EvidenceData = await evidenceService.AddEvidence(req, res, next);
   res.status(statusCodes?.created).send(EvidenceData);

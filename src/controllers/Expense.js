@@ -1,5 +1,5 @@
 import * as expenseService from "../services/expense.js";
-import { Message, statusCodes } from "../core/common/constant.js";
+import { statusCodes } from "../core/common/constant.js";
 const ExpenseAdd = async (req, res, next) => {
   const ExpenseData = await expenseService.AddExpense(req, res, next);
   res.status(statusCodes?.created).send(ExpenseData);

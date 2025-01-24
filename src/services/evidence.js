@@ -1,8 +1,9 @@
 import Evidence from "../models/Evidence.js";
 import { statusCodes, Message, errorCodes } from "../core/common/constant.js";
+import CustomError from "../utils/exception.js";
 
-export const AddEvidence = async (req, res) => {
-  const { Title, Case, Hearing, Favor, Description } = req?.body;
+export const AddEvidence = async (req) => {
+  const { Title, Case, Hearing, Favor, Description } = req.body;
 
   const files = req?.files?.map((file) => ({
     name: file?.originalname,
@@ -22,7 +23,7 @@ export const AddEvidence = async (req, res) => {
   const createdEvidence = await evidence.save();
   return createdEvidence;
 };
-export const GetEvidence = async (req) => {
+export const GetEvidence = async () => {
   const evidence = await Evidence?.find({ Active: true })
     .populate("Case")
     .populate("Hearing")
@@ -38,7 +39,7 @@ export const GetEvidence = async (req) => {
 
   return evidence;
 };
-export const DeleteEvidence = async (req, res) => {
+export const DeleteEvidence = async (req) => {
   const { id } = req.params;
 
   const deletedEvidence = await Evidence.findOneAndUpdate(
@@ -58,9 +59,9 @@ export const DeleteEvidence = async (req, res) => {
   return deletedEvidence;
 };
 
-export const UpdateEvidence = async (req, res) => {
-  const { id } = req?.params;
-  const { Title, Case, Hearing, Favor, Description } = req?.body;
+export const UpdateEvidence = async (req) => {
+  const { id } = req.params;
+  const { Title, Case, Hearing, Favor, Description } = req.body;
 
   const files = req.files?.map((file) => ({
     name: file.originalname,
@@ -93,7 +94,7 @@ export const UpdateEvidence = async (req, res) => {
 
   return updatedEvidence;
 };
-export const GetEvidenceByCase = async (req, res) => {
+export const GetEvidenceByCase = async (req) => {
   const { caseId } = req.params;
 
   const evidence = await Evidence.find({ Case: caseId, Active: true }).populate(
