@@ -1,5 +1,5 @@
 import * as advocateService from "../services/advocate.js";
-import { Message, statusCodes } from "../core/common/constant.js";
+import { statusCodes } from "../core/common/constant.js";
 const AdvocateAdd = async (req, res, next) => {
   const AdvocateData = await advocateService.AddAdvocate(req, res, next);
   res.status(statusCodes?.created).send(AdvocateData);

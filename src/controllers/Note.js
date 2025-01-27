@@ -1,5 +1,5 @@
 import * as noteService from "../services/note.js";
-import { Message, statusCodes } from "../core/common/constant.js";
+import { statusCodes } from "../core/common/constant.js";
 const NoteAdd = async (req, res, next) => {
   const NoteData = await noteService.AddNote(req, res, next);
   res.status(statusCodes?.created).send(NoteData);

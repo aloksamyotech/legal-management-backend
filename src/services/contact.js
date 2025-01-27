@@ -103,13 +103,12 @@ export const GetAllContact = async () => {
   const contact = await Contact.find({ Active: true }).sort({ createdAt: -1 });
 
   if (!contact || contact.length === 0) {
-      return {
-        status: statusCodes?.notFound,
-        message: Message?.notFound,
-        errorCode: errorCodes?.not_found,
-        contact: [],    
-    }
-  
+    return {
+      status: statusCodes?.notFound,
+      message: Message?.notFound,
+      errorCode: errorCodes?.not_found,
+      contact: [],
+    };
   }
   return contact;
 };

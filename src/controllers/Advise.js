@@ -1,5 +1,5 @@
 import * as adviseService from "../services/advise.js";
-import { Message, statusCodes } from "../core/common/constant.js";
+import { statusCodes } from "../core/common/constant.js";
 const AdviseAdd = async (req, res, next) => {
   const AdviseData = await adviseService.AddAdvise(req, res, next);
   res.status(statusCodes?.created).send(AdviseData);

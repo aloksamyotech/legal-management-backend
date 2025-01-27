@@ -45,9 +45,9 @@ const CaseSchema = new Schema(
       type: String,
       required: true,
     },
-    CaseStatus:{
-      type:String,
-      enum:["Open","Closed"]
+    CaseStatus: {
+      type: String,
+      enum: ["Open", "Closed"],
     },
     description: {
       type: String,

@@ -1,5 +1,5 @@
 import * as hearingService from "../services/hearing.js";
-import { Message, statusCodes } from "../core/common/constant.js";
+import { statusCodes } from "../core/common/constant.js";
 const HearingAdd = async (req, res, next) => {
   const HearingData = await hearingService.AddHearing(req, res, next);
   res.status(statusCodes?.created).send(HearingData);

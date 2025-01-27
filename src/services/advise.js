@@ -2,23 +2,10 @@ import { Advisedb } from "../models/Advise.js";
 import { errorCodes, Message, statusCodes } from "../core/common/constant.js";
 import CustomError from "../utils/exception.js";
 export const AddAdvise = async (req) => {
-  const {
-    Client,
-    Advocate,
-    Matter,
-    Fee,
-    Status,
-    description,
-    internalNote,
-  } = req.body;
+  const { Client, Advocate, Matter, Fee, Status, description, internalNote } =
+    req.body;
 
-  if (
-    !Client ||
-    !Advocate ||
-    !Matter ||
-    Fee === undefined ||
-    !Status
-  ) {
+  if (!Client || !Advocate || !Matter || Fee === undefined || !Status) {
     throw new CustomError(
       statusCodes?.badRequest,
       Message.Missing_required_field,
@@ -148,24 +135,23 @@ export const GetAdviseById = async (req) => {
 
   return advise;
 };
-export const updatePayment=async(req)=>{
-  const { id } = req.body; 
-  const { paymentStatus } = req.body; 
+export const updatePayment = async (req) => {
+  const { id } = req.body;
+  const { paymentStatus } = req.body;
   const validStatuses = ["Paid", "Unpaid"];
   if (!validStatuses.includes(paymentStatus)) {
-    return 
+    return;
   }
 
   const updatedAdvise = await Advisedb.findByIdAndUpdate(
-   {_id: id},
+    { _id: id },
     { Payment: paymentStatus },
-    { new: true, runValidators: true } 
+    { new: true, runValidators: true },
   );
 
   if (!updatedAdvise) {
     return { error: "Advise not found" };
   }
 
-  
-  return updatedAdvise ;
-}
+  return updatedAdvise;
+};

@@ -1,5 +1,5 @@
 import * as invoiceService from "../services/invoice.js";
-import { Message, statusCodes } from "../core/common/constant.js";
+import { statusCodes } from "../core/common/constant.js";
 const InvoiceAdd = async (req, res, next) => {
   const InvoiceData = await invoiceService.AddInvoice(req, res, next);
   res.status(statusCodes.created).send(InvoiceData);
@@ -25,7 +25,11 @@ const InvoiceUpdate = async (req, res, next) => {
   res.status(statusCodes.ok).send(InvoiceUpdateData);
 };
 const Invoicepayment = async (req, res, next) => {
-  const InvoiceUpdateData = await invoiceService.updateInvoicePayment(req, res, next);
+  const InvoiceUpdateData = await invoiceService.updateInvoicePayment(
+    req,
+    res,
+    next,
+  );
   res.status(statusCodes.ok).send(InvoiceUpdateData);
 };
 
@@ -36,5 +40,5 @@ export default {
   InvoiceFetchByCase,
   InvoiceDelete,
   InvoiceUpdate,
-  Invoicepayment
+  Invoicepayment,
 };

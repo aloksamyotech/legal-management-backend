@@ -111,7 +111,7 @@ export const GetAllAdvocates = async () => {
 };
 
 export const GetAdvocateById = async (req) => {
-  const { id } = req?.params;
+  const { id } = req.params;
 
   if (!id) {
     throw new CustomError(
@@ -157,7 +157,7 @@ export const UpdateAdvocate = async (req) => {
     position,
     duration,
     About,
-  } = req?.body;
+  } = req.body;
 
   if (!email) {
     throw new CustomError(
@@ -218,7 +218,7 @@ export const UpdateAdvocate = async (req) => {
 };
 
 export const DeleteAdvocate = async (req) => {
-  const { id } = req?.params;
+  const { id } = req.params;
 
   if (!id) {
     throw new CustomError(
