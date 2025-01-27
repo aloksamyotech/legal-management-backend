@@ -1,10 +1,10 @@
-import { Admin } from "../models/Admin.js";
+import { User } from "../models/Admin.js";
 import { errorCodes, Message, statusCodes } from "../core/common/constant.js";
 import CustomError from "../utils/exception.js";
 
 export const registerAdmin = async (req) => {
   const { Name, mobileNumber, AsignRole, email, password } = req.body;
-  const isAdminAlreadyExist = await Admin.findOne({ email });
+  const isAdminAlreadyExist = await User.findOne({ email });
 
   if (isAdminAlreadyExist) {
     throw new CustomError(
@@ -14,7 +14,7 @@ export const registerAdmin = async (req) => {
     );
   }
 
-  const admin = await Admin.create({
+  const admin = await User.create({
     Name,
     mobileNumber,
     AsignRole,
@@ -22,7 +22,7 @@ export const registerAdmin = async (req) => {
     password,
   });
 
-  const createdAdmin = await Admin.findById(admin._id).select(
+  const createdAdmin = await User.findById(admin._id).select(
     "-password -refreshToken ",
   );
 
@@ -39,7 +39,7 @@ export const registerAdmin = async (req) => {
 
 const generateAccessAndRefreshTokens = async (adminId) => {
   try {
-    const admin = await Admin.findById(adminId);
+    const admin = await User.findById(adminId);
     const accessToken = admin.generateAccessToken();
     const refreshToken = admin.generateRefreshToken();
 
@@ -57,7 +57,7 @@ const generateAccessAndRefreshTokens = async (adminId) => {
 export const loginAdmin = async (req) => {
   const { email, password } = req.body;
 
-  const admin = await Admin.findOne({ email });
+  const admin = await User.findOne({ email });
   if (!admin) {
     throw new CustomError(
       statusCodes?.notFound,
@@ -78,7 +78,7 @@ export const loginAdmin = async (req) => {
   const { accessToken, refreshToken } = await generateAccessAndRefreshTokens(
     admin._id,
   );
-  const loginadmin = await Admin.findById(admin._id).select(
+  const loginadmin = await User.findById(admin._id).select(
     "-password -refreshToken",
   );
 
