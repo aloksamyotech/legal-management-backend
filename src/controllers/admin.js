@@ -8,9 +8,11 @@ const adminLogin = async (req, res, next) => {
   const data = await adminService.loginAdmin(req, res, next);
   res
     .status(statusCodes?.ok)
-    .cookie("accessToken", data?.accessToken, data?.options)
-    .cookie("refreshToken", data?.refreshToken, data?.options)
-    .send(data?.loginadmin);
+    // .cookie("accessToken", data?.accessToken, data?.options)
+    // .cookie("refreshToken", data?.refreshToken, data?.options)
+    .send({accessToken: data?.accessToken, 
+      refreshToken: data?.refreshToken,
+      loginadmin:data?.loginadmin});
 };
 export default {
   adminRegistration,

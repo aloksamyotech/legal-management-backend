@@ -1,12 +1,16 @@
 import mongoose, { Schema } from "mongoose";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
-const AdminSchema = new Schema(
+const UserSchema = new Schema(
   {
     Name: {
       type: String,
       required: true,
       trim: true,
+    },
+    Gender:{
+      type:String,
+      enum:["Male", "Female", "Other"]
     },
     mobileNumber: {
       type: Number,
@@ -14,7 +18,7 @@ const AdminSchema = new Schema(
     },
     AsignRole: {
       type: String,
-      enum: ["admin", "manager", "company"],
+      enum: ["Admin", "Manager", "Company", "Staff"],
       required: true,
     },
     email: {
@@ -29,6 +33,11 @@ const AdminSchema = new Schema(
     companyId: {
       Type: mongoose.Types.ObjectId,
     },
+    address:{
+      type:String,
+    },
+    permission:[],
+    
     refreshToken: {
       type: String,
     },
@@ -36,18 +45,18 @@ const AdminSchema = new Schema(
   { timestamps: true },
 );
 
-AdminSchema.pre("save", async function (next) {
+UserSchema.pre("save", async function (next) {
   if (!this.isModified("password")) return next();
 
   this.password = await bcrypt.hash(this.password, 10);
   next();
 });
 
-AdminSchema.methods.isPasswordCorrect = async function (password) {
+UserSchema.methods.isPasswordCorrect = async function (password) {
   return await bcrypt.compare(password, this.password);
 };
 
-AdminSchema.methods.generateAccessToken = function () {
+UserSchema.methods.generateAccessToken = function () {
   const payload = {
     _id: this._id,
     email: this.email,
@@ -57,7 +66,7 @@ AdminSchema.methods.generateAccessToken = function () {
     expiresIn: process.env.ACCESS_TOKEN_EXPIRY,
   });
 };
-AdminSchema.methods.generateRefreshToken = function () {
+UserSchema.methods.generateRefreshToken = function () {
   const payload = {
     _id: this._id,
   };
@@ -66,4 +75,4 @@ AdminSchema.methods.generateRefreshToken = function () {
     expiresIn: process.env.REFRESH_TOKEN_EXPIRY,
   });
 };
-export const Admin = mongoose.model("Admin", AdminSchema);
+export const User = mongoose.model("User", UserSchema);
