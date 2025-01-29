@@ -30,6 +30,7 @@ export const Message = {
   Missing_required_field:
     "Required fields are missing. Please check the input.",
   notFound: "Not Found",
+  user_not_found: "User Not Found",
   registerSuccessfully: "Successfully Registered",
   inValid: "Invalid Credentials",
   successfullyUpdate: "Updated Successfully",

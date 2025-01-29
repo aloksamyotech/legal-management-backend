@@ -8,9 +8,9 @@ const UserSchema = new Schema(
       required: true,
       trim: true,
     },
-    Gender:{
-      type:String,
-      enum:["Male", "Female", "Other"]
+    Gender: {
+      type: String,
+      enum: ["Male", "Female", "Other"],
     },
     mobileNumber: {
       type: Number,
@@ -33,11 +33,11 @@ const UserSchema = new Schema(
     companyId: {
       Type: mongoose.Types.ObjectId,
     },
-    address:{
-      type:String,
+    address: {
+      type: String,
     },
-    permission:[],
-    
+    permission: [],
+
     refreshToken: {
       type: String,
     },

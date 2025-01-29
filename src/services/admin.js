@@ -61,8 +61,8 @@ export const loginAdmin = async (req) => {
   if (!admin) {
     throw new CustomError(
       statusCodes?.notFound,
-      Message?.notFound,
-      errorCodes?.not_found,
+      Message?.user_not_found,
+      errorCodes?.user_not_found,
     );
   }
 
@@ -71,8 +71,8 @@ export const loginAdmin = async (req) => {
   if (!passwordVerify) {
     throw new CustomError(
       statusCodes?.badRequest,
-      Message?.inValid,
-      errorCodes?.invalid_credentials,
+      Message?.wrongPassword,
+      errorCodes?.password_mismatch,
     );
   }
   const { accessToken, refreshToken } = await generateAccessAndRefreshTokens(
