@@ -10,9 +10,11 @@ const adminLogin = async (req, res, next) => {
     .status(statusCodes?.ok)
     // .cookie("accessToken", data?.accessToken, data?.options)
     // .cookie("refreshToken", data?.refreshToken, data?.options)
-    .send({accessToken: data?.accessToken, 
+    .send({
+      accessToken: data?.accessToken,
       refreshToken: data?.refreshToken,
-      loginadmin:data?.loginadmin});
+      loginadmin: data?.loginadmin,
+    });
 };
 export default {
   adminRegistration,
