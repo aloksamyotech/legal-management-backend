@@ -1,9 +1,21 @@
 import { User } from "../models/Admin.js";
 import { errorCodes, Message, statusCodes } from "../core/common/constant.js";
 import CustomError from "../utils/exception.js";
+import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
 
 export const registerAdmin = async (req) => {
-  const { Name, Gender, mobileNumber, AsignRole, email, password, companyId, address, permission} = req.body;
+  const {
+    Name,
+    Gender,
+    mobileNumber,
+    AsignRole,
+    email,
+    password,
+    companyId,
+    address,
+    permission,
+  } = req.body;
   const isUserAlreadyExist = await User.findOne({ email });
 
   if (isUserAlreadyExist) {
@@ -23,7 +35,7 @@ export const registerAdmin = async (req) => {
     Gender,
     companyId,
     address,
-    permission
+    permission,
   });
 
   const createdUser = await User.findById(user._id).select(
@@ -121,7 +133,6 @@ export const GetUser = async (req) => {
   return user;
 };
 
-
 export const DeleteUser = async (req) => {
   const { id } = req.params;
 
@@ -149,9 +160,18 @@ export const DeleteUser = async (req) => {
   return { message: Message.Delete, user };
 };
 
-
 export const UpdateUser = async (req) => {
-  const { Name, Gender, mobileNumber, AsignRole, email, password, companyId, address, permission } = req.body;
+  const {
+    Name,
+    Gender,
+    mobileNumber,
+    AsignRole,
+    email,
+    password,
+    companyId,
+    address,
+    permission,
+  } = req.body;
 
   if (!email) {
     throw new CustomError(
@@ -173,7 +193,7 @@ export const UpdateUser = async (req) => {
   };
 
   if (password) {
-    updateData.password = await bcrypt.hash(password, 10); 
+    updateData.password = await bcrypt.hash(password, 10);
   }
 
   const updatedUser = await User.findOneAndUpdate(
@@ -193,7 +213,6 @@ export const UpdateUser = async (req) => {
   return updatedUser;
 };
 
-
 export const GetAllUsers = async () => {
   const users = await User.find({ Active: true }).sort({ createdAt: -1 });
 
@@ -207,7 +226,6 @@ export const GetAllUsers = async () => {
 
   return users;
 };
-
 
 export const LoginUser = async (req) => {
   const { email, password } = req.body;
@@ -235,7 +253,6 @@ export const LoginUser = async (req) => {
 
   return { accessToken, refreshToken, user };
 };
-
 
 export const RefreshToken = async (req) => {
   const { refreshToken } = req.body;
