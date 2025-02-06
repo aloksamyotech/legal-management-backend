@@ -1,6 +1,7 @@
 import mongoose, { Schema } from "mongoose";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
+
 const UserSchema = new Schema(
   {
     Name: {
@@ -10,7 +11,7 @@ const UserSchema = new Schema(
     },
     Gender: {
       type: String,
-      enum: ["Male", "Female", "Other"],
+      enum: ["male", "female", "other"],
     },
     mobileNumber: {
       type: Number,
@@ -31,12 +32,18 @@ const UserSchema = new Schema(
       required: true,
     },
     companyId: {
-      Type: mongoose.Types.ObjectId,
+      type: mongoose.Types.ObjectId,
+    },
+    image: {
+      type: String,
     },
     address: {
       type: String,
     },
-    permission: [],
+    permission: {
+      type: [],
+      default: ["dashboard"],
+    },
 
     Active: {
       type: Boolean,
@@ -65,6 +72,7 @@ UserSchema.methods.generateAccessToken = function () {
   const payload = {
     _id: this._id,
     email: this.email,
+    permission: this.permission,
   };
 
   return jwt.sign(payload, process.env.ACCESS_TOKEN_SECRET, {
