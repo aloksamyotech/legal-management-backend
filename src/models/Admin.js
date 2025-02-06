@@ -38,6 +38,11 @@ const UserSchema = new Schema(
     },
     permission: [],
 
+    Active: {
+      type: Boolean,
+      default: true,
+    },
+
     refreshToken: {
       type: String,
     },
