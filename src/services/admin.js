@@ -5,17 +5,19 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 
 export const registerAdmin = async (req) => {
+  const companyId = req.user._id;
+  console.log(companyId);
   const {
     Name,
-    Gender,
+    gender,
     mobileNumber,
     AsignRole,
     email,
     password,
-    companyId,
     address,
     permission,
   } = req.body;
+
   const isUserAlreadyExist = await User.findOne({ email });
 
   if (isUserAlreadyExist) {
@@ -32,8 +34,8 @@ export const registerAdmin = async (req) => {
     AsignRole,
     email,
     password,
-    Gender,
-    companyId,
+    companyId: companyId,
+    Gender: gender,
     address,
     permission,
   });
@@ -160,6 +162,34 @@ export const DeleteUser = async (req) => {
   return { message: Message.Delete, user };
 };
 
+export const UpdateUserPermission = async (req) => {
+  const { id } = req.params;
+  const { permissions } = req.body;
+  if (!id || !permissions) {
+    throw new CustomError(
+      statusCodes?.badRequest,
+      Message?.inValid,
+      errorCodes?.bad_request,
+    );
+  }
+
+  const updatedUser = await User.findOneAndUpdate(
+    { _id: id, Active: true },
+    { permission: permissions },
+    { new: true },
+  ).select("_id Name email permission");
+
+  if (!updatedUser) {
+    throw new CustomError(
+      statusCodes?.notFound,
+      Message?.notUpdate,
+      errorCodes?.action_failed,
+    );
+  }
+
+  return updatedUser;
+};
+
 export const UpdateUser = async (req) => {
   const {
     Name,
@@ -213,8 +243,10 @@ export const UpdateUser = async (req) => {
   return updatedUser;
 };
 
-export const GetAllUsers = async () => {
-  const users = await User.find({ Active: true }).sort({ createdAt: -1 });
+export const GetAllUsers = async (req) => {
+  const users = await User.find({ Active: true, companyId: req.user._id }).sort(
+    { createdAt: -1 },
+  );
 
   if (!users || users.length === 0) {
     throw new CustomError(
