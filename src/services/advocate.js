@@ -94,20 +94,59 @@ export const AddAdvocate = async (req) => {
   return createdAdvocate;
 };
 
+// export const GetAllAdvocates = async () => {
+//   const advocates = await AdvocateSch.find({ active: true }).sort({createdAt: -1,});
+//   const newArr = [...advocates]
+//   const res = await Promise.all(
+//     newArr?.map(async (item) => {
+//       const caseByAdv = await CaseModel.find({Active: true, CaseStatus: "Open", Advocate: item?._id})
+//       // console.log("caseByAdv=========", Array.isArray(caseByAdv), item)
+//       if (Array.isArray(caseByAdv)) {
+//         console.log("item=====>", caseByAdv?.length)
+//         item.openCases = caseByAdv?.length
+//       }
+//       // item.openCases = caseByAdv?.length
+//       return item
+//     })
+//   )
+//   if (!advocates || advocates.length === 0) {
+//     throw new CustomError(
+//       statusCodes?.notFound,
+//       Message?.notFound,
+//       errorCodes?.not_found,
+//     );
+//   }
+
+//   // return advocates;
+//   return res
+// };
 export const GetAllAdvocates = async () => {
-  const advocates = await AdvocateSch.find({ active: true }).sort({
-    createdAt: -1,
-  });
+  const advocates = await AdvocateSch.find({ active: true })
+    .sort({ createdAt: -1 })
+    .lean(); 
 
   if (!advocates || advocates.length === 0) {
     throw new CustomError(
       statusCodes?.notFound,
       Message?.notFound,
-      errorCodes?.not_found,
+      errorCodes?.not_found
     );
   }
 
-  return advocates;
+  const res = await Promise.all(
+    advocates.map(async (item) => {
+      const caseByAdv = await CaseModel.find({
+        Active: true,
+        CaseStatus: "Open",
+        Advocate: item._id,
+      }).lean(); 
+
+      item.openCases = caseByAdv.length || 0; 
+      return item;
+    })
+  );
+
+  return Array.isArray(res) ? res : [];
 };
 
 export const GetAdvocateById = async (req) => {
