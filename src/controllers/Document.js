@@ -1,5 +1,5 @@
 import * as documentService from "../services/document.js";
-import { Message, statusCodes } from "../core/common/constant.js";
+import { statusCodes } from "../core/common/constant.js";
 const DocumentAdd = async (req, res, next) => {
   const DocumentData = await documentService.AddDocument(req, res, next);
   res.status(statusCodes?.created).send(DocumentData);
@@ -35,5 +35,5 @@ export default {
   DocumentById,
   DocumentDelete,
   DocumentUpdate,
-  GetDocumentByCase
+  GetDocumentByCase,
 };

@@ -15,10 +15,12 @@ const AdviseSchema = new Schema(
     },
     Date: {
       type: Date,
-      required: true,
+      //required: true,
+      default: Date.now(),
     },
     Matter: {
-      type: String,
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Matter",
       required: true,
       trim: true,
     },
@@ -29,8 +31,8 @@ const AdviseSchema = new Schema(
     },
     Status: {
       type: String,
-      enum: ["Approved", "closed", "On-hold"],
-      default: "On-hold",
+      enum: ["Draft", "Approved", "closed", "On-hold"],
+      default: "Draft",
     },
     Active: {
       type: Boolean,

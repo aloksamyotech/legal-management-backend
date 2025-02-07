@@ -1,11 +1,15 @@
 import * as advocateService from "../services/advocate.js";
-import { Message, statusCodes } from "../core/common/constant.js";
+import { statusCodes } from "../core/common/constant.js";
 const AdvocateAdd = async (req, res, next) => {
   const AdvocateData = await advocateService.AddAdvocate(req, res, next);
   res.status(statusCodes?.created).send(AdvocateData);
 };
 const AdvocateFetch = async (req, res, next) => {
-  const AdvocateData = await advocateService.GetAdvocate(req, res, next);
+  const AdvocateData = await advocateService.GetAdvocateById(req, res, next);
+  res.status(statusCodes?.ok).send(AdvocateData);
+};
+const CaseByAdvocateId = async (req, res, next) => {
+  const AdvocateData = await advocateService.GetCaseByAdvocate(req, res, next);
   res.status(statusCodes?.ok).send(AdvocateData);
 };
 const GetAlladvocate = async (req, res, next) => {
@@ -31,4 +35,5 @@ export default {
   AdvocateDelete,
   AdvocateUpdate,
   GetAlladvocate,
+  CaseByAdvocateId,
 };

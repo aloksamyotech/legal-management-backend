@@ -45,6 +45,10 @@ const CaseSchema = new Schema(
       type: String,
       required: true,
     },
+    CaseStatus: {
+      type: String,
+      enum: ["Open", "Closed"],
+    },
     description: {
       type: String,
       required: true,
@@ -52,10 +56,10 @@ const CaseSchema = new Schema(
     internalNote: {
       type: String,
     },
-    Active:{
-      type:Boolean,
-      default:true
-    }
+    Active: {
+      type: Boolean,
+      default: true,
+    },
   },
   { timestamps: true },
 );

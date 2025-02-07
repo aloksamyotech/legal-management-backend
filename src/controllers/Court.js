@@ -1,5 +1,5 @@
 import * as courtService from "../services/court.js";
-import { Message, statusCodes } from "../core/common/constant.js";
+import { statusCodes } from "../core/common/constant.js";
 const CourtAdd = async (req, res, next) => {
   const CourtData = await courtService.AddCourt(req, res, next);
   res.status(statusCodes?.created).send(CourtData);

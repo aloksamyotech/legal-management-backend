@@ -8,9 +8,13 @@ router.post(
   upload.single("image"),
   asyncHandler(clientController.ClientAdd),
 );
-router.get("/getClient", asyncHandler(clientController.ClientFetch));
+router.get("/getClientbyid/:id", asyncHandler(clientController.ClientFetch));
 router.get("/getAllClient", asyncHandler(clientController.GetAllclient));
-router.delete("/deleteClient", asyncHandler(clientController.ClientDelete));
+router.get(
+  "/getCaseByClient/:clientId",
+  asyncHandler(clientController.GetCasebyClientId),
+);
+router.delete("/deleteClient/:id", asyncHandler(clientController.ClientDelete));
 router.put(
   "/updateClient",
   upload.single("image"),

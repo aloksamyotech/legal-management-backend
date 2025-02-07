@@ -1,7 +1,6 @@
 import { Router } from "express";
 import { asyncHandler } from "../utils/asyncWrapper.js";
 import { policestationController } from "../controllers/controllers.js";
-import { upload } from "../utils/multerConfig.js";
 const router = Router();
 router.post(
   "/addPolicestation",

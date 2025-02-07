@@ -33,7 +33,9 @@ export const AddJudge = async (req) => {
 };
 
 export const GetAllJudges = async () => {
-  const judges = await JudgeModel.find({ active: true });
+  const judges = await JudgeModel.find({ active: true }).sort({
+    createdAt: -1,
+  });
 
   if (!judges || judges.length === 0) {
     throw new CustomError(

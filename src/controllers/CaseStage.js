@@ -1,5 +1,5 @@
 import * as caseStageService from "../services/caseStage.js";
-import { Message, statusCodes } from "../core/common/constant.js";
+import { statusCodes } from "../core/common/constant.js";
 const CaseStageAdd = async (req, res, next) => {
   const CaseStageData = await caseStageService.AddCaseStage(req, res, next);
   res.status(statusCodes?.created).send(CaseStageData);

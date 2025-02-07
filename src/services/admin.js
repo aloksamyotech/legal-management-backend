@@ -1,12 +1,26 @@
-import { Admin } from "../models/Admin.js";
+import { User } from "../models/Admin.js";
 import { errorCodes, Message, statusCodes } from "../core/common/constant.js";
 import CustomError from "../utils/exception.js";
+import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
 
 export const registerAdmin = async (req) => {
-  const { Name, mobileNumber, AsignRole, email, password } = req.body;
-  const isAdminAlreadyExist = await Admin.findOne({ email });
+  const companyId = req.user._id;
+  console.log(companyId);
+  const {
+    Name,
+    gender,
+    mobileNumber,
+    AsignRole,
+    email,
+    password,
+    address,
+    permission,
+  } = req.body;
 
-  if (isAdminAlreadyExist) {
+  const isUserAlreadyExist = await User.findOne({ email });
+
+  if (isUserAlreadyExist) {
     throw new CustomError(
       statusCodes?.conflict,
       Message?.alreadyExist,
@@ -14,19 +28,23 @@ export const registerAdmin = async (req) => {
     );
   }
 
-  const admin = await Admin.create({
+  const user = await User.create({
     Name,
     mobileNumber,
     AsignRole,
     email,
     password,
+    companyId: companyId,
+    Gender: gender,
+    address,
+    permission,
   });
 
-  const createdAdmin = await Admin.findById(admin._id).select(
+  const createdUser = await User.findById(user._id).select(
     "-password -refreshToken ",
   );
 
-  if (!createdAdmin) {
+  if (!createdUser) {
     return new CustomError(
       statusCodes?.serviceUnavailable,
       Message?.serverError,
@@ -34,12 +52,12 @@ export const registerAdmin = async (req) => {
     );
   }
 
-  return createdAdmin;
+  return createdUser;
 };
 
 const generateAccessAndRefreshTokens = async (adminId) => {
   try {
-    const admin = await Admin.findById(adminId);
+    const admin = await User.findById(adminId);
     const accessToken = admin.generateAccessToken();
     const refreshToken = admin.generateRefreshToken();
 
@@ -57,12 +75,12 @@ const generateAccessAndRefreshTokens = async (adminId) => {
 export const loginAdmin = async (req) => {
   const { email, password } = req.body;
 
-  const admin = await Admin.findOne({ email });
+  const admin = await User.findOne({ email });
   if (!admin) {
     throw new CustomError(
       statusCodes?.notFound,
-      Message?.notFound,
-      errorCodes?.not_found,
+      Message?.user_not_found,
+      errorCodes?.user_not_found,
     );
   }
 
@@ -71,14 +89,14 @@ export const loginAdmin = async (req) => {
   if (!passwordVerify) {
     throw new CustomError(
       statusCodes?.badRequest,
-      Message?.inValid,
-      errorCodes?.invalid_credentials,
+      Message?.wrongPassword,
+      errorCodes?.password_mismatch,
     );
   }
   const { accessToken, refreshToken } = await generateAccessAndRefreshTokens(
     admin._id,
   );
-  const loginadmin = await Admin.findById(admin._id).select(
+  const loginadmin = await User.findById(admin._id).select(
     "-password -refreshToken",
   );
 
@@ -93,4 +111,202 @@ export const loginAdmin = async (req) => {
     options,
     loginadmin,
   };
+};
+
+export const GetUser = async (req) => {
+  const { id } = req.params;
+
+  if (!id) {
+    throw new CustomError(
+      statusCodes?.badRequest,
+      Message?.inValid,
+      errorCodes?.bad_request,
+    );
+  }
+
+  const user = await User.findOne({ _id: id, Active: true });
+  if (!user) {
+    throw new CustomError(
+      statusCodes?.notFound,
+      Message?.notFound,
+      errorCodes?.not_found,
+    );
+  }
+  return user;
+};
+
+export const DeleteUser = async (req) => {
+  const { id } = req.params;
+
+  if (!id) {
+    throw new CustomError(
+      statusCodes?.badRequest,
+      Message?.inValid,
+      errorCodes?.bad_request,
+    );
+  }
+
+  const user = await User.findOne({ _id: id, Active: true });
+
+  if (!user) {
+    throw new CustomError(
+      statusCodes?.notFound,
+      Message?.notDeleted,
+      errorCodes?.not_found,
+    );
+  }
+
+  user.Active = false;
+  await user.save();
+
+  return { message: Message.Delete, user };
+};
+
+export const UpdateUserPermission = async (req) => {
+  const { id } = req.params;
+  const { permissions } = req.body;
+  if (!id || !permissions) {
+    throw new CustomError(
+      statusCodes?.badRequest,
+      Message?.inValid,
+      errorCodes?.bad_request,
+    );
+  }
+
+  const updatedUser = await User.findOneAndUpdate(
+    { _id: id, Active: true },
+    { permission: permissions },
+    { new: true },
+  ).select("_id Name email permission");
+
+  if (!updatedUser) {
+    throw new CustomError(
+      statusCodes?.notFound,
+      Message?.notUpdate,
+      errorCodes?.action_failed,
+    );
+  }
+
+  return updatedUser;
+};
+
+export const UpdateUser = async (req) => {
+  const {
+    Name,
+    Gender,
+    mobileNumber,
+    AsignRole,
+    email,
+    password,
+    companyId,
+    address,
+    permission,
+  } = req.body;
+
+  if (!email) {
+    throw new CustomError(
+      statusCodes?.badRequest,
+      Message?.inValid,
+      errorCodes?.bad_request,
+    );
+  }
+
+  const updateData = {
+    Name,
+    Gender,
+    mobileNumber,
+    AsignRole,
+    password,
+    companyId,
+    address,
+    permission,
+  };
+
+  if (password) {
+    updateData.password = await bcrypt.hash(password, 10);
+  }
+
+  const updatedUser = await User.findOneAndUpdate(
+    { email, Active: true },
+    updateData,
+    { new: true },
+  );
+
+  if (!updatedUser) {
+    throw new CustomError(
+      statusCodes?.notFound,
+      Message?.notUpdate,
+      errorCodes?.action_failed,
+    );
+  }
+
+  return updatedUser;
+};
+
+export const GetAllUsers = async (req) => {
+  const users = await User.find({ Active: true, companyId: req.user._id }).sort(
+    { createdAt: -1 },
+  );
+
+  if (!users || users.length === 0) {
+    throw new CustomError(
+      statusCodes?.notFound,
+      Message?.notFound,
+      errorCodes?.not_found,
+    );
+  }
+
+  return users;
+};
+
+export const LoginUser = async (req) => {
+  const { email, password } = req.body;
+
+  const user = await User.findOne({ email, Active: true });
+  if (!user) {
+    throw new CustomError(
+      statusCodes?.notFound,
+      Message?.notFound,
+      errorCodes?.not_found,
+    );
+  }
+
+  const isPasswordCorrect = await user.isPasswordCorrect(password);
+  if (!isPasswordCorrect) {
+    throw new CustomError(
+      statusCodes?.unauthorized,
+      Message?.invalidCredentials,
+      errorCodes?.invalid_credentials,
+    );
+  }
+
+  const accessToken = user.generateAccessToken();
+  const refreshToken = user.generateRefreshToken();
+
+  return { accessToken, refreshToken, user };
+};
+
+export const RefreshToken = async (req) => {
+  const { refreshToken } = req.body;
+
+  if (!refreshToken) {
+    throw new CustomError(
+      statusCodes?.badRequest,
+      Message?.refreshTokenMissing,
+      errorCodes?.bad_request,
+    );
+  }
+
+  const decoded = jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET);
+  const user = await User.findById(decoded._id);
+  if (!user) {
+    throw new CustomError(
+      statusCodes?.unauthorized,
+      Message?.invalidRefreshToken,
+      errorCodes?.invalid_token,
+    );
+  }
+
+  const newAccessToken = user.generateAccessToken();
+  return { accessToken: newAccessToken };
 };

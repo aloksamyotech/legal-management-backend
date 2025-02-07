@@ -1,5 +1,5 @@
 import * as evidenceService from "../services/evidence.js";
-import { Message, statusCodes } from "../core/common/constant.js";
+import { statusCodes } from "../core/common/constant.js";
 const EvidenceAdd = async (req, res, next) => {
   const EvidenceData = await evidenceService.AddEvidence(req, res, next);
   res.status(statusCodes?.created).send(EvidenceData);
@@ -8,7 +8,7 @@ const EvidenceFetch = async (req, res, next) => {
   const EvidenceData = await evidenceService.GetEvidence(req, res, next);
   res.status(statusCodes?.ok).send(EvidenceData);
 };
-const EvidenceFetchId = async (req, res, next) => {
+const EvidenceFetchbyId = async (req, res, next) => {
   const EvidenceData = await evidenceService.GetEvidenceById(req, res, next);
   res.status(statusCodes?.ok).send(EvidenceData);
 };
@@ -32,8 +32,8 @@ const EvidenceUpdate = async (req, res, next) => {
 export default {
   EvidenceAdd,
   EvidenceFetch,
-  EvidenceFetchId,
+  EvidenceFetchbyId,
   EvidenceDelete,
   EvidenceUpdate,
-  EvidencebyCaseFetch
+  EvidencebyCaseFetch,
 };

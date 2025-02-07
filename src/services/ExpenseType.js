@@ -32,7 +32,9 @@ export const AddExpenseType = async (req) => {
 };
 
 export const GetAllExpenseTypes = async () => {
-  const expenseTypes = await ExpenseTypeModel.find({ active: true });
+  const expenseTypes = await ExpenseTypeModel.find({ active: true }).sort({
+    createdAt: -1,
+  });
 
   if (!expenseTypes || expenseTypes.length === 0) {
     throw new CustomError(

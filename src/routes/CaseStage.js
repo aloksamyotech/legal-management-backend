@@ -1,7 +1,6 @@
 import { Router } from "express";
 import { asyncHandler } from "../utils/asyncWrapper.js";
 import { caseStageController } from "../controllers/controllers.js";
-import { upload } from "../utils/multerConfig.js";
 const router = Router();
 router.post("/addCaseStage", asyncHandler(caseStageController.CaseStageAdd));
 router.get("/getCaseStage", asyncHandler(caseStageController.CaseStageFetch));

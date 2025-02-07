@@ -10,7 +10,10 @@ router.post(
 );
 router.get("/getAllDocument", asyncHandler(documentController.DocumentFetch));
 router.get("/getDocument/:id", asyncHandler(documentController.DocumentById));
-router.get("/getDocumentbycase/:caseId", asyncHandler(documentController.GetDocumentByCase));
+router.get(
+  "/getDocumentbycase/:caseId",
+  asyncHandler(documentController.GetDocumentByCase),
+);
 router.put(
   "/updateDocument/:id",
   upload.array("Attachment", 5),

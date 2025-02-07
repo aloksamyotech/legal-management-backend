@@ -1,8 +1,8 @@
 import * as judgeService from "../services/Judge.js";
-import { Message, statusCodes } from "../core/common/constant.js";
+import { statusCodes } from "../core/common/constant.js";
 const JudgeAdd = async (req, res, next) => {
   const JudgeData = await judgeService.AddJudge(req, res, next);
-  res.status(statusCodes?.created).send(JudgeData);
+  res.status(statusCodes?.ok).send(JudgeData);
 };
 const JudgeFetch = async (req, res, next) => {
   const JudgeData = await judgeService.GetJudge(req, res, next);

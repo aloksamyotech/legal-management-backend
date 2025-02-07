@@ -10,6 +10,9 @@ router.delete(
 );
 router.put("/updateHearing/:id", asyncHandler(hearingController.HearingUpdate));
 router.get("/getallhearing", asyncHandler(hearingController.AllHearingFetch));
-router.get("/gethearingbycase/:caseId", asyncHandler(hearingController.HearingByCase));
+router.get(
+  "/gethearingbycase/:caseId",
+  asyncHandler(hearingController.HearingByCase),
+);
 
 export default router;

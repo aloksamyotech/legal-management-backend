@@ -1,5 +1,5 @@
 import * as practiceareaService from "../services/practicearea.js";
-import { Message, statusCodes } from "../core/common/constant.js";
+import { statusCodes } from "../core/common/constant.js";
 const PracticeareaAdd = async (req, res, next) => {
   const PracticeareaData = await practiceareaService.AddPractice(
     req,

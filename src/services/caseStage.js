@@ -32,7 +32,9 @@ export const AddCaseStage = async (req) => {
 };
 
 export const GetAllCaseStages = async () => {
-  const caseStages = await CaseStageModel.find({ active: true });
+  const caseStages = await CaseStageModel.find({ active: true }).sort({
+    createdAt: -1,
+  });
 
   if (!caseStages || caseStages.length === 0) {
     throw new CustomError(
@@ -94,8 +96,6 @@ export const UpdateCaseStage = async (req) => {
       errorCodes?.action_failed,
     );
   }
-
-  return updatedCaseStage;
 };
 
 export const DeleteCaseStage = async (req) => {

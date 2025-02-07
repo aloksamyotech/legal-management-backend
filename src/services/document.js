@@ -41,7 +41,9 @@ export const AddDocument = async (req) => {
 };
 
 export const GetAllDocuments = async () => {
-  const documents = await Document.find({ Active: true }).populate("Case","Title");
+  const documents = await Document.find({ Active: true })
+    .populate("Case", "Title")
+    .sort({ createdAt: -1 });
 
   if (!documents || documents.length === 0) {
     throw new CustomError(
@@ -55,7 +57,7 @@ export const GetAllDocuments = async () => {
 };
 
 export const GetDocumentById = async (req) => {
-  const { id } = req?.params;
+  const { id } = req.params;
 
   if (!id) {
     throw new CustomError(
@@ -65,7 +67,10 @@ export const GetDocumentById = async (req) => {
     );
   }
 
-  const document = await Document.findOne({ _id: id, Active: true }).populate("Case","Title");
+  const document = await Document.findOne({ _id: id, Active: true }).populate(
+    "Case",
+    "Title",
+  );
 
   if (!document) {
     throw new CustomError(
@@ -79,8 +84,8 @@ export const GetDocumentById = async (req) => {
 };
 
 export const UpdateDocument = async (req) => {
-  const { id } = req?.params;
-  const updateData = req?.body;
+  const { id } = req.params;
+  const updateData = req.body;
 
   if (!id) {
     throw new CustomError(
@@ -118,7 +123,7 @@ export const UpdateDocument = async (req) => {
 };
 
 export const DeleteDocument = async (req) => {
-  const { id } = req?.params;
+  const { id } = req.params;
 
   if (!id) {
     throw new CustomError(
@@ -144,18 +149,22 @@ export const DeleteDocument = async (req) => {
   return { message: Message?.Delete, document };
 };
 
-export const GetDocumentByCase = async (req, res) => {
+export const GetDocumentByCase = async (req) => {
   const { caseId } = req.params;
 
-  const document = await Document.find({ Case: caseId, Active: true }).populate("Case","Title");
+  const document = await Document.find({ Case: caseId, Active: true }).populate(
+    "Case",
+    "Title",
+  );
 
   if (!document || document.length === 0) {
-    throw new CustomError(
-      statusCodes?.notFound,
-      Message?.notFound,
-      errorCodes?.not_found,
-    );
+    return {
+      status: statusCodes?.notFound,
+      message: Message?.notFound,
+      errorCode: errorCodes?.not_found,
+      document: [],
+    };
   }
 
-  return document
+  return document;
 };

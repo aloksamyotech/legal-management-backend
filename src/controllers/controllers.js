@@ -17,6 +17,7 @@ import policestationController from "./PoliceStation.js";
 import tagController from "./Tag.js";
 import caseStageController from "./CaseStage.js";
 import expenseTypeController from "./ExpenseType.js";
+import invoiceController from "./Invoice.js";
 export {
   tagController,
   caseStageController,
@@ -37,4 +38,5 @@ export {
   documentController,
   advocateController,
   judgeController,
+  invoiceController,
 };

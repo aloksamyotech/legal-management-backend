@@ -10,8 +10,14 @@ router.post(
   asyncHandler(evidenceController.EvidenceAdd),
 );
 router.get("/getEvidence", asyncHandler(evidenceController.EvidenceFetch));
-router.get("/getEvidencebyId/:id", asyncHandler(evidenceController.EvidenceFetchId));
-router.get("/getevidencebycaseid/:caseId", asyncHandler(evidenceController.EvidencebyCaseFetch));
+router.get(
+  "/getEvidencebyId/:id",
+  asyncHandler(evidenceController.EvidenceFetchbyId),
+);
+router.get(
+  "/getevidencebycaseid/:caseId",
+  asyncHandler(evidenceController.EvidencebyCaseFetch),
+);
 router.put(
   "/updateEvidence/:id",
   upload.array("Attachment", 5),

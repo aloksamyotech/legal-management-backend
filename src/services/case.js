@@ -2,7 +2,7 @@ import CaseModel from "../models/Case.js";
 import { errorCodes, Message, statusCodes } from "../core/common/constant.js";
 import CustomError from "../utils/exception.js";
 import HearingModel from "../models/Hearing.js";
-import Evidence  from "../models/Evidence.js";
+import Evidence from "../models/Evidence.js";
 import Document from "../models/Document.js";
 
 export const AddCase = async (req) => {
@@ -10,6 +10,7 @@ export const AddCase = async (req) => {
     Title,
     Date,
     Client,
+    CaseStatus,
     Advocate,
     Matter,
     Judge,
@@ -20,7 +21,17 @@ export const AddCase = async (req) => {
     internalNote,
   } = req.body;
 
-  if (!Title || !Date || !Client || !Advocate || !Matter || !Judge || !PoliceStation || !Court || !Fir) {
+  if (
+    !Title ||
+    !Date ||
+    !Client ||
+    !Advocate ||
+    !Matter ||
+    !Judge ||
+    !PoliceStation ||
+    !Court ||
+    !Fir
+  ) {
     throw new CustomError(
       statusCodes?.badRequest,
       Message?.Missing_required_field,
@@ -37,6 +48,7 @@ export const AddCase = async (req) => {
     Judge,
     PoliceStation,
     Court,
+    CaseStatus,
     Fir,
     description,
     internalNote,
@@ -57,14 +69,16 @@ export const AddCase = async (req) => {
 };
 
 export const GetCase = async () => {
-  const cases = await CaseModel.find({ Active: true }).populate([
-    { path: "Client", select: "Name" }, 
-    { path: "Advocate", select: "name" },
-    { path: "Matter", select: "Title" }, 
-        { path: "Judge", select: "Title" }, 
-    { path: "PoliceStation", select: "Title" }, 
-    { path: "Court", select: "Title"}, 
-  ]);
+  const cases = await CaseModel.find({ Active: true })
+    .populate([
+      { path: "Client", select: "Name" },
+      { path: "Advocate", select: "name" },
+      { path: "Matter", select: "Title" },
+      { path: "Judge", select: "Title" },
+      { path: "PoliceStation", select: "Title" },
+      { path: "Court", select: "Title" },
+    ])
+    .sort({ createdAt: -1 });
 
   if (!cases || cases.length === 0) {
     throw new CustomError(
@@ -93,7 +107,7 @@ export const UpdateCase = async (req) => {
     { _id: id, Active: true },
     updateData,
     { new: true },
-  )
+  );
 
   if (!updatedCase) {
     throw new CustomError(
@@ -144,7 +158,7 @@ export const GetCaseById = async (req) => {
     throw new CustomError(
       statusCodes?.badRequest,
       Message?.inValid,
-      errorCodes?.bad_request
+      errorCodes?.bad_request,
     );
   }
 
@@ -161,7 +175,7 @@ export const GetCaseById = async (req) => {
     throw new CustomError(
       statusCodes?.notFound,
       Message?.notFound,
-      errorCodes?.not_found
+      errorCodes?.not_found,
     );
   }
 
