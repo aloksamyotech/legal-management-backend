@@ -11,23 +11,23 @@ router.post(
   "/register",
   upload.single("image"),
   jwtMiddleware,
-  asyncHandler(adminController.adminRegistration)
+  asyncHandler(adminController.adminRegistration),
 );
 router.get(
   "/getalluser",
   jwtMiddleware,
-  asyncHandler(adminController.userFetch)
+  asyncHandler(adminController.userFetch),
 );
 router.get("/getuserbyId/:id", asyncHandler(adminController.userFetchbyId));
 router.delete("/deleteUser/:id", asyncHandler(adminController.deleteuserbyId));
 router.put(
   "/updateUserpermission/:id",
-  asyncHandler(adminController.permissionUpdate)
+  asyncHandler(adminController.permissionUpdate),
 );
 router.put(
   "/update/:id",
   upload.single("image"),
-  asyncHandler(adminController.userUpdate)
+  asyncHandler(adminController.userUpdate),
 );
 
 export default router;

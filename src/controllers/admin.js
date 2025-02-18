@@ -51,5 +51,5 @@ export default {
   userFetchbyId,
   deleteuserbyId,
   permissionUpdate,
-  userUpdate
+  userUpdate,
 };
