@@ -7,6 +7,7 @@ import jwt from "jsonwebtoken";
 export const registerAdmin = async (req) => {
   const companyId = req.user._id;
   console.log(companyId);
+  console.log(req.body)
   const {
     Name,
     gender,
@@ -38,6 +39,7 @@ export const registerAdmin = async (req) => {
     Gender: gender,
     address,
     permission,
+    image: req.file ? `/uploads/${req.file.filename}` : null,
   });
 
   const createdUser = await User.findById(user._id).select(
@@ -191,57 +193,51 @@ export const UpdateUserPermission = async (req) => {
 };
 
 export const UpdateUser = async (req) => {
+  const { id } = req.params; 
   const {
     Name,
     Gender,
     mobileNumber,
     AsignRole,
     email,
-    password,
-    companyId,
     address,
-    permission,
   } = req.body;
 
-  if (!email) {
+  if (!id) {
     throw new CustomError(
       statusCodes?.badRequest,
       Message?.inValid,
-      errorCodes?.bad_request,
+      errorCodes?.bad_request
     );
   }
-
   const updateData = {
     Name,
     Gender,
     mobileNumber,
     AsignRole,
-    password,
-    companyId,
+    email,
     address,
-    permission,
+    image: req.file ? `/uploads/${req.file.filename}` : null,
   };
 
-  if (password) {
-    updateData.password = await bcrypt.hash(password, 10);
-  }
-
+  
   const updatedUser = await User.findOneAndUpdate(
-    { email, Active: true },
+    { _id: id, Active: true }, 
     updateData,
-    { new: true },
+    { new: true } 
   );
 
   if (!updatedUser) {
     throw new CustomError(
       statusCodes?.notFound,
       Message?.notUpdate,
-      errorCodes?.action_failed,
+      errorCodes?.action_failed
     );
   }
 
   return updatedUser;
 };
+
 
 export const GetAllUsers = async (req) => {
   const users = await User.find({ Active: true, companyId: req.user._id }).sort(

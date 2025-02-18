@@ -18,6 +18,10 @@ const deleteuserbyId = async (req, res, next) => {
   const userData = await adminService.DeleteUser(req, res, next);
   res.status(statusCodes?.ok).send(userData);
 };
+const userUpdate = async (req, res, next) => {
+  const userUpdateData = await adminService.UpdateUser(req, res, next);
+  res.status(statusCodes?.ok).send(userUpdateData);
+};
 
 const adminLogin = async (req, res, next) => {
   const data = await adminService.loginAdmin(req, res, next);
@@ -47,4 +51,5 @@ export default {
   userFetchbyId,
   deleteuserbyId,
   permissionUpdate,
+  userUpdate
 };

@@ -19,7 +19,7 @@ const UserSchema = new Schema(
     },
     AsignRole: {
       type: String,
-      enum: ["Admin", "Manager", "Company", "Staff"],
+      enum: ["Admin", "Manager", "Company", "Staff" , 'Advocate', 'Client' ],
       required: true,
     },
     email: {
