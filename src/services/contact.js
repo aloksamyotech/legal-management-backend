@@ -59,7 +59,7 @@ export const UpdateContact = async (req) => {
   const { id } = req.params;
   const updateData = req.body;
 
-  if (req.file) {
+  if (req?.file) {
     updateData.avatar = `/uploads/${req.file.filename}`;
   }
 

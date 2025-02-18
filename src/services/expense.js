@@ -114,7 +114,7 @@ export const UpdateExpense = async (req) => {
     type: file?.mimetype,
   }));
 
-  if (files) {
+  if (files?.length) {
     updateData.Attachment = files;
   }
 

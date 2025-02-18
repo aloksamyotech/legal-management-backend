@@ -214,7 +214,7 @@ export const UpdateAdvocate = async (req) => {
       ? `/uploads/${req.files.certificate[0].filename}`
       : null;
   const updateData = {
-    certificate,
+    // certificate,
     name,
     email,
     phone,
@@ -236,9 +236,15 @@ export const UpdateAdvocate = async (req) => {
     position,
     duration,
     About,
-    image,
+    // image,
   };
 
+  if (image) {
+    updateData.image = image;
+  }
+  if (certificate) {
+    updateData.certificate = certificate;
+  }
   const updatedAdvocate = await AdvocateSch.findOneAndUpdate(
     { email: email, active: true },
     updateData,

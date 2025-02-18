@@ -1,7 +1,6 @@
 import { User } from "../models/Admin.js";
 import { errorCodes, Message, statusCodes } from "../core/common/constant.js";
 import CustomError from "../utils/exception.js";
-import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 
 export const registerAdmin = async (req) => {
