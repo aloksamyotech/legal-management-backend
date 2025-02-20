@@ -128,8 +128,10 @@ export const UpdateClient = async (req) => {
     address,
     country,
     About,
-    image: req.file ? `/uploads/${req.file.filename}` : null,
   };
+  if (req?.file) {
+    updateData.image = `/uploads/${req.file.filename}`;
+  }
   const updatedClient = await Client.findOneAndUpdate(
     { Email, Active: true },
     updateData,

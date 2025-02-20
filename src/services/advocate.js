@@ -123,13 +123,13 @@ export const AddAdvocate = async (req) => {
 export const GetAllAdvocates = async () => {
   const advocates = await AdvocateSch.find({ active: true })
     .sort({ createdAt: -1 })
-    .lean(); 
+    .lean();
 
   if (!advocates || advocates.length === 0) {
     throw new CustomError(
       statusCodes?.notFound,
       Message?.notFound,
-      errorCodes?.not_found
+      errorCodes?.not_found,
     );
   }
 
@@ -139,11 +139,11 @@ export const GetAllAdvocates = async () => {
         Active: true,
         CaseStatus: "Open",
         Advocate: item._id,
-      }).lean(); 
+      }).lean();
 
-      item.openCases = caseByAdv.length || 0; 
+      item.openCases = caseByAdv.length || 0;
       return item;
-    })
+    }),
   );
 
   return Array.isArray(res) ? res : [];
@@ -214,7 +214,7 @@ export const UpdateAdvocate = async (req) => {
       ? `/uploads/${req.files.certificate[0].filename}`
       : null;
   const updateData = {
-    certificate,
+    // certificate,
     name,
     email,
     phone,
@@ -236,9 +236,15 @@ export const UpdateAdvocate = async (req) => {
     position,
     duration,
     About,
-    image,
+    // image,
   };
 
+  if (image) {
+    updateData.image = image;
+  }
+  if (certificate) {
+    updateData.certificate = certificate;
+  }
   const updatedAdvocate = await AdvocateSch.findOneAndUpdate(
     { email: email, active: true },
     updateData,

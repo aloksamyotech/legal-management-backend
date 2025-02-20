@@ -1,13 +1,12 @@
 import { User } from "../models/Admin.js";
 import { errorCodes, Message, statusCodes } from "../core/common/constant.js";
 import CustomError from "../utils/exception.js";
-import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 
 export const registerAdmin = async (req) => {
   const companyId = req.user._id;
   console.log(companyId);
-  console.log(req.body)
+  console.log(req.body);
   const {
     Name,
     gender,
@@ -193,21 +192,14 @@ export const UpdateUserPermission = async (req) => {
 };
 
 export const UpdateUser = async (req) => {
-  const { id } = req.params; 
-  const {
-    Name,
-    Gender,
-    mobileNumber,
-    AsignRole,
-    email,
-    address,
-  } = req.body;
+  const { id } = req.params;
+  const { Name, Gender, mobileNumber, AsignRole, email, address } = req.body;
 
   if (!id) {
     throw new CustomError(
       statusCodes?.badRequest,
       Message?.inValid,
-      errorCodes?.bad_request
+      errorCodes?.bad_request,
     );
   }
   const updateData = {
@@ -220,24 +212,22 @@ export const UpdateUser = async (req) => {
     image: req.file ? `/uploads/${req.file.filename}` : null,
   };
 
-  
   const updatedUser = await User.findOneAndUpdate(
-    { _id: id, Active: true }, 
+    { _id: id, Active: true },
     updateData,
-    { new: true } 
+    { new: true },
   );
 
   if (!updatedUser) {
     throw new CustomError(
       statusCodes?.notFound,
       Message?.notUpdate,
-      errorCodes?.action_failed
+      errorCodes?.action_failed,
     );
   }
 
   return updatedUser;
 };
-
 
 export const GetAllUsers = async (req) => {
   const users = await User.find({ Active: true, companyId: req.user._id }).sort(

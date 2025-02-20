@@ -74,10 +74,12 @@ export const UpdateEvidence = async (req) => {
     Case,
     Hearing,
     Favor,
-    Attachment: files,
     Description,
   };
 
+  if (files?.length) {
+    updatedData.Attachment = files;
+  }
   const updatedEvidence = await Evidence.findOneAndUpdate(
     { _id: id, Active: true },
     updatedData,
