@@ -94,10 +94,7 @@ const executeMongooseQuery = async (queryString, schemaUsed, userId) => {
   };
 
   try {
-    let modifiedQuery = queryString.replace(
-      /_id: userId/g,
-      `_id: '${userId}'`
-    );
+    let modifiedQuery = queryString.replace(/_id: userId/g, `_id: '${userId}'`);
 
     // if (!modifiedQuery.includes("_id:")) {
     //   modifiedQuery = modifiedQuery.replace(
@@ -123,7 +120,7 @@ const executeMongooseQuery = async (queryString, schemaUsed, userId) => {
         }
       })();
     `;
-console.log(modifiedQuery,"modifiedQuerymodifiedQuery")
+    console.log(modifiedQuery, "modifiedQuerymodifiedQuery");
     const executeQuery = new Function(...Object.keys(schemaMap), wrappedQuery);
 
     return await executeQuery(...Object.values(schemaMap));
@@ -174,9 +171,9 @@ export const testInput = async (input, userId) => {
     const dbResult = await executeMongooseQuery(
       queryData.mongooseQuery,
       queryData.schemaUsed,
-      userId
+      userId,
     );
-    console.log(dbResult,".................")
+    console.log(dbResult, ".................");
     if (dbResult === null || dbResult.length === 0) {
       const responses = {
         AdvocateSch: `Advocate not found in system.`,
@@ -199,7 +196,7 @@ export const testInput = async (input, userId) => {
     const response = await generateResponse(
       input,
       dbResult,
-      queryData.queryType
+      queryData.queryType,
     );
 
     return {
@@ -219,5 +216,3 @@ export const testInput = async (input, userId) => {
     };
   }
 };
-
-

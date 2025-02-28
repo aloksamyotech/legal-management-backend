@@ -1,4 +1,4 @@
-export const responseFormat=`
+export const responseFormat = `
 1. NEVER include IDs or ObjectIds in the response
 2. Format responses in a clean, user-friendly way
 3. Use simple dash (-) or dot (•) for list items
@@ -16,20 +16,17 @@ export const responseFormat=`
 16. Always generate index no for case_id
 17. NEVER include images in the response
 18. use bullets and change lines after each item when you make a list
-Ensure the data is properly formatted, with all relevant fields included in the response.`
+Ensure the data is properly formatted, with all relevant fields included in the response.`;
 
-export const responseQueryFormat=
-`- list: "Found [X] items: [List with names]"
+export const responseQueryFormat = `- list: "Found [X] items: [List with names]"
 - detail: "Details for [item]: [Formatted information]"
 - count: "Total count: [number]"`;
 
-export const emptyResponse=
-`- "No results found for [search criteria]"
+export const emptyResponse = `- "No results found for [search criteria]"
 - "Advocate/Case/Client not found in the system"
-- "No hearing/evidence found for the specified criteria"`
+- "No hearing/evidence found for the specified criteria"`;
 
-export const commonResponse=
-`BAD Response (Don't use):
+export const commonResponse = `BAD Response (Don't use):
 "Warning:
 - Table (ID: 6799f0f662aedaa1f8ab0979)
 - Customer Name (ID: 6799f11162aedaa1f8ab0982)"
@@ -37,4 +34,4 @@ export const commonResponse=
 GOOD Response (Use this format):
 "Warning:
 • Table - Quantity: 0
-• Chairs - Quantity: 0"`
+• Chairs - Quantity: 0"`;

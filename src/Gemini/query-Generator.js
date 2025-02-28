@@ -159,7 +159,6 @@ export const basicQueries = `
 }
 `;
 
-
 export const inventoryQueries = `
 This is only the example query. If a user asks any advocate-related question, generate the query using AdvocateSch and if user asks about clients then generate query using Client same goes for user, and all other relevant operations to provide the user with 100% accurate results.  Remember to replace placeholders like 'userId', 'Advocate Name', 'caseName', etc., with the actual values.  Do not include 'await', 'async', or IIFEs in the generated query.  The query should be valid JSON inside the find() or findOne() parentheses, If query is regarding find by name then don't include _id or userId in query, If query is regarding find advocate/client/user then do not include password, city, state, country and image fields.
 
@@ -211,7 +210,7 @@ This is only the example query. If a user asks any advocate-related question, ge
   "schemaUsed": "Client",
   "queryType": "list"
 }
-`
+`;
 
 export const responseType = `
 For Advocate Queries:
