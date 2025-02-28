@@ -19,10 +19,12 @@ import caseStageRouter from "./CaseStage.js";
 import expenseTypeRouter from "./ExpenseType.js";
 import invoiceRouter from "./Invoice.js";
 import { Router } from "express";
+import chatRouter from "./Chatbot.js";
 
 const router = Router();
 
 router.use("/user", userRouter);
+router.use("/chat", chatRouter);
 router.use("/judge", judgeRouter);
 router.use("/client", clientRouter);
 router.use("/advocate", advocateRouter);
