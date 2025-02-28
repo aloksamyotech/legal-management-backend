@@ -10,6 +10,7 @@ import {
   emptyResponse,
   commonResponse,
 } from "./response-Formator.js";
+import CaseModel from "../models/Case.js";
 
 dotenv.config();
 
@@ -86,6 +87,7 @@ Generate a clear and accurate response:`;
 
 const executeMongooseQuery = async (queryString, schemaUsed, userId) => {
   const schemaMap = {
+    CaseModel,
     AdvocateSch,
     User,
     Client,

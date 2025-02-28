@@ -13,8 +13,9 @@ export const responseFormat=`
 13. Include all relevant information
 14. Group related information together
 15. Show totals and summaries where applicable
-16. Always use Case no for case_id
-
+16. Always generate index no for case_id
+17. NEVER include images in the response
+18. use bullets and change lines after each item when you make a list
 Ensure the data is properly formatted, with all relevant fields included in the response.`
 
 export const responseQueryFormat=
