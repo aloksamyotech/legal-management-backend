@@ -1,4 +1,4 @@
-import { statusCodes } from "../core/common/constant.js";
+import { Message, statusCodes } from "../core/common/constant.js";
 import { getAiresponse } from "../services/askAI.js";
 
 export const getAiReportData = async (req, res) => {
@@ -13,7 +13,7 @@ export const getAiReportData = async (req, res) => {
   } catch (error) {
     res.status(statusCodes.internalServerError).json({
       success: false,
-      message: messages.fetching_failed,
+      message: Message.fetching_failed,
     });
   }
 };

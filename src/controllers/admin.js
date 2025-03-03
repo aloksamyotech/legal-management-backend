@@ -44,6 +44,14 @@ const permissionUpdate = async (req, res, next) => {
   res.status(statusCodes?.ok).send(permissionUpdateData);
 };
 
+const resetpassword = async (req, res, next) => {
+  const userresetData = await adminService.resetPassword(req, res, next);
+  res.status(statusCodes?.ok).send(userresetData);
+};
+const updateLogo = async (req, res, next) => {
+  const updateLogo = await adminService.Updatelogo(req, res, next);
+  res.status(statusCodes?.ok).send(updateLogo);
+};
 export default {
   adminRegistration,
   adminLogin,
@@ -52,4 +60,6 @@ export default {
   deleteuserbyId,
   permissionUpdate,
   userUpdate,
+  resetpassword,
+  updateLogo
 };

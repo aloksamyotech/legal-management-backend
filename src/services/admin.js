@@ -5,8 +5,6 @@ import jwt from "jsonwebtoken";
 
 export const registerAdmin = async (req) => {
   const companyId = req.user._id;
-  console.log(companyId);
-  console.log(req.body);
   const {
     Name,
     gender,
@@ -24,7 +22,7 @@ export const registerAdmin = async (req) => {
     throw new CustomError(
       statusCodes?.conflict,
       Message?.alreadyExist,
-      errorCodes?.already_exist,
+      errorCodes?.already_exist
     );
   }
 
@@ -42,14 +40,14 @@ export const registerAdmin = async (req) => {
   });
 
   const createdUser = await User.findById(user._id).select(
-    "-password -refreshToken ",
+    "-password -refreshToken "
   );
 
   if (!createdUser) {
     return new CustomError(
       statusCodes?.serviceUnavailable,
       Message?.serverError,
-      errorCodes?.service_unavailable,
+      errorCodes?.service_unavailable
     );
   }
 
@@ -69,7 +67,7 @@ const generateAccessAndRefreshTokens = async (adminId) => {
     throw new CustomError(
       statusCodes?.internalServerError,
       "Something went wrong while generating refresh and access tokens.",
-      errorCodes?.server_error,
+      errorCodes?.server_error
     );
   }
 };
@@ -81,7 +79,7 @@ export const loginAdmin = async (req) => {
     throw new CustomError(
       statusCodes?.notFound,
       Message?.user_not_found,
-      errorCodes?.user_not_found,
+      errorCodes?.user_not_found
     );
   }
 
@@ -91,14 +89,14 @@ export const loginAdmin = async (req) => {
     throw new CustomError(
       statusCodes?.badRequest,
       Message?.wrongPassword,
-      errorCodes?.password_mismatch,
+      errorCodes?.password_mismatch
     );
   }
   const { accessToken, refreshToken } = await generateAccessAndRefreshTokens(
-    admin._id,
+    admin._id
   );
   const loginadmin = await User.findById(admin._id).select(
-    "-password -refreshToken",
+    "-password -refreshToken"
   );
 
   const options = {
@@ -121,7 +119,7 @@ export const GetUser = async (req) => {
     throw new CustomError(
       statusCodes?.badRequest,
       Message?.inValid,
-      errorCodes?.bad_request,
+      errorCodes?.bad_request
     );
   }
 
@@ -130,7 +128,7 @@ export const GetUser = async (req) => {
     throw new CustomError(
       statusCodes?.notFound,
       Message?.notFound,
-      errorCodes?.not_found,
+      errorCodes?.not_found
     );
   }
   return user;
@@ -143,7 +141,7 @@ export const DeleteUser = async (req) => {
     throw new CustomError(
       statusCodes?.badRequest,
       Message?.inValid,
-      errorCodes?.bad_request,
+      errorCodes?.bad_request
     );
   }
 
@@ -153,7 +151,7 @@ export const DeleteUser = async (req) => {
     throw new CustomError(
       statusCodes?.notFound,
       Message?.notDeleted,
-      errorCodes?.not_found,
+      errorCodes?.not_found
     );
   }
 
@@ -170,21 +168,21 @@ export const UpdateUserPermission = async (req) => {
     throw new CustomError(
       statusCodes?.badRequest,
       Message?.inValid,
-      errorCodes?.bad_request,
+      errorCodes?.bad_request
     );
   }
 
   const updatedUser = await User.findOneAndUpdate(
     { _id: id, Active: true },
     { permission: permissions },
-    { new: true },
+    { new: true }
   ).select("_id Name email permission");
 
   if (!updatedUser) {
     throw new CustomError(
       statusCodes?.notFound,
       Message?.notUpdate,
-      errorCodes?.action_failed,
+      errorCodes?.action_failed
     );
   }
 
@@ -199,7 +197,7 @@ export const UpdateUser = async (req) => {
     throw new CustomError(
       statusCodes?.badRequest,
       Message?.inValid,
-      errorCodes?.bad_request,
+      errorCodes?.bad_request
     );
   }
   const updateData = {
@@ -215,14 +213,14 @@ export const UpdateUser = async (req) => {
   const updatedUser = await User.findOneAndUpdate(
     { _id: id, Active: true },
     updateData,
-    { new: true },
+    { new: true }
   );
 
   if (!updatedUser) {
     throw new CustomError(
       statusCodes?.notFound,
       Message?.notUpdate,
-      errorCodes?.action_failed,
+      errorCodes?.action_failed
     );
   }
 
@@ -231,14 +229,14 @@ export const UpdateUser = async (req) => {
 
 export const GetAllUsers = async (req) => {
   const users = await User.find({ Active: true, companyId: req.user._id }).sort(
-    { createdAt: -1 },
+    { createdAt: -1 }
   );
 
   if (!users || users.length === 0) {
     throw new CustomError(
       statusCodes?.notFound,
       Message?.notFound,
-      errorCodes?.not_found,
+      errorCodes?.not_found
     );
   }
 
@@ -253,7 +251,7 @@ export const LoginUser = async (req) => {
     throw new CustomError(
       statusCodes?.notFound,
       Message?.notFound,
-      errorCodes?.not_found,
+      errorCodes?.not_found
     );
   }
 
@@ -262,7 +260,7 @@ export const LoginUser = async (req) => {
     throw new CustomError(
       statusCodes?.unauthorized,
       Message?.invalidCredentials,
-      errorCodes?.invalid_credentials,
+      errorCodes?.invalid_credentials
     );
   }
 
@@ -295,4 +293,54 @@ export const RefreshToken = async (req) => {
 
   const newAccessToken = user.generateAccessToken();
   return { accessToken: newAccessToken };
+};
+export const resetPassword = async (req) => {
+  const { newPassword } = req.body;
+  const id = req.user._id;
+
+  const user = await User.findOne({
+    _id: id,
+  });
+  if (!user) {
+    throw new CustomError(
+      statusCodes?.unauthorized,
+      "Invalid or expired reset token.",
+      errorCodes?.invalid_token
+    );
+  }
+
+  user.password = newPassword;
+  await user.save();
+
+  return user;
+};
+export const Updatelogo = async (req) => {
+  const  id = req.user._id;
+
+  if (!id) {
+    throw new CustomError(
+      statusCodes?.badRequest,
+      Message?.inValid,
+      errorCodes?.bad_request
+    );
+  }
+  const updateData = {
+    CompanyLogo: req.file ? `/uploads/${req.file.filename}` : null,
+  };
+
+  const updatedLogo = await User.findOneAndUpdate(
+    { _id: id, Active: true },
+    updateData,
+    { new: true }
+  );
+
+  if (!updatedLogo) {
+    throw new CustomError(
+      statusCodes?.notFound,
+      Message?.notUpdate,
+      errorCodes?.action_failed
+    );
+  }
+
+  return updatedLogo;
 };

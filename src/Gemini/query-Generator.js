@@ -153,7 +153,7 @@ export const basicQueries = `
 5. User Queries:
 {
   "type": "database_query",
-  "mongooseQuery": "User.find({ _id: 'userId' }).select('Name email');",
+  "mongooseQuery": "User.find().select('Name email');",
   "schemaUsed": "User",
   "queryType": "list"
 }
@@ -192,14 +192,14 @@ This is only the example query. If a user asks any advocate-related question, ge
 
 5. Find cases by client name:
 {
-  "mongooseQuery": "CaseModel.find().populate({ path: 'Client', match: { Name: { $regex: 'Client Name', $options: 'i' } }, select: 'Name' }).select('Title Date Client Advocate CaseStatus')",
+  "mongooseQuery": "CaseModel.find({ "Client": { $exists: true } }).populate({ path: 'Client', match: { Name: { $regex: 'Name', $options: 'i' } }, select: 'Name' }).populate('Advocate', 'name') .select('Title Date Client Advocate CaseStatus')",
   "schemaUsed": "CaseModel",
   "queryType": "list"
 }
 
 6. Find cases by advocate name:
 {
-  "mongooseQuery": "CaseModel.find().populate({ path: 'Advocate', match: { name: { $regex: 'Advocate Name', $options: 'i' } }, select: 'name' }).select('Title Date Client Advocate CaseStatus')",
+  "mongooseQuery": "CaseModel.find().populate({ path: 'Advocates', match: { name: { $regex: 'Advocate Name', $options: 'i' } }, select: 'name' }).populate('Client', 'Name') .select('Title Date Client Advocate CaseStatus')",
   "schemaUsed": "CaseModel",
   "queryType": "list"
 }
