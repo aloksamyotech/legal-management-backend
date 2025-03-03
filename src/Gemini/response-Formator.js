@@ -21,7 +21,6 @@ Ensure the data is properly formatted, with all relevant fields included in the 
 export const responseQueryFormat = `- list: "Found [X] items: [List with names]"
 - detail: "Details for [item]: [Formatted information]"
 - count: "Total count: [number]"`;
-
 export const emptyResponse = `- "No results found for [search criteria]"
 - "Advocate/Case/Client not found in the system"
 - "No hearing/evidence found for the specified criteria"`;

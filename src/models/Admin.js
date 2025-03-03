@@ -40,9 +40,6 @@ const UserSchema = new Schema(
     CompanyLogo: {
       type: String,
     },
-    image: {
-      type: String,
-    },
     address: {
       type: String,
     },

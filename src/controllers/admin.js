@@ -61,5 +61,5 @@ export default {
   permissionUpdate,
   userUpdate,
   resetpassword,
-  updateLogo
+  updateLogo,
 };

@@ -31,12 +31,10 @@ Example QUERY GENERATION RULES:
    • Handle timezone differences by using start/end of day
    • Include date validation in try-catch blocks (in the code that *executes* the query, not in the query string itself);
 `;
-
 export const statusValues = `
 - Case Status: ["open", "closed"]
 - Invoice Status: ["paid", "unpaid"]
 Note: Status values are always lowercase!`;
-
 export const schemaDefinitions = `
 AdvocateSch:
 - _id (ObjectId): Advocate ID

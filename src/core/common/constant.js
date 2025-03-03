@@ -25,7 +25,7 @@ export const statusCodes = {
 };
 
 export const Message = {
-  fetching_failed:"failed to find data",
+  fetching_failed: "failed to find data",
   CaseId_required: "No hearings found for the given Case ID",
   Case_Hearing_NotFound: "No hearings found for the given Case ID",
   Missing_required_field:
