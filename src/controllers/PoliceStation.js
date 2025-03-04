@@ -11,7 +11,7 @@ const PolicestationAdd = async (req, res, next) => {
 const PolicestationFetch = async (req, res, next) => {
   const PolicestationData = await policestationService.GetPolicestation(
     req,
-    res,  
+    res,
     next,
   );
   res.status(statusCodes?.ok).send(PolicestationData);

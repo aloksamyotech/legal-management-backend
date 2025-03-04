@@ -5,8 +5,6 @@ import jwt from "jsonwebtoken";
 
 export const registerAdmin = async (req) => {
   const companyId = req.user._id;
-  console.log(companyId);
-  console.log(req.body);
   const {
     Name,
     gender,
@@ -295,4 +293,54 @@ export const RefreshToken = async (req) => {
 
   const newAccessToken = user.generateAccessToken();
   return { accessToken: newAccessToken };
+};
+export const resetPassword = async (req) => {
+  const { newPassword } = req.body;
+  const id = req.user._id;
+
+  const user = await User.findOne({
+    _id: id,
+  });
+  if (!user) {
+    throw new CustomError(
+      statusCodes?.unauthorized,
+      "Invalid or expired reset token.",
+      errorCodes?.invalid_token,
+    );
+  }
+
+  user.password = newPassword;
+  await user.save();
+
+  return user;
+};
+export const Updatelogo = async (req) => {
+  const id = req.user._id;
+
+  if (!id) {
+    throw new CustomError(
+      statusCodes?.badRequest,
+      Message?.inValid,
+      errorCodes?.bad_request,
+    );
+  }
+  const updateData = {
+    CompanyLogo: req.file ? `/uploads/${req.file.filename}` : null,
+  };
+
+  const updatedLogo = await User.findOneAndUpdate(
+    { _id: id, Active: true },
+    updateData,
+    { new: true },
+  );
+
+  if (!updatedLogo) {
+    throw new CustomError(
+      statusCodes?.notFound,
+      Message?.notUpdate,
+      errorCodes?.action_failed,
+    );
+  }
+
+  return updatedLogo;
 };

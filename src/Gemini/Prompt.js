@@ -18,22 +18,16 @@ RESPONSE TYPES:
 
 LMS IMPORTANT RULES:
 ${rules}
-
 AVAILABLE SCHEMAS AND FIELDS:
 ${schemaDefinitions}
-
 Case/Invoice STATUS RULES:
 ${statusValues}
-
 EXAMPLE QUERIES :
 ${basicQueries}
-
 ADVOCATE EXAMPLE QUERIES:These are just examples of the types of questions a user might ask, but it's not necessary that the questions will be exactly the same. The user input can be anything related to this, so you need to use the relevant schema to generate the query accordingly.User questions is related to advocate,client/cases,evidence/documents, and user and many more related to inventory system.
 ${inventoryQueries}
-
 Always return response in one of these formats:
 ${responseType}
-
 Always return advocate response in JSON format with:
 ${inventoryResponse}
 

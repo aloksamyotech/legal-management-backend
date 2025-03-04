@@ -30,4 +30,15 @@ router.put(
   asyncHandler(adminController.userUpdate),
 );
 
+router.put(
+  "/resetpassword",
+  jwtMiddleware,
+  asyncHandler(adminController.resetpassword),
+);
+router.put(
+  "/updatelogo",
+  upload.single("image"),
+  jwtMiddleware,
+  asyncHandler(adminController.updateLogo),
+);
 export default router;

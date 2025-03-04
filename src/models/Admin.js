@@ -37,6 +37,9 @@ const UserSchema = new Schema(
     image: {
       type: String,
     },
+    CompanyLogo: {
+      type: String,
+    },
     address: {
       type: String,
     },

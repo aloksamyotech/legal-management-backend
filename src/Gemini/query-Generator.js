@@ -31,12 +31,10 @@ Example QUERY GENERATION RULES:
    • Handle timezone differences by using start/end of day
    • Include date validation in try-catch blocks (in the code that *executes* the query, not in the query string itself);
 `;
-
 export const statusValues = `
 - Case Status: ["open", "closed"]
 - Invoice Status: ["paid", "unpaid"]
 Note: Status values are always lowercase!`;
-
 export const schemaDefinitions = `
 AdvocateSch:
 - _id (ObjectId): Advocate ID
@@ -99,6 +97,24 @@ Client:
 - Active (Boolean): Deletion status
 - createdAt (Date): Creation timestamp
 - updatedAt (Date): Last update timestamp
+
+CaseModel:
+- _id (ObjectId): Case ID
+- Title (String): Case Title
+- Date (Date): Case Date
+- Client (ObjectId): Reference to the Client
+- Advocate (ObjectId): Reference to the Advocate
+- Matter (ObjectId): Reference to the Matter
+- Judge (ObjectId): Reference to the Judge
+- PoliceStation (ObjectId): Reference to the Police Station
+- Court (ObjectId): Reference to the Court
+- Fir (String): FIR Number
+- CaseStatus (String): Status of the case (either "Open" or "Closed")
+- description (String): Detailed description of the case
+- internalNote (String): Internal notes (optional)
+- Active (Boolean): Indicates whether the case is active or deleted
+- createdAt (Date): Creation timestamp
+- updatedAt (Date): Last update timestamp
 `;
 
 export const basicQueries = `
@@ -135,7 +151,7 @@ export const basicQueries = `
 5. User Queries:
 {
   "type": "database_query",
-  "mongooseQuery": "User.find({ _id: 'userId' }).select('Name email');",
+  "mongooseQuery": "User.find().select('Name email');",
   "schemaUsed": "User",
   "queryType": "list"
 }
@@ -146,7 +162,7 @@ This is only the example query. If a user asks any advocate-related question, ge
 
 1. List all cases:
 {
-  "mongooseQuery": "CaseModel.find({ _id: 'userId' }).select('Title Date Client Advocate Matter CaseStatus')",
+  "mongooseQuery": "CaseModel.find().populate('Client', 'Name').populate('Advocate', 'name').select('Title Date Client Advocate Matter CaseStatus')",
   "schemaUsed": "CaseModel",
   "queryType": "list"
 }
@@ -158,14 +174,35 @@ This is only the example query. If a user asks any advocate-related question, ge
   "queryType": "detail"
 }
 
-3. Find client by name:
+3. List of users:
+{
+  "mongooseQuery": "User.find().select('name email phone')",
+  "schemaUsed": "User",
+  "queryType": "list"
+}
+
+4. Find client by name:
 {
   "mongooseQuery": "Client.find({ Name: { $regex: 'Client Name', $options: 'i' } })",
   "schemaUsed": "Client",
   "queryType": "detail"
 }
 
-4. Find all clients:
+5. Find cases by client name:
+{
+  "mongooseQuery": "CaseModel.find({ "Client": { $exists: true } }).populate({ path: 'Client', match: { Name: { $regex: 'Name', $options: 'i' } }, select: 'Name' }).populate('Advocate', 'name') .select('Title Date Client Advocate CaseStatus')",
+  "schemaUsed": "CaseModel",
+  "queryType": "list"
+}
+
+6. Find cases by advocate name:
+{
+  "mongooseQuery": "CaseModel.find().populate({ path: 'Advocates', match: { name: { $regex: 'Advocate Name', $options: 'i' } }, select: 'name' }).populate('Client', 'Name') .select('Title Date Client Advocate CaseStatus')",
+  "schemaUsed": "CaseModel",
+  "queryType": "list"
+}
+
+7. Find all clients:
 {
   "mongooseQuery": "Client.find()",
   "schemaUsed": "Client",
