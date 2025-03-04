@@ -51,12 +51,15 @@ export const registerAdmin = async (req) => {
       errorCodes?.service_unavailable,
     );
   }
-  const isBlocked = await BlockedRole.findOne({ role: "Create User", companyId });
+  const isBlocked = await BlockedRole.findOne({
+    role: "Create User",
+    companyId,
+  });
   if (!isBlocked || !isBlocked.isBlocked) {
     await sendEmail(
       email,
       "Welcome to Our Company",
-      `Hello ${Name},\n\nWelcome! Your account has been created successfully.\n\nThank you!`
+      `Hello ${Name},\n\nWelcome! Your account has been created successfully.\n\nThank you!`,
     );
   } else {
     console.log("Email not sent as 'User' role is blocked.");

@@ -6,8 +6,8 @@ import Evidence from "../models/Evidence.js";
 import Document from "../models/Document.js";
 import BlockedRole from "../models/Email-Sch.js";
 import { sendEmail } from "../core/Nodemailer/nodemailer.js";
-import {Client as ClientModel} from "../models/Client.js"
-import {AdvocateSch} from "../models/Advocate.js"
+import { Client as ClientModel } from "../models/Client.js";
+import { AdvocateSch } from "../models/Advocate.js";
 import getCaseConfirmationEmailTemplate from "../core/common/htmlTemplates/clientcaseregistration.js";
 import getAppointmentEmailTemplate from "../core/common/htmlTemplates/advocatecaseappoint.js";
 
@@ -72,7 +72,6 @@ import getAppointmentEmailTemplate from "../core/common/htmlTemplates/advocateca
 //       errorCodes?.service_unavailable,
 //     );
 //   }
-  
 
 //   return createdCase;
 // };
@@ -81,8 +80,8 @@ export const AddCase = async (req) => {
   const {
     Title,
     Date,
-    Client,  
-    Advocate, 
+    Client,
+    Advocate,
     CaseStatus,
     Matter,
     Judge,
@@ -94,8 +93,15 @@ export const AddCase = async (req) => {
   } = req.body;
 
   if (
-    !Title || !Date || !Client || !Advocate || !Matter || !Judge || 
-    !PoliceStation || !Court || !Fir
+    !Title ||
+    !Date ||
+    !Client ||
+    !Advocate ||
+    !Matter ||
+    !Judge ||
+    !PoliceStation ||
+    !Court ||
+    !Fir
   ) {
     throw new CustomError(
       statusCodes?.badRequest,
@@ -105,7 +111,8 @@ export const AddCase = async (req) => {
   }
 
   const clientData = await ClientModel.findById(Client).select("Name Email");
-  const advocateData = await AdvocateSch.findById(Advocate).select("name email");
+  const advocateData =
+    await AdvocateSch.findById(Advocate).select("name email");
 
   if (!clientData || !advocateData) {
     throw new CustomError(
@@ -129,7 +136,7 @@ export const AddCase = async (req) => {
     description,
     internalNote,
     Active: true,
-    companyId
+    companyId,
   });
 
   const createdCase = await newCase.save();
@@ -145,8 +152,12 @@ export const AddCase = async (req) => {
   // Check if emails should be blocked
   const blockedRoles = await BlockedRole.find({ companyId });
 
-  const isClientBlocked = blockedRoles.some(role => role.role === "client" && role.isBlocked);
-  const isAdvocateBlocked = blockedRoles.some(role => role.role === "advocate" && role.isBlocked);
+  const isClientBlocked = blockedRoles.some(
+    (role) => role.role === "client" && role.isBlocked,
+  );
+  const isAdvocateBlocked = blockedRoles.some(
+    (role) => role.role === "advocate" && role.isBlocked,
+  );
 
   // Send email to Advocate
   if (!isAdvocateBlocked && advocateData.email) {
@@ -154,7 +165,7 @@ export const AddCase = async (req) => {
       advocateData.email,
       "Appointment as Advocate",
       "",
-      getAppointmentEmailTemplate(advocateData.name, clientData.Name, Title)
+      getAppointmentEmailTemplate(advocateData.name, clientData.Name, Title),
     );
   }
 
@@ -164,7 +175,7 @@ export const AddCase = async (req) => {
       clientData.Email,
       "Your Case Has Been Registered",
       "",
-      getCaseConfirmationEmailTemplate(clientData.Name, Title)
+      getCaseConfirmationEmailTemplate(clientData.Name, Title),
     );
   }
 

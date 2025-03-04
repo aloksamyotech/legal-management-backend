@@ -7,7 +7,7 @@ const router = Router();
 router.post(
   "/addClient",
   upload.single("image"),
-   jwtMiddleware,
+  jwtMiddleware,
   asyncHandler(clientController.ClientAdd),
 );
 router.get("/getClientbyid/:id", asyncHandler(clientController.ClientFetch));

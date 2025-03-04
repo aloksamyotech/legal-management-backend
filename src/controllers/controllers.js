@@ -41,6 +41,6 @@ export {
   advocateController,
   judgeController,
   invoiceController,
-  emailController
+  emailController,
   // chatboard
 };

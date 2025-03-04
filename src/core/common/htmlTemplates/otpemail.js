@@ -1,7 +1,7 @@
-export const otpEmail = (data) => {
-    return `
+export const otpEmail = () => {
+  return `
 
 
     
-    `
-}
+    `;
+};

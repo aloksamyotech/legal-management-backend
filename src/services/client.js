@@ -53,12 +53,26 @@ import { sendEmail } from "../core/Nodemailer/nodemailer.js";
 //   return createdClient;
 // };
 export const AddClient = async (req) => {
-  const { Name, phonenum, city, state, zipcode, Email, address, country, About } = req.body;
-  const companyId = req.user._id; 
+  const {
+    Name,
+    phonenum,
+    city,
+    state,
+    zipcode,
+    Email,
+    address,
+    country,
+    About,
+  } = req.body;
+  const companyId = req.user._id;
 
   const isClientAlreadyExist = await Client.exists({ Email });
   if (isClientAlreadyExist) {
-    throw new CustomError(statusCodes?.conflict, Message?.alreadyExist, errorCodes?.already_exist);
+    throw new CustomError(
+      statusCodes?.conflict,
+      Message?.alreadyExist,
+      errorCodes?.already_exist,
+    );
   }
   const image = req.file ? `/uploads/${req.file.filename}` : null;
 
@@ -73,19 +87,23 @@ export const AddClient = async (req) => {
     country,
     image,
     About,
-    companyId
+    companyId,
   });
 
-  const createdClient = await client.save();  
+  const createdClient = await client.save();
   if (!createdClient) {
-    throw new CustomError(statusCodes?.serviceUnavailable, Message?.serverError, errorCodes?.service_unavailable);
+    throw new CustomError(
+      statusCodes?.serviceUnavailable,
+      Message?.serverError,
+      errorCodes?.service_unavailable,
+    );
   }
   const isBlocked = await BlockedRole.findOne({ role: "client", companyId });
   if (!isBlocked || !isBlocked.isBlocked) {
     await sendEmail(
       Email,
       "Welcome to Our Company",
-      `Hello ${Name},\n\nWelcome! Your account has been created.\n\nThank you!`
+      `Hello ${Name},\n\nWelcome! Your account has been created.\n\nThank you!`,
     );
   } else {
     console.log("Email not sent as 'client' role is blocked.");

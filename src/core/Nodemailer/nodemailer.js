@@ -3,12 +3,12 @@ import dotenv from "dotenv";
 
 dotenv.config();
 const transporter = nodemailer.createTransport({
-    host: 'smtp-relay.brevo.com',
-    port: 587,
-    auth: {
-        user: '8724de001@smtp-brevo.com',
-        pass: 'mCQAqp6FBXa80EG1'
-    }
+  host: "smtp-relay.brevo.com",
+  port: 587,
+  auth: {
+    user: "8724de001@smtp-brevo.com",
+    pass: "mCQAqp6FBXa80EG1",
+  },
 });
 
 /**
@@ -25,7 +25,7 @@ export const sendEmail = async (to, subject, text, html = null) => {
     to,
     subject,
     text,
-    ...(html && { html }), 
+    ...(html && { html }),
   };
 
   try {

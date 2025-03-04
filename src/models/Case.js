@@ -66,7 +66,7 @@ const CaseSchema = new Schema(
       required: true,
     },
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
 const CaseModel = mongoose.model("Case", CaseSchema);

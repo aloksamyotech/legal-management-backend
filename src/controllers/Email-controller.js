@@ -9,6 +9,6 @@ const BlockedRoleFetch = async (req, res, next) => {
   res.status(statusCodes?.ok).send(BlockedRole);
 };
 export default {
-    toggleEmail,
-    BlockedRoleFetch
-}
+  toggleEmail,
+  BlockedRoleFetch,
+};

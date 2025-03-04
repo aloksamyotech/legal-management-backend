@@ -81,7 +81,7 @@ export const AddAdvocate = async (req) => {
     duration,
     image,
     About,
-    companyId:companyId,
+    companyId: companyId,
     active: true,
   });
 
@@ -99,7 +99,7 @@ export const AddAdvocate = async (req) => {
     await sendEmail(
       email,
       "Welcome to Our Company",
-      `Hello ${name},\n\nWelcome! Your account has been created.\n\nThank you!`
+      `Hello ${name},\n\nWelcome! Your account has been created.\n\nThank you!`,
     );
   } else {
     console.log("Email not sent as 'advocate' role is blocked.");
