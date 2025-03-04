@@ -4,14 +4,86 @@ import CustomError from "../utils/exception.js";
 import HearingModel from "../models/Hearing.js";
 import Evidence from "../models/Evidence.js";
 import Document from "../models/Document.js";
+import BlockedRole from "../models/Email-Sch.js";
+import { sendEmail } from "../core/Nodemailer/nodemailer.js";
+import {Client as ClientModel} from "../models/Client.js"
+import {AdvocateSch} from "../models/Advocate.js"
+import getCaseConfirmationEmailTemplate from "../core/common/htmlTemplates/clientcaseregistration.js";
+import getAppointmentEmailTemplate from "../core/common/htmlTemplates/advocatecaseappoint.js";
 
+// export const AddCase = async (req) => {
+//   const companyId = req.user._id;
+//   const {
+//     Title,
+//     Date,
+//     Client,
+//     CaseStatus,
+//     Advocate,
+//     Matter,
+//     Judge,
+//     PoliceStation,
+//     Court,
+//     Fir,
+//     description,
+//     internalNote,
+//   } = req.body;
+
+//   if (
+//     !Title ||
+//     !Date ||
+//     !Client ||
+//     !Advocate ||
+//     !Matter ||
+//     !Judge ||
+//     !PoliceStation ||
+//     !Court ||
+//     !Fir
+//   ) {
+//     throw new CustomError(
+//       statusCodes?.badRequest,
+//       Message?.Missing_required_field,
+//       errorCodes?.bad_request,
+//     );
+//   }
+
+//   const newCase = new CaseModel({
+//     Title,
+//     Date,
+//     Client,
+//     Advocate,
+//     Matter,
+//     Judge,
+//     PoliceStation,
+//     Court,
+//     CaseStatus,
+//     Fir,
+//     description,
+//     internalNote,
+//     Active: true,
+//     companyId:companyId
+//   });
+
+//   const createdCase = await newCase.save();
+
+//   if (!createdCase) {
+//     throw new CustomError(
+//       statusCodes?.serviceUnavailable,
+//       Message?.notCreated,
+//       errorCodes?.service_unavailable,
+//     );
+//   }
+  
+
+//   return createdCase;
+// };
 export const AddCase = async (req) => {
+  const companyId = req.user._id;
   const {
     Title,
     Date,
-    Client,
+    Client,  
+    Advocate, 
     CaseStatus,
-    Advocate,
     Matter,
     Judge,
     PoliceStation,
@@ -22,20 +94,24 @@ export const AddCase = async (req) => {
   } = req.body;
 
   if (
-    !Title ||
-    !Date ||
-    !Client ||
-    !Advocate ||
-    !Matter ||
-    !Judge ||
-    !PoliceStation ||
-    !Court ||
-    !Fir
+    !Title || !Date || !Client || !Advocate || !Matter || !Judge || 
+    !PoliceStation || !Court || !Fir
   ) {
     throw new CustomError(
       statusCodes?.badRequest,
       Message?.Missing_required_field,
       errorCodes?.bad_request,
+    );
+  }
+
+  const clientData = await ClientModel.findById(Client).select("Name Email");
+  const advocateData = await AdvocateSch.findById(Advocate).select("name email");
+
+  if (!clientData || !advocateData) {
+    throw new CustomError(
+      statusCodes?.notFound,
+      "Client or Advocate not found",
+      errorCodes?.not_found,
     );
   }
 
@@ -53,6 +129,7 @@ export const AddCase = async (req) => {
     description,
     internalNote,
     Active: true,
+    companyId
   });
 
   const createdCase = await newCase.save();
@@ -62,6 +139,32 @@ export const AddCase = async (req) => {
       statusCodes?.serviceUnavailable,
       Message?.notCreated,
       errorCodes?.service_unavailable,
+    );
+  }
+
+  // Check if emails should be blocked
+  const blockedRoles = await BlockedRole.find({ companyId });
+
+  const isClientBlocked = blockedRoles.some(role => role.role === "client" && role.isBlocked);
+  const isAdvocateBlocked = blockedRoles.some(role => role.role === "advocate" && role.isBlocked);
+
+  // Send email to Advocate
+  if (!isAdvocateBlocked && advocateData.email) {
+    await sendEmail(
+      advocateData.email,
+      "Appointment as Advocate",
+      "",
+      getAppointmentEmailTemplate(advocateData.name, clientData.Name, Title)
+    );
+  }
+
+  // Send email to Client
+  if (!isClientBlocked && clientData.Email) {
+    await sendEmail(
+      clientData.Email,
+      "Your Case Has Been Registered",
+      "",
+      getCaseConfirmationEmailTemplate(clientData.Name, Title)
     );
   }
 

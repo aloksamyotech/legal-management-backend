@@ -18,6 +18,7 @@ import tagController from "./Tag.js";
 import caseStageController from "./CaseStage.js";
 import expenseTypeController from "./ExpenseType.js";
 import invoiceController from "./Invoice.js";
+import emailController from "./Email-controller.js";
 // import chatboard  from "./chatbot.js"
 export {
   tagController,
@@ -40,5 +41,6 @@ export {
   advocateController,
   judgeController,
   invoiceController,
+  emailController
   // chatboard
 };

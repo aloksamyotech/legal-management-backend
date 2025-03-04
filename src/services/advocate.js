@@ -2,9 +2,12 @@ import { AdvocateSch } from "../models/Advocate.js";
 import { errorCodes, Message, statusCodes } from "../core/common/constant.js";
 import CustomError from "../utils/exception.js";
 import CaseModel from "../models/Case.js";
+import BlockedRole from "../models/Email-Sch.js";
+import { sendEmail } from "../core/Nodemailer/nodemailer.js";
 
 // Create an Advocate
 export const AddAdvocate = async (req) => {
+  const companyId = req.user._id;
   const {
     name,
     email,
@@ -78,6 +81,7 @@ export const AddAdvocate = async (req) => {
     duration,
     image,
     About,
+    companyId:companyId,
     active: true,
   });
 
@@ -89,6 +93,16 @@ export const AddAdvocate = async (req) => {
       Message?.notCreated,
       errorCodes?.service_unavailable,
     );
+  }
+  const isBlocked = await BlockedRole.findOne({ role: "advocate", companyId });
+  if (!isBlocked || !isBlocked.isBlocked) {
+    await sendEmail(
+      email,
+      "Welcome to Our Company",
+      `Hello ${name},\n\nWelcome! Your account has been created.\n\nThank you!`
+    );
+  } else {
+    console.log("Email not sent as 'advocate' role is blocked.");
   }
 
   return createdAdvocate;

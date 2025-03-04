@@ -2,6 +2,7 @@ import { Router } from "express";
 import { asyncHandler } from "../utils/asyncWrapper.js";
 import { advocateController } from "../controllers/controllers.js";
 import { upload } from "../utils/multerConfig.js";
+import { jwtMiddleware } from "../middlewares/JWTAuthentication.js";
 const router = Router();
 router.post(
   "/addadvocate",
@@ -9,6 +10,7 @@ router.post(
     { name: "certificate", maxCount: 1 },
     { name: "image", maxCount: 1 },
   ]),
+  jwtMiddleware,
   asyncHandler(advocateController.AdvocateAdd),
 );
 router.get(

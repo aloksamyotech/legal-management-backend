@@ -2,7 +2,8 @@ import { User } from "../models/Admin.js";
 import { errorCodes, Message, statusCodes } from "../core/common/constant.js";
 import CustomError from "../utils/exception.js";
 import jwt from "jsonwebtoken";
-
+import BlockedRole from "../models/Email-Sch.js";
+import { sendEmail } from "../core/Nodemailer/nodemailer.js";
 export const registerAdmin = async (req) => {
   const companyId = req.user._id;
   const {
@@ -50,7 +51,16 @@ export const registerAdmin = async (req) => {
       errorCodes?.service_unavailable,
     );
   }
-
+  const isBlocked = await BlockedRole.findOne({ role: "Create User", companyId });
+  if (!isBlocked || !isBlocked.isBlocked) {
+    await sendEmail(
+      email,
+      "Welcome to Our Company",
+      `Hello ${Name},\n\nWelcome! Your account has been created successfully.\n\nThank you!`
+    );
+  } else {
+    console.log("Email not sent as 'User' role is blocked.");
+  }
   return createdUser;
 };
 

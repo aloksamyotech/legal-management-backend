@@ -1,8 +1,9 @@
 import { Router } from "express";
 import { asyncHandler } from "../utils/asyncWrapper.js";
 import { caseController } from "../controllers/controllers.js";
+import { jwtMiddleware } from "../middlewares/JWTAuthentication.js";
 const router = Router();
-router.post("/addCase", asyncHandler(caseController.CaseAdd));
+router.post("/addCase", jwtMiddleware, asyncHandler(caseController.CaseAdd));
 router.get("/getCase", asyncHandler(caseController.CaseFetch));
 router.delete("/deleteCase/:id", asyncHandler(caseController.CaseDelete));
 router.put("/updateCase/:id", asyncHandler(caseController.CaseUpdate));

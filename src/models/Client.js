@@ -40,12 +40,17 @@ const ClientSchema = new Schema(
     image: {
       type: String,
     },
+    companyId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
+    },
     Active: {
       type: Boolean,
       default: true,
     },
   },
-  { timestamps: true },
+  { timestamps: true }
 );
 
 export const Client = mongoose.model("Client", ClientSchema);

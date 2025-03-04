@@ -2,26 +2,63 @@ import { Client } from "../models/Client.js";
 import { errorCodes, Message, statusCodes } from "../core/common/constant.js";
 import CustomError from "../utils/exception.js";
 import CaseModel from "../models/Case.js";
+import BlockedRole from "../models/Email-Sch.js";
+import { sendEmail } from "../core/Nodemailer/nodemailer.js";
+// export const AddClient = async (req) => {
+//   const {
+//     Name,
+//     phonenum,
+//     city,
+//     state,
+//     zipcode,
+//     Email,
+//     address,
+//     country,
+//     About,
+//   } = req.body;
+
+//   const isClientAlreadyExist = await Client.exists({ Email });
+//   if (isClientAlreadyExist) {
+//     throw new CustomError(
+//       statusCodes?.conflict,
+//       Message?.alreadyExist,
+//       errorCodes?.already_exist,
+//     );
+//   }
+//   const image = req.file ? `/uploads/${req.file.filename}` : null;
+
+//   const client = new Client({
+//     Name,
+//     phonenum,
+//     city,
+//     state,
+//     zipcode,
+//     Email,
+//     address,
+//     country,
+//     image,
+//     About,
+//   });
+
+//   const createdClient = await client.save();
+
+//   if (!createdClient) {
+//     throw new CustomError(
+//       statusCodes?.serviceUnavailable,
+//       Message?.serverError,
+//       errorCodes?.service_unavailable,
+//     );
+//   }
+
+//   return createdClient;
+// };
 export const AddClient = async (req) => {
-  const {
-    Name,
-    phonenum,
-    city,
-    state,
-    zipcode,
-    Email,
-    address,
-    country,
-    About,
-  } = req.body;
+  const { Name, phonenum, city, state, zipcode, Email, address, country, About } = req.body;
+  const companyId = req.user._id; 
 
   const isClientAlreadyExist = await Client.exists({ Email });
   if (isClientAlreadyExist) {
-    throw new CustomError(
-      statusCodes?.conflict,
-      Message?.alreadyExist,
-      errorCodes?.already_exist,
-    );
+    throw new CustomError(statusCodes?.conflict, Message?.alreadyExist, errorCodes?.already_exist);
   }
   const image = req.file ? `/uploads/${req.file.filename}` : null;
 
@@ -36,16 +73,22 @@ export const AddClient = async (req) => {
     country,
     image,
     About,
+    companyId
   });
 
-  const createdClient = await client.save();
-
+  const createdClient = await client.save();  
   if (!createdClient) {
-    throw new CustomError(
-      statusCodes?.serviceUnavailable,
-      Message?.serverError,
-      errorCodes?.service_unavailable,
+    throw new CustomError(statusCodes?.serviceUnavailable, Message?.serverError, errorCodes?.service_unavailable);
+  }
+  const isBlocked = await BlockedRole.findOne({ role: "client", companyId });
+  if (!isBlocked || !isBlocked.isBlocked) {
+    await sendEmail(
+      Email,
+      "Welcome to Our Company",
+      `Hello ${Name},\n\nWelcome! Your account has been created.\n\nThank you!`
     );
+  } else {
+    console.log("Email not sent as 'client' role is blocked.");
   }
 
   return createdClient;
