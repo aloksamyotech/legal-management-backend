@@ -1,7 +1,6 @@
 import { User } from "../models/Admin.js";
 import { errorCodes, Message, statusCodes } from "../core/common/constant.js";
 import CustomError from "../utils/exception.js";
-import jwt from "jsonwebtoken";
 import BlockedRole from "../models/Email-Sch.js";
 import { sendEmail } from "../core/Nodemailer/nodemailer.js";
 import getAccountCreationEmailTemplate from "../core/common/htmlTemplates/accountCreationtemp.js";

@@ -1,7 +1,6 @@
 import PolicestationModel from "../models/PoliceStation.js";
 import { errorCodes, Message, statusCodes } from "../core/common/constant.js";
 import CustomError from "../utils/exception.js";
-import { User } from "../models/Admin.js";
 
 export const AddPolicestation = async (req) => {
   const companyId = req.user.companyId;

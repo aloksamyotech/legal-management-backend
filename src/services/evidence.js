@@ -26,6 +26,7 @@ export const AddEvidence = async (req) => {
   return createdEvidence;
 };
 export const GetEvidence = async (req) => {
+  const companyId = req.user.companyId;
   const evidence = await Evidence?.find({ Active: true, companyId })
     .populate("Case")
     .populate("Hearing")
