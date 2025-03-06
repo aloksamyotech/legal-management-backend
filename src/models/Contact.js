@@ -31,6 +31,10 @@ const contactSchema = new mongoose.Schema(
     subject: {
       type: String,
     },
+    companyId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+    },
     Active: {
       type: Boolean,
       default: true,

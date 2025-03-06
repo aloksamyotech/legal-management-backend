@@ -2,13 +2,15 @@ import { Router } from "express";
 import { asyncHandler } from "../utils/asyncWrapper.js";
 import { noteController } from "../controllers/controllers.js";
 import { upload } from "../utils/multerConfig.js";
+import { jwtMiddleware } from "../middlewares/JWTAuthentication.js";
 const router = Router();
 router.post(
   "/addNote",
   upload.array("Attachment", 5),
+  jwtMiddleware,
   asyncHandler(noteController.NoteAdd),
 );
-router.get("/getAllNote", asyncHandler(noteController.NoteFetch));
+router.get("/getAllNote", jwtMiddleware, asyncHandler(noteController.NoteFetch));
 router.get("/getNote/:id", asyncHandler(noteController.NoteById));
 router.put(
   "/updateNote/:id",

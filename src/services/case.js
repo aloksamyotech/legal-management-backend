@@ -10,73 +10,8 @@ import { Client as ClientModel } from "../models/Client.js";
 import { AdvocateSch } from "../models/Advocate.js";
 import getCaseConfirmationEmailTemplate from "../core/common/htmlTemplates/clientcaseregistration.js";
 import getAppointmentEmailTemplate from "../core/common/htmlTemplates/advocatecaseappoint.js";
-
-// export const AddCase = async (req) => {
-//   const companyId = req.user._id;
-//   const {
-//     Title,
-//     Date,
-//     Client,
-//     CaseStatus,
-//     Advocate,
-//     Matter,
-//     Judge,
-//     PoliceStation,
-//     Court,
-//     Fir,
-//     description,
-//     internalNote,
-//   } = req.body;
-
-//   if (
-//     !Title ||
-//     !Date ||
-//     !Client ||
-//     !Advocate ||
-//     !Matter ||
-//     !Judge ||
-//     !PoliceStation ||
-//     !Court ||
-//     !Fir
-//   ) {
-//     throw new CustomError(
-//       statusCodes?.badRequest,
-//       Message?.Missing_required_field,
-//       errorCodes?.bad_request,
-//     );
-//   }
-
-//   const newCase = new CaseModel({
-//     Title,
-//     Date,
-//     Client,
-//     Advocate,
-//     Matter,
-//     Judge,
-//     PoliceStation,
-//     Court,
-//     CaseStatus,
-//     Fir,
-//     description,
-//     internalNote,
-//     Active: true,
-//     companyId:companyId
-//   });
-
-//   const createdCase = await newCase.save();
-
-//   if (!createdCase) {
-//     throw new CustomError(
-//       statusCodes?.serviceUnavailable,
-//       Message?.notCreated,
-//       errorCodes?.service_unavailable,
-//     );
-//   }
-
-//   return createdCase;
-// };
 export const AddCase = async (req) => {
-  const companyId = req.user._id;
+  const companyId = req.user.companyId;
   const {
     Title,
     Date,
@@ -149,9 +84,8 @@ export const AddCase = async (req) => {
     );
   }
 
-  // Check if emails should be blocked
+  if(createdCase){ 
   const blockedRoles = await BlockedRole.find({ companyId });
-
   const isClientBlocked = blockedRoles.some(
     (role) => role.role === "client" && role.isBlocked,
   );
@@ -160,17 +94,16 @@ export const AddCase = async (req) => {
   );
 
   // Send email to Advocate
-  if (!isAdvocateBlocked && advocateData.email) {
+  if (isAdvocateBlocked && advocateData.email) {
     await sendEmail(
       advocateData.email,
-      "Appointment as Advocate",
+      "Appointed as Advocate",
       "",
       getAppointmentEmailTemplate(advocateData.name, clientData.Name, Title),
     );
   }
 
-  // Send email to Client
-  if (!isClientBlocked && clientData.Email) {
+  if (isClientBlocked && clientData.Email) {
     await sendEmail(
       clientData.Email,
       "Your Case Has Been Registered",
@@ -178,12 +111,13 @@ export const AddCase = async (req) => {
       getCaseConfirmationEmailTemplate(clientData.Name, Title),
     );
   }
-
+}
   return createdCase;
 };
 
-export const GetCase = async () => {
-  const cases = await CaseModel.find({ Active: true })
+export const GetCase = async (req) => {
+  const companyId = req.user.companyId
+  const cases = await CaseModel.find({ Active: true, companyId })
     .populate([
       { path: "Client", select: "Name" },
       { path: "Advocate", select: "name" },

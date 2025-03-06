@@ -21,7 +21,7 @@ router.get(
   "/getCasebyadvocateId/:advocateId",
   asyncHandler(advocateController.CaseByAdvocateId),
 );
-router.get("/getalladvocate", asyncHandler(advocateController.GetAlladvocate));
+router.get("/getalladvocate", jwtMiddleware, asyncHandler(advocateController.GetAlladvocate));
 router.delete(
   "/deleteadvocate/:id",
   asyncHandler(advocateController.AdvocateDelete),

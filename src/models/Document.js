@@ -10,6 +10,10 @@ const DocumentSchema = new mongoose.Schema(
   {
     Title: { type: String, required: true },
     Case: { type: mongoose.Schema.Types.ObjectId, ref: "Case", required: true },
+    companyId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+    },
     Attachment: [AttachmentSchema],
     CreatedAt: {
       type: Date,

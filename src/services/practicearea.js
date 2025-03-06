@@ -4,36 +4,38 @@ import CustomError from "../utils/exception.js";
 
 export const AddPractice = async (req) => {
   const { Title, address, description } = req.body;
+const companyId = req.user.companyId;
+if (!Title) {
+  throw new CustomError(
+    statusCodes?.badRequest,
+    Message?.Missing_required_field,
+    errorCodes?.bad_request,
+  );
+}
 
-  if (!Title) {
-    throw new CustomError(
-      statusCodes?.badRequest,
-      Message?.Missing_required_field,
-      errorCodes?.bad_request,
-    );
-  }
+const newPractice = new PracticeModel({
+  Title,
+  address,
+  description,
+  companyId
+});
 
-  const newPractice = new PracticeModel({
-    Title,
-    address,
-    description,
-  });
+const createdPractice = await newPractice.save();
 
-  const createdPractice = await newPractice.save();
+if (!createdPractice) {
+  throw new CustomError(
+    statusCodes?.serviceUnavailable,
+    Message?.notCreated,
+    errorCodes?.service_unavailable,
+  );
+}
 
-  if (!createdPractice) {
-    throw new CustomError(
-      statusCodes?.serviceUnavailable,
-      Message?.notCreated,
-      errorCodes?.service_unavailable,
-    );
-  }
-
-  return createdPractice;
+return createdPractice;
 };
 
-export const GetAllPractices = async () => {
-  const practices = await PracticeModel.find({ active: true }).sort({
+export const GetAllPractices = async (req) => {
+  const companyId = req.user.companyId;
+  const practices = await PracticeModel.find({ active: true, companyId }).sort({
     createdAt: -1,
   });
 

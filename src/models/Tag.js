@@ -16,6 +16,10 @@ const TagSchema = new Schema(
       type: Boolean,
       default: true,
     },
+    companyId:{
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User"
+    },
     CreatedAt: {
       type: Date,
       default: () => new Date(),

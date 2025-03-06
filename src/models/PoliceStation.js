@@ -15,7 +15,10 @@ const PolicestationSchema = new Schema(
       type: Number,
       trim: true,
     },
-
+    companyId:{
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User"
+    },
     active: {
       type: Boolean,
       default: true,

@@ -3,6 +3,7 @@ import { errorCodes, Message, statusCodes } from "../core/common/constant.js";
 import CustomError from "../utils/exception.js";
 
 export const AddTag = async (req) => {
+  const companyId = req.user.companyId
   const { Title, description } = req.body;
 
   if (!Title) {
@@ -16,6 +17,7 @@ export const AddTag = async (req) => {
   const newTag = new TagModel({
     Title,
     description,
+    companyId
   });
 
   const createdTag = await newTag.save();
@@ -31,8 +33,9 @@ export const AddTag = async (req) => {
   return createdTag;
 };
 
-export const GetAllTags = async () => {
-  const tags = await TagModel.find({ active: true }).sort({ createdAt: -1 });
+export const GetAllTags = async (req) => {
+  const companyId = req.user.companyId
+  const tags = await TagModel.find({ active: true, companyId }).sort({ createdAt: -1 });
 
   if (!tags || tags.length === 0) {
     throw new CustomError(

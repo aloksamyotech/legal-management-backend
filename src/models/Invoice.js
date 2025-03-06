@@ -50,6 +50,10 @@ const InvoiceSchema = new mongoose.Schema(
       default: "Unpaid",
     },
     Active: { type: Boolean, default: true },
+    companyId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+    },
   },
   { timestamps: true },
 );

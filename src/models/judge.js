@@ -25,6 +25,10 @@ const JudgeSchema = new Schema(
       type: Date,
       default: () => new Date(),
     },
+    companyId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+    },
   },
   {
     timestamps: true,

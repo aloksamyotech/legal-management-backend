@@ -37,7 +37,10 @@ const EvidenceSchema = new mongoose.Schema({
   },
   Description: {
     type: String,
-    required: true,
+  },
+  companyId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User",
   },
   Active: {
     type: Boolean,

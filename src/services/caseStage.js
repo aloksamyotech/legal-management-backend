@@ -3,6 +3,7 @@ import { errorCodes, Message, statusCodes } from "../core/common/constant.js";
 import CustomError from "../utils/exception.js";
 
 export const AddCaseStage = async (req) => {
+  const companyId = req.user.companyId
   const { Title, description } = req.body;
 
   if (!Title) {
@@ -16,6 +17,7 @@ export const AddCaseStage = async (req) => {
   const newCaseStage = new CaseStageModel({
     Title,
     description,
+    companyId
   });
 
   const createdCaseStage = await newCaseStage.save();
@@ -31,8 +33,9 @@ export const AddCaseStage = async (req) => {
   return createdCaseStage;
 };
 
-export const GetAllCaseStages = async () => {
-  const caseStages = await CaseStageModel.find({ active: true }).sort({
+export const GetAllCaseStages = async (req) => {
+  const companyId = req.user.companyId
+  const caseStages = await CaseStageModel.find({ active: true, companyId}).sort({
     createdAt: -1,
   });
 

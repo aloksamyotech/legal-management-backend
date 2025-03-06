@@ -16,6 +16,10 @@ const CaseStageSchema = new Schema(
       type: Boolean,
       default: true,
     },
+    companyId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+    },
     CreatedAt: {
       type: Date,
       default: () => new Date(),
@@ -23,7 +27,7 @@ const CaseStageSchema = new Schema(
   },
   {
     timestamps: true,
-  },
+  }
 );
 
 const CaseStageModel = mongoose.model("CaseStage", CaseStageSchema);

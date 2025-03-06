@@ -1,8 +1,10 @@
 import PolicestationModel from "../models/PoliceStation.js";
 import { errorCodes, Message, statusCodes } from "../core/common/constant.js";
 import CustomError from "../utils/exception.js";
+import { User } from "../models/Admin.js";
 
 export const AddPolicestation = async (req) => {
+  const companyId = req.user.companyId;
   const { Title, Location, Contact } = req.body;
 
   if (!Title) {
@@ -17,6 +19,7 @@ export const AddPolicestation = async (req) => {
     Title,
     Location,
     Contact,
+    companyId
   });
 
   const createdPolicestation = await newPolicestation.save();
@@ -32,8 +35,9 @@ export const AddPolicestation = async (req) => {
   return createdPolicestation;
 };
 
-export const GetAllPolicestations = async () => {
-  const policestations = await PolicestationModel.find({ active: true }).sort({
+export const GetAllPolicestations = async (req) => {
+  const companyId = req.user.companyId;
+  const policestations = await PolicestationModel.find({ active: true, companyId }).sort({
     createdAt: -1,
   });
 

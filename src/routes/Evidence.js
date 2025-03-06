@@ -2,14 +2,16 @@ import { Router } from "express";
 import { asyncHandler } from "../utils/asyncWrapper.js";
 import { evidenceController } from "../controllers/controllers.js";
 import { upload } from "../utils/multerConfig.js";
+import { jwtMiddleware } from "../middlewares/JWTAuthentication.js";
 const router = Router();
 
 router.post(
   "/addEvidence",
+  jwtMiddleware,
   upload.array("Attachment", 5),
   asyncHandler(evidenceController.EvidenceAdd),
 );
-router.get("/getEvidence", asyncHandler(evidenceController.EvidenceFetch));
+router.get("/getEvidence", jwtMiddleware, asyncHandler(evidenceController.EvidenceFetch));
 router.get(
   "/getEvidencebyId/:id",
   asyncHandler(evidenceController.EvidenceFetchbyId),

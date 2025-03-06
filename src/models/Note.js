@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose, { Mongoose } from "mongoose";
 
 const AttachmentSchema = new mongoose.Schema({
   name: { type: String, required: true },
@@ -18,6 +18,10 @@ const NoteSchema = new mongoose.Schema(
     Active: {
       type: Boolean,
       default: true,
+    },
+    companyId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
     },
   },
   { timestamps: true },

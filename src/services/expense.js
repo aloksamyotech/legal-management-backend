@@ -4,7 +4,7 @@ import CustomError from "../utils/exception.js";
 
 export const AddExpense = async (req) => {
   const { Title, Case, Type, Amount, Description } = req.body;
-
+  const companyId = req.user.companyId
   // Check for required fields
   if (!Title || !Case || !Type || !Amount) {
     throw new CustomError(
@@ -28,6 +28,7 @@ export const AddExpense = async (req) => {
     Amount,
     Attachment: files || [],
     Description,
+    companyId
   });
 
   const createdExpense = await newExpense.save();
@@ -43,8 +44,9 @@ export const AddExpense = async (req) => {
   return createdExpense;
 };
 
-export const GetExpense = async () => {
-  const expenses = await ExpenseModel.find({ Active: true })
+export const GetExpense = async (req) => {
+  const companyId = req.user.companyId
+  const expenses = await ExpenseModel.find({ Active: true, companyId })
     .populate("Type", "Title")
     .populate("Case", "Title")
     .sort({ createdAt: -1 });
