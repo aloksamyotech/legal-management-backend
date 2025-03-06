@@ -101,7 +101,7 @@ export const AddAdvocate = async (req) => {
       email,
       "Welcome to Our Company",
       "",
-      getAccountCreationEmailTemplate(name)
+      getAccountCreationEmailTemplate(name),
     );
   } else {
     console.log("Email not sent as 'advocate' role is blocked.");
@@ -138,7 +138,7 @@ export const AddAdvocate = async (req) => {
 // };
 export const GetAllAdvocates = async (req) => {
   const companyId = req.user.companyId;
-  const advocates = await AdvocateSch.find({ active: true, companyId})
+  const advocates = await AdvocateSch.find({ active: true, companyId })
     .sort({ createdAt: -1 })
     .lean();
 

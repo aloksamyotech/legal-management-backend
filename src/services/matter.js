@@ -3,7 +3,7 @@ import { errorCodes, Message, statusCodes } from "../core/common/constant.js";
 import CustomError from "../utils/exception.js";
 
 export const AddMatter = async (req) => {
-  const companyId = req.user.companyId
+  const companyId = req.user.companyId;
   const { Title, description } = req.body;
 
   if (!Title) {
@@ -17,7 +17,7 @@ export const AddMatter = async (req) => {
   const newMatter = new MatterModel({
     Title,
     description,
-    companyId
+    companyId,
   });
 
   const createdMatter = await newMatter.save();
@@ -34,7 +34,7 @@ export const AddMatter = async (req) => {
 };
 
 export const GetAllMatters = async (req) => {
-  const companyId = req.user.companyId
+  const companyId = req.user.companyId;
   const matters = await MatterModel.find({ active: true, companyId }).sort({
     createdAt: -1,
   });

@@ -50,7 +50,7 @@ const connectDB = async () => {
               "judge",
               "expense type",
               "reports",
-              "profile"
+              "profile",
             ],
           });
           await userData.save();

@@ -10,7 +10,11 @@ router.post(
   jwtMiddleware,
   asyncHandler(documentController.DocumentAdd),
 );
-router.get("/getAllDocument", jwtMiddleware, asyncHandler(documentController.DocumentFetch));
+router.get(
+  "/getAllDocument",
+  jwtMiddleware,
+  asyncHandler(documentController.DocumentFetch),
+);
 router.get("/getDocument/:id", asyncHandler(documentController.DocumentById));
 router.get(
   "/getDocumentbycase/:caseId",

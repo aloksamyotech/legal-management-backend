@@ -75,7 +75,7 @@ UserSchema.methods.generateAccessToken = function () {
   const payload = {
     _id: this._id,
     email: this.email,
-    companyId:this.companyId,
+    companyId: this.companyId,
     permission: this.permission,
   };
 

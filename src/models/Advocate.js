@@ -92,7 +92,7 @@ const AdvocateSchema = new Schema(
       ref: "User",
     },
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
 export const AdvocateSch = mongoose.model("Advocate", AdvocateSchema);

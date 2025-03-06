@@ -84,39 +84,39 @@ export const AddCase = async (req) => {
     );
   }
 
-  if(createdCase){ 
-  const blockedRoles = await BlockedRole.find({ companyId });
-  const isClientBlocked = blockedRoles.some(
-    (role) => role.role === "client" && role.isBlocked,
-  );
-  const isAdvocateBlocked = blockedRoles.some(
-    (role) => role.role === "advocate" && role.isBlocked,
-  );
-
-  // Send email to Advocate
-  if (isAdvocateBlocked && advocateData.email) {
-    await sendEmail(
-      advocateData.email,
-      "Appointed as Advocate",
-      "",
-      getAppointmentEmailTemplate(advocateData.name, clientData.Name, Title),
+  if (createdCase) {
+    const blockedRoles = await BlockedRole.find({ companyId });
+    const isClientBlocked = blockedRoles.some(
+      (role) => role.role === "client" && role.isBlocked,
     );
-  }
-
-  if (isClientBlocked && clientData.Email) {
-    await sendEmail(
-      clientData.Email,
-      "Your Case Has Been Registered",
-      "",
-      getCaseConfirmationEmailTemplate(clientData.Name, Title),
+    const isAdvocateBlocked = blockedRoles.some(
+      (role) => role.role === "advocate" && role.isBlocked,
     );
+
+    // Send email to Advocate
+    if (isAdvocateBlocked && advocateData.email) {
+      await sendEmail(
+        advocateData.email,
+        "Appointed as Advocate",
+        "",
+        getAppointmentEmailTemplate(advocateData.name, clientData.Name, Title),
+      );
+    }
+
+    if (isClientBlocked && clientData.Email) {
+      await sendEmail(
+        clientData.Email,
+        "Your Case Has Been Registered",
+        "",
+        getCaseConfirmationEmailTemplate(clientData.Name, Title),
+      );
+    }
   }
-}
   return createdCase;
 };
 
 export const GetCase = async (req) => {
-  const companyId = req.user.companyId
+  const companyId = req.user.companyId;
   const cases = await CaseModel.find({ Active: true, companyId })
     .populate([
       { path: "Client", select: "Name" },

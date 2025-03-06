@@ -4,33 +4,33 @@ import CustomError from "../utils/exception.js";
 
 export const AddPractice = async (req) => {
   const { Title, address, description } = req.body;
-const companyId = req.user.companyId;
-if (!Title) {
-  throw new CustomError(
-    statusCodes?.badRequest,
-    Message?.Missing_required_field,
-    errorCodes?.bad_request,
-  );
-}
+  const companyId = req.user.companyId;
+  if (!Title) {
+    throw new CustomError(
+      statusCodes?.badRequest,
+      Message?.Missing_required_field,
+      errorCodes?.bad_request,
+    );
+  }
 
-const newPractice = new PracticeModel({
-  Title,
-  address,
-  description,
-  companyId
-});
+  const newPractice = new PracticeModel({
+    Title,
+    address,
+    description,
+    companyId,
+  });
 
-const createdPractice = await newPractice.save();
+  const createdPractice = await newPractice.save();
 
-if (!createdPractice) {
-  throw new CustomError(
-    statusCodes?.serviceUnavailable,
-    Message?.notCreated,
-    errorCodes?.service_unavailable,
-  );
-}
+  if (!createdPractice) {
+    throw new CustomError(
+      statusCodes?.serviceUnavailable,
+      Message?.notCreated,
+      errorCodes?.service_unavailable,
+    );
+  }
 
-return createdPractice;
+  return createdPractice;
 };
 
 export const GetAllPractices = async (req) => {

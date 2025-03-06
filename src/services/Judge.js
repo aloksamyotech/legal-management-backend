@@ -3,7 +3,7 @@ import { errorCodes, Message, statusCodes } from "../core/common/constant.js";
 import CustomError from "../utils/exception.js";
 
 export const AddJudge = async (req) => {
-  const companyId = req.user.companyId
+  const companyId = req.user.companyId;
   const { Title, mobile, description } = req.body;
 
   if (!Title) {
@@ -18,7 +18,7 @@ export const AddJudge = async (req) => {
     Title,
     mobile,
     description,
-    companyId
+    companyId,
   });
 
   const createdJudge = await newJudge.save();
@@ -35,7 +35,7 @@ export const AddJudge = async (req) => {
 };
 
 export const GetAllJudges = async (req) => {
-  const companyId = req.user.companyId
+  const companyId = req.user.companyId;
   const judges = await JudgeModel.find({ active: true, companyId }).sort({
     createdAt: -1,
   });

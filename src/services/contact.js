@@ -5,7 +5,7 @@ import CustomError from "../utils/exception.js";
 export const AddContact = async (req) => {
   const { Name, gender, phoneNumber, emailAddress, Message, subject } =
     req.body;
-    const companyId = req.user.companyId
+  const companyId = req.user.companyId;
   const isContactExist = await Contact.exists({ emailAddress });
   if (isContactExist) {
     throw new CustomError(
@@ -25,7 +25,7 @@ export const AddContact = async (req) => {
     avatar,
     Message,
     subject,
-    companyId
+    companyId,
   });
 
   const createdContact = await contact.save();
@@ -101,8 +101,10 @@ export const DeleteContact = async (req) => {
 };
 
 export const GetAllContact = async (req) => {
-  const companyId = req.user.companyId
-  const contact = await Contact.find({ Active: true, companyId }).sort({ createdAt: -1 });
+  const companyId = req.user.companyId;
+  const contact = await Contact.find({ Active: true, companyId }).sort({
+    createdAt: -1,
+  });
 
   if (!contact || contact.length === 0) {
     return {

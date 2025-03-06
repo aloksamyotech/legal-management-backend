@@ -4,7 +4,7 @@ import CustomError from "../utils/exception.js";
 
 export const AddCourt = async (req) => {
   const { Title, address, description } = req.body;
-  const companyId = req.user.companyId
+  const companyId = req.user.companyId;
   if (!Title) {
     throw new CustomError(
       statusCodes?.badRequest,
@@ -17,7 +17,7 @@ export const AddCourt = async (req) => {
     Title,
     address,
     description,
-    companyId
+    companyId,
   });
 
   const createdCourt = await newCourt.save();
@@ -34,7 +34,7 @@ export const AddCourt = async (req) => {
 };
 
 export const GetAllCourts = async (req) => {
-  const companyId= req.user.companyId
+  const companyId = req.user.companyId;
   const courts = await CourtModel.find({ active: true, companyId }).sort({
     createdAt: -1,
   });

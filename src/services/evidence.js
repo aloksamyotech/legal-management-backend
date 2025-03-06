@@ -3,7 +3,7 @@ import { statusCodes, Message, errorCodes } from "../core/common/constant.js";
 import CustomError from "../utils/exception.js";
 
 export const AddEvidence = async (req) => {
-  const companyId = req.user.companyId
+  const companyId = req.user.companyId;
   const { Title, Case, Hearing, Favor, Description } = req.body;
 
   const files = req?.files?.map((file) => ({
@@ -19,7 +19,7 @@ export const AddEvidence = async (req) => {
     Favor,
     Attachment: files || [],
     Description,
-    companyId
+    companyId,
   });
 
   const createdEvidence = await evidence.save();

@@ -13,7 +13,8 @@ router.get(
   asyncHandler(expenseTypeController.ExpenseTypeFetch),
 );
 router.get(
-  "/getAllExpenseType",jwtMiddleware,
+  "/getAllExpenseType",
+  jwtMiddleware,
   asyncHandler(expenseTypeController.GetAllexpenseType),
 );
 router.delete(

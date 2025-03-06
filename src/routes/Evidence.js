@@ -11,7 +11,11 @@ router.post(
   upload.array("Attachment", 5),
   asyncHandler(evidenceController.EvidenceAdd),
 );
-router.get("/getEvidence", jwtMiddleware, asyncHandler(evidenceController.EvidenceFetch));
+router.get(
+  "/getEvidence",
+  jwtMiddleware,
+  asyncHandler(evidenceController.EvidenceFetch),
+);
 router.get(
   "/getEvidencebyId/:id",
   asyncHandler(evidenceController.EvidenceFetchbyId),

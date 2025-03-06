@@ -60,7 +60,7 @@ const HearingSchema = new Schema(
   },
   {
     timestamps: true,
-  }
+  },
 );
 
 HearingSchema.index({ Title: 1 });

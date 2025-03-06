@@ -10,7 +10,11 @@ router.post(
   upload.array("Attachment", 5),
   asyncHandler(expenseController.ExpenseAdd),
 );
-router.get("/getAllExpense", jwtMiddleware, asyncHandler(expenseController.ExpenseFetch));
+router.get(
+  "/getAllExpense",
+  jwtMiddleware,
+  asyncHandler(expenseController.ExpenseFetch),
+);
 router.get("/getExpense/:id", asyncHandler(expenseController.ExpenseById));
 router.put(
   "/updateExpense/:id",

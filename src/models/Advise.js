@@ -56,7 +56,7 @@ const AdviseSchema = new Schema(
       ref: "User",
     },
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
 export const Advisedb = mongoose.model("Advise", AdviseSchema);

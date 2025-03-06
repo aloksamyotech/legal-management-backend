@@ -49,7 +49,7 @@ import getHearingEmailTemplate from "../core/common/htmlTemplates/HearingEmailTe
 //   return savedHearing;
 // };
 export const AddHearing = async (req) => {
-  const companyId = req?.user?.companyId
+  const companyId = req?.user?.companyId;
   const {
     Title,
     Fee,
@@ -90,7 +90,7 @@ export const AddHearing = async (req) => {
     JudgementReason,
     Description,
     Case,
-    companyId
+    companyId,
   });
 
   const savedHearing = await hearing.save();
@@ -102,15 +102,19 @@ export const AddHearing = async (req) => {
     );
   }
 
-  const blockedRoles = await BlockedRole.find({ companyId: req.user.companyId });
-  const isClientBlocked = blockedRoles.some(role => role.role === "AddHearing" && role.isBlocked);
+  const blockedRoles = await BlockedRole.find({
+    companyId: req.user.companyId,
+  });
+  const isClientBlocked = blockedRoles.some(
+    (role) => role.role === "AddHearing" && role.isBlocked,
+  );
 
   if (isClientBlocked && clientData.Email) {
     await sendEmail(
       clientData.Email,
       "New Hearing Scheduled",
       "",
-      getHearingEmailTemplate(clientData.Name, Title, Date)
+      getHearingEmailTemplate(clientData.Name, Title, Date),
     );
   }
 

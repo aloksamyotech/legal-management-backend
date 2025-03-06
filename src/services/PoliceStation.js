@@ -19,7 +19,7 @@ export const AddPolicestation = async (req) => {
     Title,
     Location,
     Contact,
-    companyId
+    companyId,
   });
 
   const createdPolicestation = await newPolicestation.save();
@@ -37,7 +37,10 @@ export const AddPolicestation = async (req) => {
 
 export const GetAllPolicestations = async (req) => {
   const companyId = req.user.companyId;
-  const policestations = await PolicestationModel.find({ active: true, companyId }).sort({
+  const policestations = await PolicestationModel.find({
+    active: true,
+    companyId,
+  }).sort({
     createdAt: -1,
   });
 

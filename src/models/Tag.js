@@ -16,9 +16,9 @@ const TagSchema = new Schema(
       type: Boolean,
       default: true,
     },
-    companyId:{
+    companyId: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "User"
+      ref: "User",
     },
     CreatedAt: {
       type: Date,

@@ -10,7 +10,11 @@ router.post(
   jwtMiddleware,
   asyncHandler(noteController.NoteAdd),
 );
-router.get("/getAllNote", jwtMiddleware, asyncHandler(noteController.NoteFetch));
+router.get(
+  "/getAllNote",
+  jwtMiddleware,
+  asyncHandler(noteController.NoteFetch),
+);
 router.get("/getNote/:id", asyncHandler(noteController.NoteById));
 router.put(
   "/updateNote/:id",

@@ -10,7 +10,11 @@ router.post(
   jwtMiddleware,
   asyncHandler(contactController.ContactAdd),
 );
-router.get("/getContact", jwtMiddleware, asyncHandler(contactController.ContactFetch));
+router.get(
+  "/getContact",
+  jwtMiddleware,
+  asyncHandler(contactController.ContactFetch),
+);
 router.delete(
   "/deleteContact/:id",
   asyncHandler(contactController.ContactDelete),

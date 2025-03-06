@@ -61,7 +61,7 @@ export const registerAdmin = async (req) => {
       email,
       "Welcome to Our Company",
       "",
-      getAccountCreationEmailTemplate(Name)
+      getAccountCreationEmailTemplate(Name),
     );
   } else {
     console.log("Email not sent as 'User' role is blocked.");
@@ -243,9 +243,10 @@ export const UpdateUser = async (req) => {
 };
 
 export const GetAllUsers = async (req) => {
-  const users = await User.find({ Active: true, companyId: req.user.companyId }).sort(
-    { createdAt: -1 },
-  );
+  const users = await User.find({
+    Active: true,
+    companyId: req.user.companyId,
+  }).sort({ createdAt: -1 });
 
   if (!users || users.length === 0) {
     throw new CustomError(

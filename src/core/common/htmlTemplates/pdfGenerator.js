@@ -4,8 +4,8 @@ import path from "path";
 
 /**
  * Generates a PDF invoice.
- * @param {Object} invoiceData 
- * @returns {Promise<string>} 
+ * @param {Object} invoiceData
+ * @returns {Promise<string>}
  */
 export const generateInvoicePDF = async (invoiceData) => {
   return new Promise((resolve, reject) => {
@@ -35,7 +35,9 @@ export const generateInvoicePDF = async (invoiceData) => {
     });
 
     doc.moveDown();
-    doc.fontSize(16).text(`Total Amount: $${invoiceData.totalAmount}`, { bold: true });
+    doc
+      .fontSize(16)
+      .text(`Total Amount: $${invoiceData.totalAmount}`, { bold: true });
 
     doc.end();
     doc.on("finish", () => resolve(filePath));

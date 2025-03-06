@@ -28,7 +28,7 @@ const ExpenseSchema = new mongoose.Schema(
     Description: { type: String },
     Active: { type: Boolean, default: true },
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
 const Expense = mongoose.model("Expense", ExpenseSchema);

@@ -3,8 +3,16 @@ import { asyncHandler } from "../utils/asyncWrapper.js";
 import { invoiceController } from "../controllers/controllers.js";
 import { jwtMiddleware } from "../middlewares/JWTAuthentication.js";
 const router = Router();
-router.post("/addInvoice", jwtMiddleware, asyncHandler(invoiceController.InvoiceAdd));
-router.get("/getAllInvoice",jwtMiddleware, asyncHandler(invoiceController.AllInvoiceFetch));
+router.post(
+  "/addInvoice",
+  jwtMiddleware,
+  asyncHandler(invoiceController.InvoiceAdd),
+);
+router.get(
+  "/getAllInvoice",
+  jwtMiddleware,
+  asyncHandler(invoiceController.AllInvoiceFetch),
+);
 router.get("/getInvoice/:id", asyncHandler(invoiceController.InvoiceFetchByid));
 router.get(
   "/getinvoicebycase/:caseId",

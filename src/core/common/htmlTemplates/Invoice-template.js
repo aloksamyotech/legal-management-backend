@@ -10,4 +10,4 @@ const getInvoiceEmailTemplate = (recipientName, invoiceNo, amount) => `
   </div>
 `;
 
-export default getInvoiceEmailTemplate
+export default getInvoiceEmailTemplate;

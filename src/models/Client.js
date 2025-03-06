@@ -8,15 +8,12 @@ const ClientSchema = new Schema(
     },
     city: {
       type: String,
-     
     },
     state: {
       type: String,
-      
     },
     zipcode: {
       type: Number,
-     
     },
     phonenum: {
       type: Number,
@@ -24,7 +21,6 @@ const ClientSchema = new Schema(
     },
     country: {
       type: String,
-      
     },
     Email: {
       type: String,

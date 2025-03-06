@@ -57,7 +57,7 @@ export const AddClient = async (req) => {
       Email,
       "Welcome to Our Company",
       "",
-      getAccountCreationEmailTemplate(Name)
+      getAccountCreationEmailTemplate(Name),
     );
   } else {
     console.log("Email not sent as 'client' role is blocked.");
@@ -166,7 +166,9 @@ export const UpdateClient = async (req) => {
 
 export const GetAllClients = async (req) => {
   const companyId = req.user.companyId;
-  const clients = await Client.find({ Active: true, companyId }).sort({ createdAt: -1 });
+  const clients = await Client.find({ Active: true, companyId }).sort({
+    createdAt: -1,
+  });
 
   if (!clients || clients.length === 0) {
     throw new CustomError(

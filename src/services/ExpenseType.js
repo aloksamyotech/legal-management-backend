@@ -4,7 +4,7 @@ import CustomError from "../utils/exception.js";
 
 export const AddExpenseType = async (req) => {
   const { Title, description } = req.body;
-  const companyId = req.user.companyId
+  const companyId = req.user.companyId;
   if (!Title) {
     throw new CustomError(
       statusCodes?.badRequest,
@@ -16,7 +16,7 @@ export const AddExpenseType = async (req) => {
   const newExpenseType = new ExpenseTypeModel({
     Title,
     description,
-    companyId
+    companyId,
   });
 
   const createdExpenseType = await newExpenseType.save();
@@ -33,8 +33,11 @@ export const AddExpenseType = async (req) => {
 };
 
 export const GetAllExpenseTypes = async (req) => {
-  const companyId = req.user.companyId
-  const expenseTypes = await ExpenseTypeModel.find({ active: true, companyId }).sort({
+  const companyId = req.user.companyId;
+  const expenseTypes = await ExpenseTypeModel.find({
+    active: true,
+    companyId,
+  }).sort({
     createdAt: -1,
   });
 

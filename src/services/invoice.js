@@ -10,29 +10,29 @@ import { Client as ClientModel } from "../models/Client.js";
 export const AddInvoice = async (req) => {
   const { Case, Advocate, Client, hearings, extraExpenses, PaymentStatus } =
     req.body;
- const companyId= req.user.companyId
+  const companyId = req.user.companyId;
   if (!Case || !Advocate || !Client || !hearings || hearings.length === 0) {
     throw new CustomError(
       statusCodes?.badRequest,
       Message.Missing_required_field,
-      errorCodes?.bad_request
+      errorCodes?.bad_request,
     );
   }
 
   let HearingTotal = hearings.reduce(
     (sum, hearing) => sum + (hearing.amount || 0),
-    0
+    0,
   );
   let ExpenseTotal = extraExpenses.reduce(
     (sum, expense) => sum + (expense.amount || 0),
-    0
+    0,
   );
   let totalPrice = HearingTotal + ExpenseTotal;
   if (totalPrice <= 0) {
     throw new CustomError(
       statusCodes?.badRequest,
       "Total Price must be greater than 0",
-      errorCodes?.bad_request
+      errorCodes?.bad_request,
     );
   }
   const timestamp = Date.now();
@@ -44,7 +44,7 @@ export const AddInvoice = async (req) => {
     throw new CustomError(
       statusCodes?.notFound,
       "Client, Advocate, or Case not found",
-      errorCodes?.not_found
+      errorCodes?.not_found,
     );
   }
 
@@ -58,7 +58,7 @@ export const AddInvoice = async (req) => {
     TotalPrice: totalPrice,
     extraExpenses,
     PaymentStatus,
-    companyId
+    companyId,
   });
 
   const invoiceCreate = await invoice.save();
@@ -66,13 +66,15 @@ export const AddInvoice = async (req) => {
     throw new CustomError(
       statusCodes?.serviceUnavailable,
       Message.notCreated,
-      errorCodes?.service_unavailable
+      errorCodes?.service_unavailable,
     );
   }
   if (invoiceCreate) {
-    const blockedRoles = await BlockedRole.find({ companyId: req.user.companyId });
+    const blockedRoles = await BlockedRole.find({
+      companyId: req.user.companyId,
+    });
     const isClientBlocked = blockedRoles.some(
-      (role) => role.role === "On Invoice Generate" && role.isBlocked
+      (role) => role.role === "On Invoice Generate" && role.isBlocked,
     );
     if (isClientBlocked) {
       await sendEmail(
@@ -82,13 +84,12 @@ export const AddInvoice = async (req) => {
         getInvoiceEmailTemplate(clientData.Name, InvoiceNo, totalPrice),
       );
     }
-
   }
   return invoiceCreate;
 };
 
 export const GetInvoices = async (req) => {
-  const companyId = req.user.companyId
+  const companyId = req.user.companyId;
   const invoices = await Invoice.find({ Active: true, companyId })
     .populate("Case")
     .populate("Advocate")
@@ -113,7 +114,7 @@ export const GetInvoiceById = async (req) => {
     throw new CustomError(
       statusCodes?.badRequest,
       Message?.inValid,
-      errorCodes?.bad_request
+      errorCodes?.bad_request,
     );
   }
 
@@ -146,7 +147,7 @@ export const UpdateInvoice = async (req) => {
     throw new CustomError(
       statusCodes?.badRequest,
       Message?.inValid,
-      errorCodes?.bad_request
+      errorCodes?.bad_request,
     );
   }
 
@@ -168,7 +169,7 @@ export const UpdateInvoice = async (req) => {
       throw new CustomError(
         statusCodes?.badRequest,
         "Total Price must be greater than 0",
-        errorCodes?.bad_request
+        errorCodes?.bad_request,
       );
     }
     updateData.TotalPrice = totalPrice;
@@ -177,14 +178,14 @@ export const UpdateInvoice = async (req) => {
   const updatedInvoice = await Invoice.findOneAndUpdate(
     { _id: id },
     updateData,
-    { new: true }
+    { new: true },
   );
 
   if (!updatedInvoice) {
     throw new CustomError(
       statusCodes?.notFound,
       Message?.notUpdated,
-      errorCodes?.action_failed
+      errorCodes?.action_failed,
     );
   }
 
@@ -199,20 +200,20 @@ export const DeleteInvoice = async (req) => {
     throw new CustomError(
       statusCodes?.badRequest,
       Message?.inValid,
-      errorCodes?.bad_request
+      errorCodes?.bad_request,
     );
   }
 
   const invoice = await Invoice.findByIdAndUpdate(
     id,
     { Active: false },
-    { new: true }
+    { new: true },
   );
   if (!invoice) {
     throw new CustomError(
       statusCodes?.notFound,
       Message?.notFound,
-      errorCodes?.not_found
+      errorCodes?.not_found,
     );
   }
 
@@ -227,7 +228,7 @@ export const UpdatePaymentStatus = async (req) => {
     throw new CustomError(
       statusCodes?.badRequest,
       Message?.inValid,
-      errorCodes?.bad_request
+      errorCodes?.bad_request,
     );
   }
 
@@ -237,7 +238,7 @@ export const UpdatePaymentStatus = async (req) => {
     throw new CustomError(
       statusCodes?.notFound,
       Message?.notFound,
-      errorCodes?.not_found
+      errorCodes?.not_found,
     );
   }
 
@@ -265,7 +266,7 @@ export const GetInvoiceByCaseId = async (req) => {
     throw new CustomError(
       statusCodes?.badRequest,
       Message?.inValid,
-      errorCodes?.bad_request
+      errorCodes?.bad_request,
     );
   }
 
@@ -295,7 +296,7 @@ export const updateInvoicePayment = async (req) => {
   const updatedInvoice = await Invoice.findByIdAndUpdate(
     { _id: id },
     { PaymentStatus: paymentStatus },
-    { new: true, runValidators: true }
+    { new: true, runValidators: true },
   );
 
   if (!updatedInvoice) {

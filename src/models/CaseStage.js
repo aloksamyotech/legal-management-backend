@@ -27,7 +27,7 @@ const CaseStageSchema = new Schema(
   },
   {
     timestamps: true,
-  }
+  },
 );
 
 const CaseStageModel = mongoose.model("CaseStage", CaseStageSchema);

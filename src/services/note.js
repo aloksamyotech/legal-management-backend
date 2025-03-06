@@ -4,7 +4,7 @@ import CustomError from "../utils/exception.js";
 
 export const AddNote = async (req) => {
   const { Title, Description, CreatedAt } = req.body;
-  const companyId = req.user.companyId
+  const companyId = req.user.companyId;
   if (!Title || !Description) {
     throw new CustomError(
       statusCodes?.badRequest,
@@ -12,7 +12,7 @@ export const AddNote = async (req) => {
       errorCodes?.bad_request,
     );
   }
- 
+
   const files = req.files?.map((file) => ({
     name: file.originalname,
     url: `/uploads/${file.filename}`,
@@ -25,7 +25,7 @@ export const AddNote = async (req) => {
     CreatedAt,
     Attachment: files || [],
     Active: true,
-    companyId
+    companyId,
   });
 
   const createdNote = await newNote.save();
@@ -43,7 +43,9 @@ export const AddNote = async (req) => {
 
 export const GetAllNotes = async (req) => {
   const companyId = req.user.companyId;
-  const notes = await Note.find({ Active: true, companyId }).sort({ createdAt: -1 });
+  const notes = await Note.find({ Active: true, companyId }).sort({
+    createdAt: -1,
+  });
 
   if (!notes || notes.length === 0) {
     throw new CustomError(
