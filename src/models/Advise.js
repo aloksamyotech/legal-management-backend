@@ -51,6 +51,10 @@ const AdviseSchema = new Schema(
       type: String,
       trim: true,
     },
+    companyId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+    },
   },
   { timestamps: true },
 );

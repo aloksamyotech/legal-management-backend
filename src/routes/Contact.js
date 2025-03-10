@@ -2,13 +2,19 @@ import { Router } from "express";
 import { asyncHandler } from "../utils/asyncWrapper.js";
 import { contactController } from "../controllers/controllers.js";
 import { upload } from "../utils/multerConfig.js";
+import { jwtMiddleware } from "../middlewares/JWTAuthentication.js";
 const router = Router();
 router.post(
   "/addContact",
   upload.single("avatar"),
+  jwtMiddleware,
   asyncHandler(contactController.ContactAdd),
 );
-router.get("/getContact", asyncHandler(contactController.ContactFetch));
+router.get(
+  "/getContact",
+  jwtMiddleware,
+  asyncHandler(contactController.ContactFetch),
+);
 router.delete(
   "/deleteContact/:id",
   asyncHandler(contactController.ContactDelete),

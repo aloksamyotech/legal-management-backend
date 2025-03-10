@@ -1,7 +1,55 @@
 import HearingModel from "../models/Hearing.js";
 import { errorCodes, Message, statusCodes } from "../core/common/constant.js";
 import CustomError from "../utils/exception.js";
+import { Client as ClientModel } from "../models/Client.js";
+import BlockedRole from "../models/Email-Sch.js";
+import { sendEmail } from "../core/Nodemailer/nodemailer.js";
+import getHearingEmailTemplate from "../core/common/htmlTemplates/HearingEmailTemplate.js";
+// export const AddHearing = async (req) => {
+//   const {
+//     Title,
+//     Fee,
+//     Client,
+//     Witness,
+//     JudgementStatus,
+//     Date,
+//     JudgementReason,
+//     Description,
+//     Case,
+//   } = req.body;
+
+//   if (!Title || !Fee || !Date || !Case) {
+//     throw new CustomError(
+//       statusCodes?.badRequest,
+//       Message?.Missing_required_field,
+//       errorCodes?.bad_request,
+//     );
+//   }
+
+//   const hearing = new HearingModel({
+//     Title,
+//     Fee,
+//     Witness,
+//     Client,
+//     JudgementStatus,
+//     Date,
+//     JudgementReason,
+//     Description,
+//     Case,
+//   });
+
+//   const savedHearing = await hearing.save();
+//   if (!savedHearing) {
+//     throw new CustomError(
+//       statusCodes?.serviceUnavailable,
+//       Message?.serverError,
+//       errorCodes?.service_unavailable,
+//     );
+//   }
+//   return savedHearing;
+// };
 export const AddHearing = async (req) => {
+  const companyId = req?.user?.companyId;
   const {
     Title,
     Fee,
@@ -22,6 +70,16 @@ export const AddHearing = async (req) => {
     );
   }
 
+  const clientData = await ClientModel.findById(Client).select("Name Email");
+
+  if (!clientData) {
+    throw new CustomError(
+      statusCodes?.notFound,
+      "Client not found",
+      errorCodes?.not_found,
+    );
+  }
+
   const hearing = new HearingModel({
     Title,
     Fee,
@@ -32,6 +90,7 @@ export const AddHearing = async (req) => {
     JudgementReason,
     Description,
     Case,
+    companyId,
   });
 
   const savedHearing = await hearing.save();
@@ -42,6 +101,23 @@ export const AddHearing = async (req) => {
       errorCodes?.service_unavailable,
     );
   }
+
+  const blockedRoles = await BlockedRole.find({
+    companyId: req.user.companyId,
+  });
+  const isClientBlocked = blockedRoles.some(
+    (role) => role.role === "AddHearing" && role.isBlocked,
+  );
+
+  if (isClientBlocked && clientData.Email) {
+    await sendEmail(
+      clientData.Email,
+      "New Hearing Scheduled",
+      "",
+      getHearingEmailTemplate(clientData.Name, Title, Date),
+    );
+  }
+
   return savedHearing;
 };
 
@@ -63,8 +139,9 @@ export const GetHearing = async (req) => {
 
   return hearing;
 };
-export const GetAllHearing = async () => {
-  const allhearings = await HearingModel?.find({ Active: true })
+export const GetAllHearing = async (req) => {
+  const companyId = req.user.companyId;
+  const allhearings = await HearingModel?.find({ Active: true, companyId })
     .populate("Case", "Title")
     .populate("Client", "Name")
     .sort({ createdAt: -1 });

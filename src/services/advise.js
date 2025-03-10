@@ -4,7 +4,7 @@ import CustomError from "../utils/exception.js";
 export const AddAdvise = async (req) => {
   const { Client, Advocate, Matter, Fee, Status, description, internalNote } =
     req.body;
-
+  const companyId = req.user.companyId;
   if (!Client || !Advocate || !Matter || Fee === undefined || !Status) {
     throw new CustomError(
       statusCodes?.badRequest,
@@ -21,6 +21,7 @@ export const AddAdvise = async (req) => {
     Status,
     description,
     internalNote,
+    companyId,
   });
 
   const Advisecreate = await advise.save();
@@ -36,8 +37,9 @@ export const AddAdvise = async (req) => {
   return Advisecreate;
 };
 
-export const GetAdvise = async () => {
-  const advises = await Advisedb.find({ Active: true })
+export const GetAdvise = async (req) => {
+  const companyId = req.user.companyId;
+  const advises = await Advisedb.find({ Active: true, companyId })
     .sort({ createdAt: -1 })
     .populate("Client", "Name")
     .populate("Advocate", "name")

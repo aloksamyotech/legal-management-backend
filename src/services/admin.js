@@ -1,11 +1,11 @@
 import { User } from "../models/Admin.js";
 import { errorCodes, Message, statusCodes } from "../core/common/constant.js";
 import CustomError from "../utils/exception.js";
-import jwt from "jsonwebtoken";
 import BlockedRole from "../models/Email-Sch.js";
 import { sendEmail } from "../core/Nodemailer/nodemailer.js";
+import getAccountCreationEmailTemplate from "../core/common/htmlTemplates/accountCreationtemp.js";
 export const registerAdmin = async (req) => {
-  const companyId = req.user._id;
+  const companyId = req.user.companyId;
   const {
     Name,
     gender,
@@ -55,11 +55,12 @@ export const registerAdmin = async (req) => {
     role: "Create User",
     companyId,
   });
-  if (!isBlocked || !isBlocked.isBlocked) {
+  if (isBlocked.isBlocked) {
     await sendEmail(
       email,
       "Welcome to Our Company",
-      `Hello ${Name},\n\nWelcome! Your account has been created successfully.\n\nThank you!`,
+      "",
+      getAccountCreationEmailTemplate(Name),
     );
   } else {
     console.log("Email not sent as 'User' role is blocked.");
@@ -241,9 +242,10 @@ export const UpdateUser = async (req) => {
 };
 
 export const GetAllUsers = async (req) => {
-  const users = await User.find({ Active: true, companyId: req.user._id }).sort(
-    { createdAt: -1 },
-  );
+  const users = await User.find({
+    Active: true,
+    companyId: req.user.companyId,
+  }).sort({ createdAt: -1 });
 
   if (!users || users.length === 0) {
     throw new CustomError(
@@ -256,57 +258,57 @@ export const GetAllUsers = async (req) => {
   return users;
 };
 
-export const LoginUser = async (req) => {
-  const { email, password } = req.body;
+// export const LoginUser = async (req) => {
+//   const { email, password } = req.body;
 
-  const user = await User.findOne({ email, Active: true });
-  if (!user) {
-    throw new CustomError(
-      statusCodes?.notFound,
-      Message?.notFound,
-      errorCodes?.not_found,
-    );
-  }
+//   const user = await User.findOne({ email, Active: true });
+//   if (!user) {
+//     throw new CustomError(
+//       statusCodes?.notFound,
+//       Message?.notFound,
+//       errorCodes?.not_found,
+//     );
+//   }
 
-  const isPasswordCorrect = await user.isPasswordCorrect(password);
-  if (!isPasswordCorrect) {
-    throw new CustomError(
-      statusCodes?.unauthorized,
-      Message?.invalidCredentials,
-      errorCodes?.invalid_credentials,
-    );
-  }
+//   const isPasswordCorrect = await user.isPasswordCorrect(password);
+//   if (!isPasswordCorrect) {
+//     throw new CustomError(
+//       statusCodes?.unauthorized,
+//       Message?.invalidCredentials,
+//       errorCodes?.invalid_credentials,
+//     );
+//   }
 
-  const accessToken = user.generateAccessToken();
-  const refreshToken = user.generateRefreshToken();
+//   const accessToken = user.generateAccessToken();
+//   const refreshToken = user.generateRefreshToken();
 
-  return { accessToken, refreshToken, user };
-};
+//   return { accessToken, refreshToken, user };
+// };
 
-export const RefreshToken = async (req) => {
-  const { refreshToken } = req.body;
+// export const RefreshToken = async (req) => {
+//   const { refreshToken } = req.body;
 
-  if (!refreshToken) {
-    throw new CustomError(
-      statusCodes?.badRequest,
-      Message?.refreshTokenMissing,
-      errorCodes?.bad_request,
-    );
-  }
+//   if (!refreshToken) {
+//     throw new CustomError(
+//       statusCodes?.badRequest,
+//       Message?.refreshTokenMissing,
+//       errorCodes?.bad_request,
+//     );
+//   }
 
-  const decoded = jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET);
-  const user = await User.findById(decoded._id);
-  if (!user) {
-    throw new CustomError(
-      statusCodes?.unauthorized,
-      Message?.invalidRefreshToken,
-      errorCodes?.invalid_token,
-    );
-  }
+//   const decoded = jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET);
+//   const user = await User.findById(decoded._id);
+//   if (!user) {
+//     throw new CustomError(
+//       statusCodes?.unauthorized,
+//       Message?.invalidRefreshToken,
+//       errorCodes?.invalid_token,
+//     );
+//   }
 
-  const newAccessToken = user.generateAccessToken();
-  return { accessToken: newAccessToken };
-};
+//   const newAccessToken = user.generateAccessToken();
+//   return { accessToken: newAccessToken };
+// };
 export const resetPassword = async (req) => {
   const { newPassword } = req.body;
   const id = req.user._id;

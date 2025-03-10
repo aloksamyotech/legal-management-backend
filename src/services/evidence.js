@@ -3,6 +3,7 @@ import { statusCodes, Message, errorCodes } from "../core/common/constant.js";
 import CustomError from "../utils/exception.js";
 
 export const AddEvidence = async (req) => {
+  const companyId = req.user.companyId;
   const { Title, Case, Hearing, Favor, Description } = req.body;
 
   const files = req?.files?.map((file) => ({
@@ -18,13 +19,15 @@ export const AddEvidence = async (req) => {
     Favor,
     Attachment: files || [],
     Description,
+    companyId,
   });
 
   const createdEvidence = await evidence.save();
   return createdEvidence;
 };
-export const GetEvidence = async () => {
-  const evidence = await Evidence?.find({ Active: true })
+export const GetEvidence = async (req) => {
+  const companyId = req.user.companyId;
+  const evidence = await Evidence?.find({ Active: true, companyId })
     .populate("Case")
     .populate("Hearing")
     .sort({ createdAt: -1 });

@@ -3,7 +3,7 @@ import BlockedRole from "../models/Email-Sch.js";
 import { statusCodes, errorCodes, Message } from "../core/common/constant.js";
 import CustomError from "../utils/exception.js";
 export const getBlockmail = async (req) => {
-  const companyId = req.user._id;
+  const companyId = req.user.companyId;
   const blockedRoles = await BlockedRole.find({ companyId });
   if (!blockedRoles || blockedRoles.length === 0) {
     throw new CustomError(
@@ -18,7 +18,7 @@ export const getBlockmail = async (req) => {
 
 export const toggerRole = async (req) => {
   const { role, isBlocked } = req.body;
-  const companyId = req.user._id;
+  const companyId = req.user.companyId;
   let blockedRole = await BlockedRole.findOne({ role, companyId });
 
   if (blockedRole) {

@@ -4,7 +4,7 @@ import CustomError from "../utils/exception.js";
 
 export const AddDocument = async (req) => {
   const { Title, Case, Note } = req.body;
-
+  const companyId = req.user.companyId;
   if (!Title || !Case || !Note) {
     throw new CustomError(
       statusCodes?.badRequest,
@@ -23,6 +23,7 @@ export const AddDocument = async (req) => {
     Title,
     Case,
     Note,
+    companyId,
     Attachment: files || [],
     Active: true,
   });
@@ -40,8 +41,9 @@ export const AddDocument = async (req) => {
   return createdDocument;
 };
 
-export const GetAllDocuments = async () => {
-  const documents = await Document.find({ Active: true })
+export const GetAllDocuments = async (req) => {
+  const companyId = req.user.companyId;
+  const documents = await Document.find({ Active: true, companyId })
     .populate("Case", "Title")
     .sort({ createdAt: -1 });
 

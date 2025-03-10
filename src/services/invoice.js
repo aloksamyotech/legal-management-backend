@@ -1,12 +1,16 @@
 import Invoice from "../models/Invoice.js";
-
 import { errorCodes, Message, statusCodes } from "../core/common/constant.js";
 import CustomError from "../utils/exception.js";
+import { sendEmail } from "../core/Nodemailer/nodemailer.js";
+import BlockedRole from "../models/Email-Sch.js";
+import getInvoiceEmailTemplate from "../core/common/htmlTemplates/Invoice-template.js";
+import CaseModel from "../models/Case.js";
+import { Client as ClientModel } from "../models/Client.js";
 
 export const AddInvoice = async (req) => {
   const { Case, Advocate, Client, hearings, extraExpenses, PaymentStatus } =
     req.body;
-
+  const companyId = req.user.companyId;
   if (!Case || !Advocate || !Client || !hearings || hearings.length === 0) {
     throw new CustomError(
       statusCodes?.badRequest,
@@ -15,19 +19,14 @@ export const AddInvoice = async (req) => {
     );
   }
 
-  let HearingTotal = 0;
-  hearings.forEach((hearing) => {
-    if (hearing.amount) {
-      HearingTotal += hearing.amount;
-    }
-  });
-  let ExpenseTotal = 0;
-  extraExpenses.forEach((expense) => {
-    if (expense.amount) {
-      ExpenseTotal += expense.amount;
-    }
-  });
-
+  let HearingTotal = hearings.reduce(
+    (sum, hearing) => sum + (hearing.amount || 0),
+    0,
+  );
+  let ExpenseTotal = extraExpenses.reduce(
+    (sum, expense) => sum + (expense.amount || 0),
+    0,
+  );
   let totalPrice = HearingTotal + ExpenseTotal;
   if (totalPrice <= 0) {
     throw new CustomError(
@@ -38,8 +37,20 @@ export const AddInvoice = async (req) => {
   }
   const timestamp = Date.now();
   const InvoiceNo = `INV-${String(timestamp).slice(-4)}`;
+  const clientData = await ClientModel.findById(Client).select("Name Email");
+  const caseData = await CaseModel.findById(Case).select("Title");
+
+  if (!clientData || !caseData) {
+    throw new CustomError(
+      statusCodes?.notFound,
+      "Client, Advocate, or Case not found",
+      errorCodes?.not_found,
+    );
+  }
+
+  // Create invoice entry
   const invoice = new Invoice({
-    InvoiceNo: InvoiceNo,
+    InvoiceNo,
     Case,
     Advocate,
     Client,
@@ -47,10 +58,10 @@ export const AddInvoice = async (req) => {
     TotalPrice: totalPrice,
     extraExpenses,
     PaymentStatus,
+    companyId,
   });
 
   const invoiceCreate = await invoice.save();
-
   if (!invoiceCreate) {
     throw new CustomError(
       statusCodes?.serviceUnavailable,
@@ -58,12 +69,28 @@ export const AddInvoice = async (req) => {
       errorCodes?.service_unavailable,
     );
   }
-
+  if (invoiceCreate) {
+    const blockedRoles = await BlockedRole.find({
+      companyId: req.user.companyId,
+    });
+    const isClientBlocked = blockedRoles.some(
+      (role) => role.role === "On Invoice Generate" && role.isBlocked,
+    );
+    if (isClientBlocked) {
+      await sendEmail(
+        clientData.Email,
+        "Invoice Generated for Your Case",
+        "",
+        getInvoiceEmailTemplate(clientData.Name, InvoiceNo, totalPrice),
+      );
+    }
+  }
   return invoiceCreate;
 };
 
-export const GetInvoices = async () => {
-  const invoices = await Invoice.find({ Active: true })
+export const GetInvoices = async (req) => {
+  const companyId = req.user.companyId;
+  const invoices = await Invoice.find({ Active: true, companyId })
     .populate("Case")
     .populate("Advocate")
     .populate("Client");

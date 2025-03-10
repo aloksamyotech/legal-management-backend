@@ -4,10 +4,11 @@ import CustomError from "../utils/exception.js";
 import CaseModel from "../models/Case.js";
 import BlockedRole from "../models/Email-Sch.js";
 import { sendEmail } from "../core/Nodemailer/nodemailer.js";
+import getAccountCreationEmailTemplate from "../core/common/htmlTemplates/accountCreationtemp.js";
 
 // Create an Advocate
 export const AddAdvocate = async (req) => {
-  const companyId = req.user._id;
+  const companyId = req.user.companyId;
   const {
     name,
     email,
@@ -95,11 +96,12 @@ export const AddAdvocate = async (req) => {
     );
   }
   const isBlocked = await BlockedRole.findOne({ role: "advocate", companyId });
-  if (!isBlocked || !isBlocked.isBlocked) {
+  if (isBlocked.isBlocked) {
     await sendEmail(
       email,
       "Welcome to Our Company",
-      `Hello ${name},\n\nWelcome! Your account has been created.\n\nThank you!`,
+      "",
+      getAccountCreationEmailTemplate(name),
     );
   } else {
     console.log("Email not sent as 'advocate' role is blocked.");
@@ -134,8 +136,9 @@ export const AddAdvocate = async (req) => {
 //   // return advocates;
 //   return res
 // };
-export const GetAllAdvocates = async () => {
-  const advocates = await AdvocateSch.find({ active: true })
+export const GetAllAdvocates = async (req) => {
+  const companyId = req.user.companyId;
+  const advocates = await AdvocateSch.find({ active: true, companyId })
     .sort({ createdAt: -1 })
     .lean();
 

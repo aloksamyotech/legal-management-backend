@@ -1,9 +1,11 @@
 import { Router } from "express";
 import { asyncHandler } from "../utils/asyncWrapper.js";
 import { practiceareaController } from "../controllers/controllers.js";
+import { jwtMiddleware } from "../middlewares/JWTAuthentication.js";
 const router = Router();
 router.post(
   "/addPracticearea",
+  jwtMiddleware,
   asyncHandler(practiceareaController.PracticeareaAdd),
 );
 router.get(
@@ -12,6 +14,7 @@ router.get(
 );
 router.get(
   "/getAllPracticearea",
+  jwtMiddleware,
   asyncHandler(practiceareaController.GetAllpracticearea),
 );
 router.delete(

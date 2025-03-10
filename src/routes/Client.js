@@ -11,7 +11,11 @@ router.post(
   asyncHandler(clientController.ClientAdd),
 );
 router.get("/getClientbyid/:id", asyncHandler(clientController.ClientFetch));
-router.get("/getAllClient", asyncHandler(clientController.GetAllclient));
+router.get(
+  "/getAllClient",
+  jwtMiddleware,
+  asyncHandler(clientController.GetAllclient),
+);
 router.get(
   "/getCaseByClient/:clientId",
   asyncHandler(clientController.GetCasebyClientId),

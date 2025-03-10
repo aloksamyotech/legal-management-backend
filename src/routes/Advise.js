@@ -1,9 +1,18 @@
 import { Router } from "express";
 import { asyncHandler } from "../utils/asyncWrapper.js";
 import { adviseController } from "../controllers/controllers.js";
+import { jwtMiddleware } from "../middlewares/JWTAuthentication.js";
 const router = Router();
-router.post("/addAdvise", asyncHandler(adviseController.AdviseAdd));
-router.get("/getAdvise", asyncHandler(adviseController.AdviseFetch));
+router.post(
+  "/addAdvise",
+  jwtMiddleware,
+  asyncHandler(adviseController.AdviseAdd),
+);
+router.get(
+  "/getAdvise",
+  jwtMiddleware,
+  asyncHandler(adviseController.AdviseFetch),
+);
 router.get(
   "/getoneAdvise/:id",
   asyncHandler(adviseController.SingleAdviceFetch),

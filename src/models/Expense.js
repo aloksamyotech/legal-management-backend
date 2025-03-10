@@ -21,6 +21,10 @@ const ExpenseSchema = new mongoose.Schema(
     },
     Amount: { type: Number, required: true },
     Attachment: [AttachmentSchema],
+    companyId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+    },
     Description: { type: String },
     Active: { type: Boolean, default: true },
   },

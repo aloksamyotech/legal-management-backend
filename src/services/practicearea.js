@@ -4,7 +4,7 @@ import CustomError from "../utils/exception.js";
 
 export const AddPractice = async (req) => {
   const { Title, address, description } = req.body;
-
+  const companyId = req.user.companyId;
   if (!Title) {
     throw new CustomError(
       statusCodes?.badRequest,
@@ -17,6 +17,7 @@ export const AddPractice = async (req) => {
     Title,
     address,
     description,
+    companyId,
   });
 
   const createdPractice = await newPractice.save();
@@ -32,8 +33,9 @@ export const AddPractice = async (req) => {
   return createdPractice;
 };
 
-export const GetAllPractices = async () => {
-  const practices = await PracticeModel.find({ active: true }).sort({
+export const GetAllPractices = async (req) => {
+  const companyId = req.user.companyId;
+  const practices = await PracticeModel.find({ active: true, companyId }).sort({
     createdAt: -1,
   });
 
