@@ -106,7 +106,7 @@ export const AddHearing = async (req) => {
     companyId: req.user.companyId,
   });
   const isClientBlocked = blockedRoles.some(
-    (role) => role.role === "AddHearing" && role.isBlocked,
+    (role) => role?.role === "AddHearing" && role?.isBlocked,
   );
 
   if (isClientBlocked && clientData.Email) {

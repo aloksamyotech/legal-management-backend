@@ -87,10 +87,10 @@ export const AddCase = async (req) => {
   if (createdCase) {
     const blockedRoles = await BlockedRole.find({ companyId });
     const isClientBlocked = blockedRoles.some(
-      (role) => role.role === "client" && role.isBlocked,
+      (role) => role?.role === "client" && role?.isBlocked,
     );
     const isAdvocateBlocked = blockedRoles.some(
-      (role) => role.role === "advocate" && role.isBlocked,
+      (role) => role?.role === "advocate" && role?.isBlocked,
     );
 
     // Send email to Advocate

@@ -10,6 +10,10 @@ const userFetch = async (req, res, next) => {
   const userData = await adminService.GetAllUsers(req, res, next);
   res.status(statusCodes?.ok).send(userData);
 };
+const companylogo = async (req, res, next) => {
+  const logo = await adminService.Companylogo(req, res, next);
+  res.status(statusCodes?.ok).send(logo);
+};
 const userFetchbyId = async (req, res, next) => {
   const userData = await adminService.GetUser(req, res, next);
   res.status(statusCodes?.ok).send(userData);
@@ -59,6 +63,7 @@ export default {
   userFetchbyId,
   deleteuserbyId,
   permissionUpdate,
+  companylogo,
   userUpdate,
   resetpassword,
   updateLogo,

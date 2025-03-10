@@ -126,6 +126,36 @@ export const loginAdmin = async (req) => {
   };
 };
 
+export const Companylogo = async (req) => {
+  const id  = req.user.companyId;
+
+  if (!id) {
+    throw new CustomError(
+      statusCodes?.badRequest,
+      Message?.inValid,
+      errorCodes?.bad_request
+    );
+  }
+
+  // Fetch user details
+  const user = await User.findOne({ _id: id, Active: true });
+
+  if (!user) {
+    throw new CustomError(
+      statusCodes?.notFound,
+      Message?.notFound,
+      errorCodes?.not_found
+    );
+  }
+
+  // Fetch company logo based on companyId
+  let companyLogo = null;
+  if (user?.CompanyLogo) {
+    companyLogo = user.CompanyLogo|| null;
+  }
+
+  return {companyLogo};
+};
 export const GetUser = async (req) => {
   const { id } = req.params;
 
@@ -205,7 +235,7 @@ export const UpdateUserPermission = async (req) => {
 
 export const UpdateUser = async (req) => {
   const { id } = req.params;
-  const { Name, Gender, mobileNumber, AsignRole, email, address } = req.body;
+  const { Name, Gender, mobileNumber, AsignRole, email, address, currency } = req.body;
 
   if (!id) {
     throw new CustomError(
@@ -221,9 +251,11 @@ export const UpdateUser = async (req) => {
     AsignRole,
     email,
     address,
-    image: req.file ? `/uploads/${req.file.filename}` : null,
+    currency,  
   };
-
+  if (req?.file) {
+    updateData.image = `/uploads/${req.file.filename}`;
+  }
   const updatedUser = await User.findOneAndUpdate(
     { _id: id, Active: true },
     updateData,
@@ -330,7 +362,7 @@ export const resetPassword = async (req) => {
   return user;
 };
 export const Updatelogo = async (req) => {
-  const id = req.user._id;
+  const id = req.user.companyId;
 
   if (!id) {
     throw new CustomError(

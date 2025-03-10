@@ -18,6 +18,7 @@ router.get(
   jwtMiddleware,
   asyncHandler(adminController.userFetch),
 );
+router.get("/getcompanyLogo", jwtMiddleware,asyncHandler(adminController.companylogo))
 router.get("/getuserbyId/:id", asyncHandler(adminController.userFetchbyId));
 router.delete("/deleteUser/:id", asyncHandler(adminController.deleteuserbyId));
 router.put(
