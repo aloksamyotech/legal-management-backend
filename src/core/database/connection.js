@@ -53,7 +53,7 @@ const connectDB = async () => {
               "profile",
             ],
           });
-        const newAdmin= await userData.save();
+          const newAdmin = await userData.save();
           newAdmin.companyId = newAdmin._id;
           await newAdmin.save();
           console.log(`New Admin is Created`);
