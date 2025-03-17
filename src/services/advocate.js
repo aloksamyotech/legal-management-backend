@@ -96,7 +96,7 @@ export const AddAdvocate = async (req) => {
     );
   }
   const isBlocked = await BlockedRole.findOne({ role: "advocate", companyId });
-  if (isBlocked.isBlocked) {
+  if (isBlocked?.isBlocked) {
     await sendEmail(
       email,
       "Welcome to Our Company",

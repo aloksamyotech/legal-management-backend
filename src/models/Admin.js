@@ -47,7 +47,10 @@ const UserSchema = new Schema(
       type: [],
       default: ["dashboard"],
     },
-
+    currency:{
+      type:String,
+      default:"INR"
+    },
     Active: {
       type: Boolean,
       default: true,
