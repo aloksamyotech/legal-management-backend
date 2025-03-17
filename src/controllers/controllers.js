@@ -19,8 +19,10 @@ import caseStageController from "./CaseStage.js";
 import expenseTypeController from "./ExpenseType.js";
 import invoiceController from "./Invoice.js";
 import emailController from "./Email-controller.js";
+import reportController from "./Report.js";
 // import chatboard  from "./chatbot.js"
 export {
+  reportController,
   tagController,
   caseStageController,
   expenseTypeController,

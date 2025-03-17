@@ -54,7 +54,8 @@ const AdvocateSchema = new Schema(
       type: String,
     },
     practiceArea: {
-      type: String,
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Practicearea",
     },
     languages: {
       type: String,
