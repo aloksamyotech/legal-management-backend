@@ -177,7 +177,10 @@ export const GetAdvocateById = async (req) => {
     );
   }
 
-  const advocate = await AdvocateSch.findOne({ _id: id, active: true });
+  const advocate = await AdvocateSch.findOne({
+    _id: id,
+    active: true,
+  }).populate("practiceArea");
 
   if (!advocate) {
     throw new CustomError(

@@ -47,7 +47,7 @@ const CaseSchema = new Schema(
     },
     CaseStatus: {
       type: String,
-      enum: ["Open", "Closed","Pending"],
+      enum: ["Open", "Closed", "Pending"],
     },
     description: {
       type: String,

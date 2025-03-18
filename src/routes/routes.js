@@ -21,6 +21,7 @@ import invoiceRouter from "./Invoice.js";
 import emailRouter from "./Email-Route.js";
 import { Router } from "express";
 import chatRouter from "./Chatbot.js";
+import reportRouter from "./Report.js";
 
 const router = Router();
 
@@ -45,5 +46,6 @@ router.use("/tag", tagRouter);
 router.use("/casestage", caseStageRouter);
 router.use("/expensetype", expenseTypeRouter);
 router.use("/invoice", invoiceRouter);
+router.use("/Report", reportRouter);
 router.use("/BlockMail", emailRouter);
 export default router;

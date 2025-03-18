@@ -8,7 +8,7 @@ export const registerAdmin = async (req) => {
   const companyId = req.user.companyId;
   const {
     Name,
-    gender,
+    Gender,
     mobileNumber,
     AsignRole,
     email,
@@ -34,7 +34,7 @@ export const registerAdmin = async (req) => {
     email,
     password,
     companyId: companyId,
-    Gender: gender,
+    Gender,
     address,
     permission,
     image: req.file ? `/uploads/${req.file.filename}` : null,
@@ -55,7 +55,7 @@ export const registerAdmin = async (req) => {
     role: "Create User",
     companyId,
   });
-  if (isBlocked.isBlocked) {
+  if (isBlocked?.isBlocked) {
     await sendEmail(
       email,
       "Welcome to Our Company",
@@ -127,13 +127,13 @@ export const loginAdmin = async (req) => {
 };
 
 export const Companylogo = async (req) => {
-  const id  = req.user.companyId;
+  const id = req.user.companyId;
 
   if (!id) {
     throw new CustomError(
       statusCodes?.badRequest,
       Message?.inValid,
-      errorCodes?.bad_request
+      errorCodes?.bad_request,
     );
   }
 
@@ -144,17 +144,17 @@ export const Companylogo = async (req) => {
     throw new CustomError(
       statusCodes?.notFound,
       Message?.notFound,
-      errorCodes?.not_found
+      errorCodes?.not_found,
     );
   }
 
   // Fetch company logo based on companyId
   let companyLogo = null;
   if (user?.CompanyLogo) {
-    companyLogo = user.CompanyLogo|| null;
+    companyLogo = user.CompanyLogo || null;
   }
 
-  return {companyLogo};
+  return { companyLogo };
 };
 export const GetUser = async (req) => {
   const { id } = req.params;
@@ -235,7 +235,8 @@ export const UpdateUserPermission = async (req) => {
 
 export const UpdateUser = async (req) => {
   const { id } = req.params;
-  const { Name, Gender, mobileNumber, AsignRole, email, address, currency } = req.body;
+  const { Name, Gender, mobileNumber, AsignRole, email, address, currency } =
+    req.body;
 
   if (!id) {
     throw new CustomError(
@@ -251,7 +252,7 @@ export const UpdateUser = async (req) => {
     AsignRole,
     email,
     address,
-    currency,  
+    currency,
   };
   if (req?.file) {
     updateData.image = `/uploads/${req.file.filename}`;
