@@ -26,4 +26,5 @@ router.put(
   upload.single("image"),
   asyncHandler(clientController.ClientUpdate),
 );
+router.post('/bulkUpload', upload.single('file'), asyncHandler(clientController.BulkuploadClient))
 export default router;
