@@ -5,6 +5,7 @@ import CaseModel from "../models/Case.js";
 import BlockedRole from "../models/Email-Sch.js";
 import { sendEmail } from "../core/Nodemailer/nodemailer.js";
 import getAccountCreationEmailTemplate from "../core/common/htmlTemplates/accountCreationtemp.js";
+import xlsx from 'xlsx';
 export const AddClient = async (req) => {
   const {
     Name,
@@ -205,3 +206,29 @@ export const GetCaseByClient = async (req) => {
 
   return cases;
 };
+
+export const ClientBulk = async(req , res)=>{
+    const { file } = req;
+    if (!file) {
+      return res.status(400).json({ message: 'No file uploaded' });
+    }
+
+    const workbook = xlsx.read(file.buffer, { type: 'buffer' });
+    const sheetName = workbook.SheetNames[0];
+    const worksheet = workbook.Sheets[sheetName];
+    const data = xlsx.utils.sheet_to_json(worksheet);
+
+    if (data.length === 0) {
+      return res.status(400).json({ message: 'File is empty' });
+    }
+
+    const bulkInsert = await Client.insertMany(data);
+    if (!bulkInsert) {
+      throw new CustomError(
+        statusCodes?.notFound,
+        Message?.notFound,
+        errorCodes?.not_found,
+      );
+    }
+    return bulkInsert;
+}

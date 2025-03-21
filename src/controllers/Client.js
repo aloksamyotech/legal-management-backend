@@ -25,6 +25,10 @@ const GetCasebyClientId = async (req, res, next) => {
   const ClientData = await clientService.GetCaseByClient(req, res, next);
   res.status(statusCodes?.ok).send(ClientData);
 };
+const BulkuploadClient = async (req, res, next) => {
+  const ClientData = await clientService.ClientBulk(req, res, next);
+  res.status(statusCodes?.ok).send(ClientData);
+};
 export default {
   GetCasebyClientId,
   ClientAdd,
@@ -32,4 +36,5 @@ export default {
   ClientDelete,
   ClientUpdate,
   GetAllclient,
+  BulkuploadClient
 };
