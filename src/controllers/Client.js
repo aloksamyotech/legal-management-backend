@@ -36,5 +36,5 @@ export default {
   ClientDelete,
   ClientUpdate,
   GetAllclient,
-  BulkuploadClient
+  BulkuploadClient,
 };

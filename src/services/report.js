@@ -1,3 +1,4 @@
+import mongoose from "mongoose";
 import { errorCodes, Message, statusCodes } from "../core/common/constant.js";
 import CaseModel from "../models/Case.js";
 import HearingModel from "../models/Hearing.js";
@@ -5,16 +6,17 @@ import CustomError from "../utils/exception.js";
 
 export const GetAllHearingRepo = async (req) => {
   const companyId = req.user.companyId;
-  const { client, title, startDate, endDate, judgementStatus } = req.query;
+  const { client, title, startDate, endDate, judgementStatus, timeFilter } =
+    req.query;
 
   let filterConditions = { Active: true, companyId };
 
   if (client) {
-    filterConditions["Client.Name"] = { $regex: client, $options: "i" };
+    filterConditions["Client"] = new mongoose.Types.ObjectId(client);
   }
 
   if (title) {
-    filterConditions["Case.Title"] = { $regex: title, $options: "i" };
+    filterConditions["Title"] = { $regex: title, $options: "i" };
   }
 
   if (judgementStatus) {
@@ -29,6 +31,20 @@ export const GetAllHearingRepo = async (req) => {
     filterConditions["Date"] = { $gte: start, $lte: end };
   }
 
+  if (timeFilter === "today") {
+    const today = new Date();
+    filterConditions["Date"] = {
+      $gte: new Date(today.setHours(0, 0, 0, 0)),
+      $lte: new Date(today.setHours(23, 59, 59, 999)),
+    };
+  } else if (timeFilter === "thisMonth") {
+    const currentMonth = new Date().getMonth();
+    const currentYear = new Date().getFullYear();
+    filterConditions["Date"] = {
+      $gte: new Date(currentYear, currentMonth, 1),
+      $lte: new Date(currentYear, currentMonth + 1, 0, 23, 59, 59),
+    };
+  }
   const allhearings = await HearingModel?.find(filterConditions)
     .populate("Case", "Title")
     .populate("Client", "Name")
@@ -52,15 +68,19 @@ export const GetCaseRepo = async (req) => {
   let query = { Active: true, companyId };
 
   if (client) {
-    query["Client"] = { $regex: client, $options: "i" }; 
+    query["Client"] = new mongoose.Types.ObjectId(client);
+  }
+  if (
+    caseName &&
+    typeof caseName === "string" &&
+    caseName.trim() !== "" &&
+    caseName !== ""
+  ) {
+    query["Title"] = { $regex: caseName, $options: "i" };
   }
 
   if (caseStatus) {
     query["CaseStatus"] = caseStatus;
-  }
-
-  if (caseName) {
-    query["Title"] = { $regex: caseName, $options: "i" }; 
   }
 
   if (startDate && endDate) {
@@ -96,11 +116,11 @@ export const GetCaseRepo = async (req) => {
     .sort({ createdAt: -1 });
 
   if (!cases || cases.length === 0) {
-    throw new CustomError(
-      statusCodes?.notFound,
-      Message?.notFound,
-      errorCodes?.not_found,
-    );
+    return {
+      status: statusCodes?.notFound,
+      message: Message?.notFound,
+      errorcode: errorCodes?.not_found,
+    };
   }
 
   return cases;
