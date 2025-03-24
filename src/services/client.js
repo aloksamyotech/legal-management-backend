@@ -5,7 +5,7 @@ import CaseModel from "../models/Case.js";
 import BlockedRole from "../models/Email-Sch.js";
 import { sendEmail } from "../core/Nodemailer/nodemailer.js";
 import getAccountCreationEmailTemplate from "../core/common/htmlTemplates/accountCreationtemp.js";
-import xlsx from 'xlsx';
+import xlsx from "xlsx";
 export const AddClient = async (req) => {
   const {
     Name,
@@ -206,23 +206,45 @@ export const GetCaseByClient = async (req) => {
 
   return cases;
 };
+export const ClientBulk = async (req, res) => {
+  const file = req?.file?.path;
+  const companyId = req.user.companyId;
 
-export const ClientBulk = async(req , res)=>{
-    const { file } = req;
-    if (!file) {
-      return res.status(400).json({ message: 'No file uploaded' });
+  if (!file) {
+    return res.status(400).json({ message: "No file uploaded" });
+  }
+
+  try {
+    const workbook = xlsx.readFile(file);
+    if (!workbook.SheetNames || workbook.SheetNames.length === 0) {
+      return res.status(400).json({ message: "No sheets found in the file" });
     }
 
-    const workbook = xlsx.read(file.buffer, { type: 'buffer' });
     const sheetName = workbook.SheetNames[0];
     const worksheet = workbook.Sheets[sheetName];
     const data = xlsx.utils.sheet_to_json(worksheet);
 
     if (data.length === 0) {
-      return res.status(400).json({ message: 'File is empty' });
+      return res.status(400).json({ message: "File is empty" });
     }
+    const emailSet = new Set();
+    const filteredData = data
+      .map((row) => {
+        if (row.Email && emailSet.has(row.Email)) {
+          console.log(`Skipping duplicate email: ${row.Email}`);
+          return null;
+        }
+        row.companyId = companyId;
+        emailSet.add(row.Email);
+        return row;
+      })
+      .filter((row) => row !== null);
 
-    const bulkInsert = await Client.insertMany(data);
+    if (filteredData.length === 0) {
+      return res.status(400).json({ message: "No valid data to insert" });
+    }
+    const bulkInsert = await Client.insertMany(filteredData);
+
     if (!bulkInsert) {
       throw new CustomError(
         statusCodes?.notFound,
@@ -230,5 +252,14 @@ export const ClientBulk = async(req , res)=>{
         errorCodes?.not_found,
       );
     }
-    return bulkInsert;
-}
+
+    return res
+      .status(200)
+      .json({ message: "Bulk upload successful", data: bulkInsert });
+  } catch (error) {
+    console.error(error);
+    return res
+      .status(500)
+      .json({ message: "Internal Server Error", error: error.message });
+  }
+};
