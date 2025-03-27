@@ -16,6 +16,7 @@ export const responseFormat = `
 16. Always generate index no for case_id
 17. NEVER include images in the response
 18. use bullets and change lines after each item when you make a list
+19. Respond with HTML if lists or tables are available in response.
 Ensure the data is properly formatted, with all relevant fields included in the response.`;
 
 export const responseQueryFormat = `- list: "Found [X] items: [List with names]"

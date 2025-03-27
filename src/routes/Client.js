@@ -17,6 +17,11 @@ router.get(
   asyncHandler(clientController.GetAllclient),
 );
 router.get(
+  "/getAllClientIndex",
+  jwtMiddleware,
+  asyncHandler(clientController.GetAllPageClint),
+);
+router.get(
   "/getCaseByClient/:clientId",
   asyncHandler(clientController.GetCasebyClientId),
 );

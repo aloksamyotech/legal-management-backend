@@ -263,3 +263,67 @@ export const ClientBulk = async (req, res) => {
       .json({ message: "Internal Server Error", error: error.message });
   }
 };
+
+export const GetAllClientsIndex = async (req) => {
+  const companyId = req.user.companyId;
+  const { page, limit, search } = req.query;
+  const searchCondition = search
+    ? { Name: { $regex: search, $options: "i" } }
+    : {};
+
+  const pageNumber = parseInt(page);
+  const pageSize = parseInt(limit);
+
+  if (isNaN(pageNumber) || pageNumber <= 0) {
+    throw new CustomError(
+      statusCodes.badRequest,
+      "Invalid page number",
+      errorCodes.invalidInput,
+    );
+  }
+  if (isNaN(pageSize) || pageSize <= 0) {
+    throw new CustomError(
+      statusCodes.badRequest,
+      "Invalid page size",
+      errorCodes.invalidInput,
+    );
+  }
+
+  try {
+    const clients = await Client.find({
+      Active: true,
+      companyId,
+      ...searchCondition,
+    })
+      .skip((pageNumber - 1) * pageSize)
+      .limit(pageSize)
+      .sort({ createdAt: -1 })
+      .exec();
+    const totalClients = await Client.countDocuments({
+      Active: true,
+      companyId,
+      ...searchCondition,
+    });
+
+    if (!clients || clients.length === 0) {
+      throw new CustomError(
+        statusCodes.notFound,
+        Message.notFound,
+        errorCodes.not_found,
+      );
+    }
+
+    return {
+      clients,
+      totalClients,
+      page: pageNumber,
+      totalPages: Math.ceil(totalClients / pageSize),
+    };
+  } catch (error) {
+    throw new CustomError(
+      statusCodes.internalServerError,
+      error.message,
+      errorCodes.serverError,
+    );
+  }
+};

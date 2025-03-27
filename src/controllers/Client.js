@@ -29,7 +29,12 @@ const BulkuploadClient = async (req, res, next) => {
   const ClientData = await clientService.ClientBulk(req, res, next);
   res.status(statusCodes?.ok).send(ClientData);
 };
+const GetAllPageClint = async (req, res, next) => {
+  const ClientData = await clientService.GetAllClientsIndex(req, res, next);
+  res.status(statusCodes?.ok).send(ClientData);
+};
 export default {
+  GetAllPageClint,
   GetCasebyClientId,
   ClientAdd,
   ClientFetch,
