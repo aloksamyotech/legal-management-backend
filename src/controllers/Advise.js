@@ -24,8 +24,13 @@ const SingleAdviceFetch = async (req, res, next) => {
   const SingleAdviseData = await adviseService.GetAdviseById(req, res, next);
   res.status(statusCodes?.ok).send(SingleAdviseData);
 };
+const AdviseFetchpage = async (req, res, next) => {
+  const AdviseData = await adviseService.GetAdvforPagination(req, res, next);
+  res.status(statusCodes?.ok).send(AdviseData);
+};
 
 export default {
+  AdviseFetchpage,
   AdviseAdd,
   AdviseFetch,
   AdviseDelete,

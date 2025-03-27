@@ -8,6 +8,10 @@ const CaseFetch = async (req, res, next) => {
   const CaseData = await caseService.GetCase(req, res, next);
   res.status(statusCodes?.ok).send(CaseData);
 };
+const CaseFetchforpage = async (req, res, next) => {
+  const CaseData = await caseService.GetCaseforpage(req, res, next);
+  res.status(statusCodes?.ok).send(CaseData);
+};
 const GetCasebyId = async (req, res, next) => {
   const CaseData = await caseService.GetCaseById(req, res, next);
   res.status(statusCodes?.ok).send(CaseData);
@@ -27,4 +31,5 @@ export default {
   CaseDelete,
   CaseUpdate,
   GetCasebyId,
+  CaseFetchforpage,
 };

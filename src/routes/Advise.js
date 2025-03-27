@@ -14,6 +14,11 @@ router.get(
   asyncHandler(adviseController.AdviseFetch),
 );
 router.get(
+  "/getAdvforPage",
+  jwtMiddleware,
+  asyncHandler(adviseController.AdviseFetchpage),
+);
+router.get(
   "/getoneAdvise/:id",
   asyncHandler(adviseController.SingleAdviceFetch),
 );

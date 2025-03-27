@@ -8,6 +8,10 @@ const DocumentFetch = async (req, res, next) => {
   const DocumentData = await documentService.GetAllDocuments(req, res, next);
   res.status(statusCodes?.ok).send(DocumentData);
 };
+const DocFetchforpage = async (req, res, next) => {
+  const DocumentData = await documentService.GetAllDocforpage(req, res, next);
+  res.status(statusCodes?.ok).send(DocumentData);
+};
 const DocumentById = async (req, res, next) => {
   const DocumentData = await documentService.GetDocumentById(req, res, next);
   res.status(statusCodes?.ok).send(DocumentData);
@@ -32,6 +36,7 @@ const DocumentUpdate = async (req, res, next) => {
 export default {
   DocumentAdd,
   DocumentFetch,
+  DocFetchforpage,
   DocumentById,
   DocumentDelete,
   DocumentUpdate,

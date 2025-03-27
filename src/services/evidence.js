@@ -144,3 +144,61 @@ export const GetEvidenceById = async (req) => {
 
   return evidence;
 };
+export const GetAllEvidforPage = async (req) => {
+  const companyId = req.user.companyId;
+  const { page, limit, search } = req.query;
+  const searchCondition = search
+    ? { Title: { $regex: search, $options: "i" } }
+    : {};
+  const pageNumber = parseInt(page);
+  const pageSize = parseInt(limit);
+
+  if (isNaN(pageNumber) || pageNumber <= 0) {
+    throw new CustomError(
+      statusCodes.badRequest,
+      "Invalid page number",
+      errorCodes.invalidInput,
+    );
+  }
+  if (isNaN(pageSize) || pageSize <= 0) {
+    throw new CustomError(
+      statusCodes.badRequest,
+      "Invalid page size",
+      errorCodes.invalidInput,
+    );
+  }
+  const evidenceQuery = Evidence.find({
+    Active: true,
+    companyId,
+    ...searchCondition,
+  })
+    .populate("Case")
+    .populate("Hearing")
+    .sort({ createdAt: -1 });
+
+  const totalEvidence = await Evidence.countDocuments({
+    Active: true,
+    companyId,
+    ...searchCondition,
+  });
+
+  const evidence = await evidenceQuery
+    .skip((pageNumber - 1) * pageSize)
+    .limit(pageSize)
+    .exec();
+
+  if (!evidence || evidence.length === 0) {
+    throw new CustomError(
+      statusCodes.notFound,
+      Message.notFound,
+      errorCodes.not_found,
+    );
+  }
+
+  return {
+    evidence,
+    totalEvidence,
+    page: pageNumber,
+    totalPages: Math.ceil(totalEvidence / pageSize),
+  };
+};

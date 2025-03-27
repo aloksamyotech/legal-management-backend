@@ -116,3 +116,67 @@ export const GetAllContact = async (req) => {
   }
   return contact;
 };
+export const GetAllContactforpage = async (req) => {
+  const companyId = req.user.companyId;
+  const { page, limit, search } = req.query;
+
+  const searchCondition = search
+    ? { Name: { $regex: search, $options: "i" } }
+    : {};
+
+  let pageNumber = parseInt(page);
+  const pageSize = parseInt(limit);
+
+  if (isNaN(pageNumber) || pageNumber <= 0) {
+    throw new CustomError(
+      statusCodes.badRequest,
+      "Invalid page number",
+      errorCodes.invalidInput,
+    );
+  }
+  if (isNaN(pageSize) || pageSize <= 0) {
+    throw new CustomError(
+      statusCodes.badRequest,
+      "Invalid page size",
+      errorCodes.invalidInput,
+    );
+  }
+
+  const contactQuery = Contact.find({
+    Active: true,
+    companyId,
+    ...searchCondition,
+  }).sort({ createdAt: -1 });
+
+  const totalContacts = await Contact.countDocuments({
+    Active: true,
+    companyId,
+    ...searchCondition,
+  });
+
+  const totalPages = Math.ceil(totalContacts / pageSize);
+  if (pageNumber > totalPages && totalPages > 0) {
+    pageNumber = totalPages;
+  }
+
+  const contacts = await contactQuery
+    .skip((pageNumber - 1) * pageSize)
+    .limit(pageSize)
+    .exec();
+
+  if (!contacts || contacts.length === 0) {
+    return {
+      status: statusCodes?.notFound,
+      message: Message?.notFound,
+      errorCode: errorCodes?.not_found,
+      contact: [],
+    };
+  }
+
+  return {
+    contacts,
+    totalContacts,
+    page: pageNumber,
+    totalPages: totalPages,
+  };
+};

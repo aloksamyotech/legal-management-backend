@@ -288,42 +288,35 @@ export const GetAllClientsIndex = async (req) => {
       errorCodes.invalidInput,
     );
   }
+  const clientsQuery = Client.find({
+    Active: true,
+    companyId,
+    ...searchCondition,
+  }).sort({ createdAt: -1 });
 
-  try {
-    const clients = await Client.find({
-      Active: true,
-      companyId,
-      ...searchCondition,
-    })
-      .skip((pageNumber - 1) * pageSize)
-      .limit(pageSize)
-      .sort({ createdAt: -1 })
-      .exec();
-    const totalClients = await Client.countDocuments({
-      Active: true,
-      companyId,
-      ...searchCondition,
-    });
+  const totalClients = await Client.countDocuments({
+    Active: true,
+    companyId,
+    ...searchCondition,
+  });
 
-    if (!clients || clients.length === 0) {
-      throw new CustomError(
-        statusCodes.notFound,
-        Message.notFound,
-        errorCodes.not_found,
-      );
-    }
+  const clients = await clientsQuery
+    .skip((pageNumber - 1) * pageSize)
+    .limit(pageSize)
+    .exec();
 
-    return {
-      clients,
-      totalClients,
-      page: pageNumber,
-      totalPages: Math.ceil(totalClients / pageSize),
-    };
-  } catch (error) {
+  if (!clients || clients.length === 0) {
     throw new CustomError(
-      statusCodes.internalServerError,
-      error.message,
-      errorCodes.serverError,
+      statusCodes.notFound,
+      Message.notFound,
+      errorCodes.not_found,
     );
   }
+
+  return {
+    clients,
+    totalClients,
+    page: pageNumber,
+    totalPages: Math.ceil(totalClients / pageSize),
+  };
 };

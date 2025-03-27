@@ -1,4 +1,5 @@
 import { Advisedb } from "../models/Advise.js";
+import mongoose from "mongoose";
 import { errorCodes, Message, statusCodes } from "../core/common/constant.js";
 import CustomError from "../utils/exception.js";
 export const AddAdvise = async (req) => {
@@ -156,4 +157,91 @@ export const updatePayment = async (req) => {
   }
 
   return updatedAdvise;
+};
+export const GetAdvforPagination = async (req) => {
+  const companyId = req.user.companyId;
+  const { page, limit, search } = req.query;
+
+  const pageNumber = parseInt(page) || 1;
+  const pageSize = parseInt(limit) || 10;
+
+  if (isNaN(pageNumber) || pageNumber <= 0) {
+    throw new CustomError(
+      statusCodes.badRequest,
+      "Invalid page number",
+      errorCodes.invalidInput,
+    );
+  }
+  if (isNaN(pageSize) || pageSize <= 0) {
+    throw new CustomError(
+      statusCodes.badRequest,
+      "Invalid page size",
+      errorCodes.invalidInput,
+    );
+  }
+
+  const matchStage = {
+    Active: true,
+    companyId: new mongoose.Types.ObjectId(companyId),
+  };
+  const pipeline = [
+    { $match: matchStage },
+    {
+      $lookup: {
+        from: "clients",
+        localField: "Client",
+        foreignField: "_id",
+        as: "Client",
+      },
+    },
+    { $unwind: { path: "$Client", preserveNullAndEmptyArrays: true } },
+    {
+      $lookup: {
+        from: "matters",
+        localField: "Matter",
+        foreignField: "_id",
+        as: "Matter",
+      },
+    },
+    { $unwind: { path: "$Matter", preserveNullAndEmptyArrays: true } },
+    {
+      $lookup: {
+        from: "advocates",
+        localField: "Advocate",
+        foreignField: "_id",
+        as: "Advocate",
+      },
+    },
+    { $unwind: { path: "$Advocate", preserveNullAndEmptyArrays: true } },
+    {
+      $match: search
+        ? {
+            $or: [
+              { "Client.Name": { $regex: search, $options: "i" } },
+              { "Advocate.name": { $regex: search, $options: "i" } },
+            ],
+          }
+        : {},
+    },
+    { $sort: { createdAt: -1 } },
+    { $skip: (pageNumber - 1) * pageSize },
+    { $limit: pageSize },
+  ];
+  const advises = await Advisedb.aggregate(pipeline);
+  const totalAdvises = await Advisedb.countDocuments(matchStage);
+
+  if (!advises.length) {
+    throw new CustomError(
+      statusCodes.notFound,
+      Message.notFound,
+      errorCodes.not_found,
+    );
+  }
+
+  return {
+    advises,
+    totalAdvises,
+    page: pageNumber,
+    totalPages: Math.ceil(totalAdvises / pageSize),
+  };
 };

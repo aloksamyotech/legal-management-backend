@@ -8,6 +8,10 @@ const EvidenceFetch = async (req, res, next) => {
   const EvidenceData = await evidenceService.GetEvidence(req, res, next);
   res.status(statusCodes?.ok).send(EvidenceData);
 };
+const EvidenceFetchforpage = async (req, res, next) => {
+  const EvidenceData = await evidenceService.GetAllEvidforPage(req, res, next);
+  res.status(statusCodes?.ok).send(EvidenceData);
+};
 const EvidenceFetchbyId = async (req, res, next) => {
   const EvidenceData = await evidenceService.GetEvidenceById(req, res, next);
   res.status(statusCodes?.ok).send(EvidenceData);
@@ -36,4 +40,5 @@ export default {
   EvidenceDelete,
   EvidenceUpdate,
   EvidencebyCaseFetch,
+  EvidenceFetchforpage,
 };

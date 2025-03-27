@@ -170,3 +170,62 @@ export const GetDocumentByCase = async (req) => {
 
   return document;
 };
+export const GetAllDocforpage = async (req) => {
+  const companyId = req.user.companyId;
+  const { page, limit, search } = req.query;
+  const searchCondition = search
+    ? { Title: { $regex: search, $options: "i" } }
+    : {};
+
+  const pageNumber = parseInt(page);
+  const pageSize = parseInt(limit);
+
+  if (isNaN(pageNumber) || pageNumber <= 0) {
+    throw new CustomError(
+      statusCodes.badRequest,
+      "Invalid page number",
+      errorCodes.invalidInput,
+    );
+  }
+  if (isNaN(pageSize) || pageSize <= 0) {
+    throw new CustomError(
+      statusCodes.badRequest,
+      "Invalid page size",
+      errorCodes.invalidInput,
+    );
+  }
+
+  const documentsQuery = Document.find({
+    Active: true,
+    companyId,
+    ...searchCondition,
+  })
+    .populate("Case", "Title")
+    .sort({ createdAt: -1 });
+
+  const totalDocuments = await Document.countDocuments({
+    Active: true,
+    companyId,
+    ...searchCondition,
+  });
+
+  const documents = await documentsQuery
+    .skip((pageNumber - 1) * pageSize)
+    .limit(pageSize)
+    .exec();
+
+  if (!documents || documents.length === 0) {
+    throw new CustomError(
+      statusCodes.notFound,
+      Message.notFound,
+      errorCodes.not_found,
+    );
+  }
+
+  return {
+    documents,
+    totalDocuments,
+    page: pageNumber,
+    totalPages: Math.ceil(totalDocuments / pageSize),
+  };
+};

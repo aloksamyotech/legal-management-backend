@@ -8,6 +8,10 @@ const ContactFetch = async (req, res, next) => {
   const ContactData = await contactService.GetAllContact(req, res, next);
   res.status(statusCodes?.ok).send(ContactData);
 };
+const ContactforpageFetch = async (req, res, next) => {
+  const ContactData = await contactService.GetAllContactforpage(req, res, next);
+  res.status(statusCodes?.ok).send(ContactData);
+};
 const ContactDelete = async (req, res, next) => {
   const ContactDelData = await contactService.DeleteContact(req, res, next);
   res.status(statusCodes?.ok).send(ContactDelData);
@@ -22,4 +26,5 @@ export default {
   ContactFetch,
   ContactDelete,
   ContactUpdate,
+  ContactforpageFetch,
 };

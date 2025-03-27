@@ -49,7 +49,7 @@ const UserSchema = new Schema(
     },
     currency: {
       type: String,
-      default: "INR",
+      default: "₹",
     },
     Active: {
       type: Boolean,

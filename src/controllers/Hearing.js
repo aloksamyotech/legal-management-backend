@@ -8,6 +8,10 @@ const HearingFetch = async (req, res, next) => {
   const HearingData = await hearingService.GetHearing(req, res, next);
   res.status(statusCodes?.ok).send(HearingData);
 };
+const HearingFetchforpage = async (req, res, next) => {
+  const HearingData = await hearingService.GetAllHearingForpage(req, res, next);
+  res.status(statusCodes?.ok).send(HearingData);
+};
 const HearingByCase = async (req, res, next) => {
   const HearingData = await hearingService.GetHearingsByCaseId(req, res, next);
   res.status(statusCodes?.ok).send(HearingData);
@@ -32,4 +36,5 @@ export default {
   HearingUpdate,
   AllHearingFetch,
   HearingByCase,
+  HearingFetchforpage,
 };

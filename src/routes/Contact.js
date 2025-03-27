@@ -15,6 +15,11 @@ router.get(
   jwtMiddleware,
   asyncHandler(contactController.ContactFetch),
 );
+router.get(
+  "/getContactforpage",
+  jwtMiddleware,
+  asyncHandler(contactController.ContactforpageFetch),
+);
 router.delete(
   "/deleteContact/:id",
   asyncHandler(contactController.ContactDelete),
