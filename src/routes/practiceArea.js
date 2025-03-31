@@ -17,6 +17,11 @@ router.get(
   jwtMiddleware,
   asyncHandler(practiceareaController.GetAllpracticearea),
 );
+router.get(
+  "/getAllPracticeareapage",
+  jwtMiddleware,
+  asyncHandler(practiceareaController.GetAllpracticeareapage),
+);
 router.delete(
   "/deletePracticearea/:id",
   asyncHandler(practiceareaController.PracticeareaDelete),

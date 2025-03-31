@@ -12,6 +12,10 @@ const GetAllcaseStage = async (req, res, next) => {
   const CaseStageData = await caseStageService.GetAllCaseStages(req, res, next);
   res.status(statusCodes?.ok).send(CaseStageData);
 };
+const GetAllcaseStagepage = async (req, res, next) => {
+  const CaseStageData = await caseStageService.GetAllCaseStagespage(req, res, next);
+  res.status(statusCodes?.ok).send(CaseStageData);
+};
 const CaseStageDelete = async (req, res, next) => {
   const CaseStageDelData = await caseStageService.DeleteCaseStage(
     req,
@@ -35,4 +39,5 @@ export default {
   CaseStageDelete,
   CaseStageUpdate,
   GetAllcaseStage,
+  GetAllcaseStagepage,
 };

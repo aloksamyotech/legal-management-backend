@@ -24,6 +24,14 @@ const GetAllpracticearea = async (req, res, next) => {
   );
   res.status(statusCodes?.ok).send(PracticeareaData);
 };
+const GetAllpracticeareapage = async (req, res, next) => {
+  const PracticeareaData = await practiceareaService.GetAllPracticesIndex(
+    req,
+    res,
+    next,
+  );
+  res.status(statusCodes?.ok).send(PracticeareaData);
+};
 const PracticeareaDelete = async (req, res, next) => {
   const PracticeareaDelData = await practiceareaService.DeletePractice(
     req,
@@ -47,4 +55,5 @@ export default {
   PracticeareaDelete,
   PracticeareaUpdate,
   GetAllpracticearea,
+  GetAllpracticeareapage,
 };

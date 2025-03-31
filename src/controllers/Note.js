@@ -8,6 +8,10 @@ const NoteFetch = async (req, res, next) => {
   const NoteData = await noteService.GetAllNotes(req, res, next);
   res.status(statusCodes?.ok).send(NoteData);
 };
+const NoteFetchpage = async (req, res, next) => {
+  const NoteData = await noteService.GetAllNotesIndex(req, res, next);
+  res.status(statusCodes?.ok).send(NoteData);
+};
 const NoteById = async (req, res, next) => {
   const NoteData = await noteService.GetNoteById(req, res, next);
   res.status(statusCodes?.ok).send(NoteData);
@@ -27,4 +31,5 @@ export default {
   NoteById,
   NoteDelete,
   NoteUpdate,
+  NoteFetchpage
 };

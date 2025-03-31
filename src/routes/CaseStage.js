@@ -14,6 +14,11 @@ router.get(
   jwtMiddleware,
   asyncHandler(caseStageController.GetAllcaseStage),
 );
+router.get(
+  "/getAllCaseStagepage",
+  jwtMiddleware,
+  asyncHandler(caseStageController.GetAllcaseStagepage),
+);
 router.delete(
   "/deleteCaseStage/:id",
   asyncHandler(caseStageController.CaseStageDelete),

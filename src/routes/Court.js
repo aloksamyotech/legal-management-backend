@@ -10,6 +10,11 @@ router.get(
   jwtMiddleware,
   asyncHandler(courtController.GetAllcourt),
 );
+router.get(
+  "/getAllCourtpage",
+  jwtMiddleware,
+  asyncHandler(courtController.GetAllcourtpage),
+);
 router.delete("/deleteCourt/:id", asyncHandler(courtController.CourtDelete));
 router.put("/updateCourt/:id", asyncHandler(courtController.CourtUpdate));
 export default router;

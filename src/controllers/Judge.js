@@ -12,6 +12,10 @@ const GetAlljudge = async (req, res, next) => {
   const JudgeData = await judgeService.GetAllJudges(req, res, next);
   res.status(statusCodes?.ok).send(JudgeData);
 };
+const GetAlljudgepage = async (req, res, next) => {
+  const JudgeData = await judgeService.GetAllJudgesIndex(req, res, next);
+  res.status(statusCodes?.ok).send(JudgeData);
+};
 const JudgeDelete = async (req, res, next) => {
   const JudgeDelData = await judgeService.DeleteJudge(req, res, next);
   res.status(statusCodes?.ok).send(JudgeDelData);
@@ -27,4 +31,5 @@ export default {
   JudgeDelete,
   JudgeUpdate,
   GetAlljudge,
+  GetAlljudgepage,
 };

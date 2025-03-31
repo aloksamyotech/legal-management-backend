@@ -24,6 +24,14 @@ const GetAllpolicestation = async (req, res, next) => {
   );
   res.status(statusCodes?.ok).send(PolicestationData);
 };
+const GetAllpolicestationpage = async (req, res, next) => {
+  const PolicestationData = await policestationService.GetAllPolicestationsIndex(
+    req,
+    res,
+    next,
+  );
+  res.status(statusCodes?.ok).send(PolicestationData);
+};
 const PolicestationDelete = async (req, res, next) => {
   const PolicestationDelData = await policestationService.DeletePolicestation(
     req,
@@ -44,4 +52,5 @@ export default {
   PolicestationDelete,
   PolicestationUpdate,
   GetAllpolicestation,
+  GetAllpolicestationpage
 };

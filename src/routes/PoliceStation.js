@@ -17,6 +17,11 @@ router.get(
   jwtMiddleware,
   asyncHandler(policestationController.GetAllpolicestation),
 );
+router.get(
+  "/getAllPolicestationpage",
+  jwtMiddleware,
+  asyncHandler(policestationController.GetAllpolicestationpage),
+);
 router.delete(
   "/deletePolicestation/:id",
   asyncHandler(policestationController.PolicestationDelete),

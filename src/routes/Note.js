@@ -15,6 +15,11 @@ router.get(
   jwtMiddleware,
   asyncHandler(noteController.NoteFetch),
 );
+router.get(
+  "/getAllNoteforpage",
+  jwtMiddleware,
+  asyncHandler(noteController.NoteFetchpage),
+);
 router.get("/getNote/:id", asyncHandler(noteController.NoteById));
 router.put(
   "/updateNote/:id",

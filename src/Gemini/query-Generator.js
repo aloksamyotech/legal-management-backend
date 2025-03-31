@@ -32,7 +32,7 @@ Example QUERY GENERATION RULES:
    • Include date validation in try-catch blocks (in the code that *executes* the query, not in the query string itself);
 `;
 export const statusValues = `
-- Case Status: ["open", "closed"]
+- Case Status: ["open", "closed" , "pending"]
 - Invoice Status: ["paid", "unpaid"]
 Note: Status values are always lowercase!`;
 export const schemaDefinitions = `
