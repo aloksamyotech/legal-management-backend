@@ -15,6 +15,11 @@ router.get(
   jwtMiddleware,
   asyncHandler(expenseController.ExpenseFetch),
 );
+router.get(
+  "/getAllExpforpage",
+  jwtMiddleware,
+  asyncHandler(expenseController.getexpforpage),
+);
 router.get("/getExpense/:id", asyncHandler(expenseController.ExpenseById));
 router.put(
   "/updateExpense/:id",

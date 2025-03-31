@@ -15,6 +15,11 @@ router.get(
   jwtMiddleware,
   asyncHandler(documentController.DocumentFetch),
 );
+router.get(
+  "/getAllDocforpage",
+  jwtMiddleware,
+  asyncHandler(documentController.DocFetchforpage),
+);
 router.get("/getDocument/:id", asyncHandler(documentController.DocumentById));
 router.get(
   "/getDocumentbycase/:caseId",

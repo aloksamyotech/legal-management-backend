@@ -20,6 +20,11 @@ router.get(
   asyncHandler(hearingController.AllHearingFetch),
 );
 router.get(
+  "/getallhearingforpage",
+  jwtMiddleware,
+  asyncHandler(hearingController.HearingFetchforpage),
+);
+router.get(
   "/gethearingbycase/:caseId",
   asyncHandler(hearingController.HearingByCase),
 );

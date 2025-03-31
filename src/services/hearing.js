@@ -229,3 +229,61 @@ export const GetHearingsByCaseId = async (req) => {
 
   return hearings;
 };
+export const GetAllHearingForpage = async (req) => {
+  const companyId = req.user.companyId;
+  const { page, limit, search } = req.query;
+  const searchCondition = search
+    ? { Title: { $regex: search, $options: "i" } }
+    : {};
+  const pageNumber = parseInt(page);
+  const pageSize = parseInt(limit);
+
+  if (isNaN(pageNumber) || pageNumber <= 0) {
+    throw new CustomError(
+      statusCodes.badRequest,
+      "Invalid page number",
+      errorCodes.invalidInput,
+    );
+  }
+  if (isNaN(pageSize) || pageSize <= 0) {
+    throw new CustomError(
+      statusCodes.badRequest,
+      "Invalid page size",
+      errorCodes.invalidInput,
+    );
+  }
+  const hearingsQuery = HearingModel.find({
+    Active: true,
+    companyId,
+    ...searchCondition,
+  })
+    .populate("Case", "Title")
+    .populate("Client", "Name")
+    .sort({ createdAt: -1 });
+
+  const totalHearings = await HearingModel.countDocuments({
+    Active: true,
+    companyId,
+    ...searchCondition,
+  });
+
+  const hearings = await hearingsQuery
+    .skip((pageNumber - 1) * pageSize)
+    .limit(pageSize)
+    .exec();
+
+  if (!hearings || hearings.length === 0) {
+    throw new CustomError(
+      statusCodes.notFound,
+      Message.notFound,
+      errorCodes.not_found,
+    );
+  }
+
+  return {
+    hearings,
+    totalHearings,
+    page: pageNumber,
+    totalPages: Math.ceil(totalHearings / pageSize),
+  };
+};

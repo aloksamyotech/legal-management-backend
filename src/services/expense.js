@@ -166,3 +166,60 @@ export const DeleteExpense = async (req) => {
 
   return { message: Message.Delete, expense: deletedExpense };
 };
+export const GetExpforpage = async (req) => {
+  const companyId = req.user.companyId;
+  const { page, limit, search } = req.query;
+  const searchCondition = search
+    ? { Title: { $regex: search, $options: "i" } }
+    : {};
+  const pageNumber = parseInt(page);
+  const pageSize = parseInt(limit);
+
+  if (isNaN(pageNumber) || pageNumber <= 0) {
+    throw new CustomError(
+      statusCodes.badRequest,
+      "Invalid page number",
+      errorCodes.invalidInput,
+    );
+  }
+  if (isNaN(pageSize) || pageSize <= 0) {
+    throw new CustomError(
+      statusCodes.badRequest,
+      "Invalid page size",
+      errorCodes.invalidInput,
+    );
+  }
+  const expensesQuery = ExpenseModel.find({
+    Active: true,
+    companyId,
+    ...searchCondition,
+  })
+    .populate("Type", "Title")
+    .populate("Case", "Title")
+    .sort({ createdAt: -1 });
+  const totalExpenses = await ExpenseModel.countDocuments({
+    Active: true,
+    companyId,
+    ...searchCondition,
+  });
+
+  const expenses = await expensesQuery
+    .skip((pageNumber - 1) * pageSize)
+    .limit(pageSize)
+    .exec();
+
+  if (!expenses || expenses.length === 0) {
+    throw new CustomError(
+      statusCodes.notFound,
+      Message.notFound,
+      errorCodes.not_found,
+    );
+  }
+
+  return {
+    expenses,
+    totalExpenses,
+    page: pageNumber,
+    totalPages: Math.ceil(totalExpenses / pageSize),
+  };
+};

@@ -17,6 +17,11 @@ router.get(
   asyncHandler(evidenceController.EvidenceFetch),
 );
 router.get(
+  "/getEvidenceforpage",
+  jwtMiddleware,
+  asyncHandler(evidenceController.EvidenceFetchforpage),
+);
+router.get(
   "/getEvidencebyId/:id",
   asyncHandler(evidenceController.EvidenceFetchbyId),
 );
