@@ -128,3 +128,62 @@ export const DeleteCourt = async (req) => {
 
   return { message: Message?.Delete, court };
 };
+
+export const GetAllCourtsIndex = async (req) => {
+  const companyId = req.user.companyId;
+  const { page, limit, search } = req.query;
+  const searchCondition = search
+    ? { Title: { $regex: search, $options: "i" } } 
+    : {};
+
+  const pageNumber = parseInt(page);
+  const pageSize = parseInt(limit);
+
+  if (isNaN(pageNumber) || pageNumber <= 0) {
+    throw new CustomError(
+      statusCodes.badRequest,
+      "Invalid page number",
+      errorCodes.invalidInput
+    );
+  }
+
+  if (isNaN(pageSize) || pageSize <= 0) {
+    throw new CustomError(
+      statusCodes.badRequest,
+      "Invalid page size",
+      errorCodes.invalidInput
+    );
+  }
+
+  const courtsQuery = CourtModel.find({
+    active: true,
+    companyId,
+    ...searchCondition,
+  }).sort({ createdAt: -1 });
+
+  const totalCourts = await CourtModel.countDocuments({
+    active: true,
+    companyId,
+    ...searchCondition,
+  });
+
+  const courts = await courtsQuery
+    .skip((pageNumber - 1) * pageSize)
+    .limit(pageSize)
+    .exec();
+
+  if (!courts || courts.length === 0) {
+    throw new CustomError(
+      statusCodes.notFound,
+      Message.notFound,
+      errorCodes.not_found
+    );
+  }
+
+  return {
+    courts,
+    totalCourts,
+    page: pageNumber,
+    totalPages: Math.ceil(totalCourts / pageSize),
+  };
+};

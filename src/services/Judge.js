@@ -10,7 +10,7 @@ export const AddJudge = async (req) => {
     throw new CustomError(
       statusCodes?.badRequest,
       Message?.Missing_required_field,
-      errorCodes?.bad_request,
+      errorCodes?.bad_request
     );
   }
 
@@ -27,7 +27,7 @@ export const AddJudge = async (req) => {
     throw new CustomError(
       statusCodes?.serviceUnavailable,
       Message?.notCreated,
-      errorCodes?.service_unavailable,
+      errorCodes?.service_unavailable
     );
   }
 
@@ -44,7 +44,7 @@ export const GetAllJudges = async (req) => {
     throw new CustomError(
       statusCodes?.notFound,
       Message?.notFound,
-      errorCodes?.not_found,
+      errorCodes?.not_found
     );
   }
 
@@ -59,7 +59,7 @@ export const GetJudge = async (req) => {
     throw new CustomError(
       statusCodes?.badRequest,
       Message?.inValid,
-      errorCodes?.bad_request,
+      errorCodes?.bad_request
     );
   }
 
@@ -69,7 +69,7 @@ export const GetJudge = async (req) => {
     throw new CustomError(
       statusCodes?.notFound,
       Message?.notFound,
-      errorCodes?.not_found,
+      errorCodes?.not_found
     );
   }
 
@@ -84,21 +84,21 @@ export const UpdateJudge = async (req) => {
     throw new CustomError(
       statusCodes?.badRequest,
       Message?.inValid,
-      errorCodes?.bad_request,
+      errorCodes?.bad_request
     );
   }
 
   const updatedJudge = await JudgeModel.findOneAndUpdate(
     { _id: id, active: true },
     { Title, mobile, description },
-    { new: true },
+    { new: true }
   );
 
   if (!updatedJudge) {
     throw new CustomError(
       statusCodes?.notFound,
       Message?.notUpdate,
-      errorCodes?.action_failed,
+      errorCodes?.action_failed
     );
   }
 
@@ -112,7 +112,7 @@ export const DeleteJudge = async (req) => {
     throw new CustomError(
       statusCodes?.badRequest,
       Message?.inValid,
-      errorCodes?.bad_request,
+      errorCodes?.bad_request
     );
   }
 
@@ -122,7 +122,7 @@ export const DeleteJudge = async (req) => {
     throw new CustomError(
       statusCodes?.notFound,
       Message?.notFound,
-      errorCodes?.not_found,
+      errorCodes?.not_found
     );
   }
 
@@ -130,4 +130,62 @@ export const DeleteJudge = async (req) => {
   await judge.save();
 
   return { message: Message?.Delete, judge };
+};
+export const GetAllJudgesIndex = async (req) => {
+  const companyId = req.user.companyId;
+  const { page, limit, search } = req.query;
+  const searchCondition = search
+    ? { Title: { $regex: search, $options: "i" } }
+    : {};
+
+  const pageNumber = parseInt(page);
+  const pageSize = parseInt(limit);
+
+  if (isNaN(pageNumber) || pageNumber <= 0) {
+    throw new CustomError(
+      statusCodes.badRequest,
+      "Invalid page number",
+      errorCodes.invalidInput
+    );
+  }
+
+  if (isNaN(pageSize) || pageSize <= 0) {
+    throw new CustomError(
+      statusCodes.badRequest,
+      "Invalid page size",
+      errorCodes.invalidInput
+    );
+  }
+
+  const judgesQuery = JudgeModel.find({
+    active: true,
+    companyId,
+    ...searchCondition,
+  }).sort({ createdAt: -1 });
+
+  const totalJudges = await JudgeModel.countDocuments({
+    active: true,
+    companyId,
+    ...searchCondition,
+  });
+
+  const judges = await judgesQuery
+    .skip((pageNumber - 1) * pageSize)
+    .limit(pageSize)
+    .exec();
+
+  if (!judges || judges.length === 0) {
+    throw new CustomError(
+      statusCodes.notFound,
+      Message.notFound,
+      errorCodes.not_found
+    );
+  }
+
+  return {
+    judges,
+    totalJudges,
+    page: pageNumber,
+    totalPages: Math.ceil(totalJudges / pageSize),
+  };
 };

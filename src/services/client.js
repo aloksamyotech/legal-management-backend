@@ -255,7 +255,7 @@ export const ClientBulk = async (req, res) => {
 
     return res
       .status(200)
-      .json({ message: "Bulk upload successful", data: bulkInsert });
+      .json({ message: "Bulk upload successfull", data: bulkInsert });
   } catch (error) {
     console.error(error);
     return res

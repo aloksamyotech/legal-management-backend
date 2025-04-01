@@ -12,6 +12,10 @@ const GetAllcourt = async (req, res, next) => {
   const CourtData = await courtService.GetAllCourts(req, res, next);
   res.status(statusCodes?.ok).send(CourtData);
 };
+const GetAllcourtpage = async (req, res, next) => {
+  const CourtData = await courtService.GetAllCourtsIndex(req, res, next);
+  res.status(statusCodes?.ok).send(CourtData);
+};
 const CourtDelete = async (req, res, next) => {
   const CourtDelData = await courtService.DeleteCourt(req, res, next);
   res.status(statusCodes?.ok).send(CourtDelData);
@@ -27,4 +31,5 @@ export default {
   CourtDelete,
   CourtUpdate,
   GetAllcourt,
+  GetAllcourtpage,
 };

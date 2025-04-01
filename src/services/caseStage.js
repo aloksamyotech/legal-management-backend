@@ -130,3 +130,61 @@ export const DeleteCaseStage = async (req) => {
 
   return { message: Message?.Delete, caseStage };
 };
+export const GetAllCaseStagespage = async (req) => {
+  const companyId = req.user.companyId;
+  const { page, limit, search } = req.query;
+  const searchCondition = search
+    ? { Title: { $regex: search, $options: "i" } } 
+    : {};
+
+  const pageNumber = parseInt(page);
+  const pageSize = parseInt(limit);
+
+  if (isNaN(pageNumber) || pageNumber <= 0) {
+    throw new CustomError(
+      statusCodes.badRequest,
+      "Invalid page number",
+      errorCodes.invalidInput
+    );
+  }
+
+  if (isNaN(pageSize) || pageSize <= 0) {
+    throw new CustomError(
+      statusCodes.badRequest,
+      "Invalid page size",
+      errorCodes.invalidInput
+    );
+  }
+
+  const caseStagesQuery = CaseStageModel.find({
+    active: true,
+    companyId,
+    ...searchCondition,
+  }).sort({ createdAt: -1 });
+
+  const totalCaseStages = await CaseStageModel.countDocuments({
+    active: true,
+    companyId,
+    ...searchCondition,
+  });
+
+  const caseStages = await caseStagesQuery
+    .skip((pageNumber - 1) * pageSize)
+    .limit(pageSize)
+    .exec();
+
+  if (!caseStages || caseStages.length === 0) {
+    throw new CustomError(
+      statusCodes.notFound,
+      Message.notFound,
+      errorCodes.not_found
+    );
+  }
+
+  return {
+    caseStages,
+    totalCaseStages,
+    page: pageNumber,
+    totalPages: Math.ceil(totalCaseStages / pageSize),
+  };
+};
