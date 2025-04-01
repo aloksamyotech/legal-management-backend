@@ -19,6 +19,11 @@ router.get(
   asyncHandler(adminController.userFetch),
 );
 router.get(
+  "/getalluserpage",
+  jwtMiddleware,
+  asyncHandler(adminController.userFetchpage),
+);
+router.get(
   "/getcompanyLogo",
   jwtMiddleware,
   asyncHandler(adminController.companylogo),

@@ -10,6 +10,10 @@ const userFetch = async (req, res, next) => {
   const userData = await adminService.GetAllUsers(req, res, next);
   res.status(statusCodes?.ok).send(userData);
 };
+const userFetchpage = async (req, res, next) => {
+  const userData = await adminService.GetAllUsersIndex(req, res, next);
+  res.status(statusCodes?.ok).send(userData);
+};
 const companylogo = async (req, res, next) => {
   const logo = await adminService.Companylogo(req, res, next);
   res.status(statusCodes?.ok).send(logo);
@@ -60,6 +64,7 @@ export default {
   adminRegistration,
   adminLogin,
   userFetch,
+  userFetchpage,
   userFetchbyId,
   deleteuserbyId,
   permissionUpdate,
