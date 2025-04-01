@@ -10,7 +10,7 @@ export const AddJudge = async (req) => {
     throw new CustomError(
       statusCodes?.badRequest,
       Message?.Missing_required_field,
-      errorCodes?.bad_request
+      errorCodes?.bad_request,
     );
   }
 
@@ -27,7 +27,7 @@ export const AddJudge = async (req) => {
     throw new CustomError(
       statusCodes?.serviceUnavailable,
       Message?.notCreated,
-      errorCodes?.service_unavailable
+      errorCodes?.service_unavailable,
     );
   }
 
@@ -44,7 +44,7 @@ export const GetAllJudges = async (req) => {
     throw new CustomError(
       statusCodes?.notFound,
       Message?.notFound,
-      errorCodes?.not_found
+      errorCodes?.not_found,
     );
   }
 
@@ -59,7 +59,7 @@ export const GetJudge = async (req) => {
     throw new CustomError(
       statusCodes?.badRequest,
       Message?.inValid,
-      errorCodes?.bad_request
+      errorCodes?.bad_request,
     );
   }
 
@@ -69,7 +69,7 @@ export const GetJudge = async (req) => {
     throw new CustomError(
       statusCodes?.notFound,
       Message?.notFound,
-      errorCodes?.not_found
+      errorCodes?.not_found,
     );
   }
 
@@ -84,21 +84,21 @@ export const UpdateJudge = async (req) => {
     throw new CustomError(
       statusCodes?.badRequest,
       Message?.inValid,
-      errorCodes?.bad_request
+      errorCodes?.bad_request,
     );
   }
 
   const updatedJudge = await JudgeModel.findOneAndUpdate(
     { _id: id, active: true },
     { Title, mobile, description },
-    { new: true }
+    { new: true },
   );
 
   if (!updatedJudge) {
     throw new CustomError(
       statusCodes?.notFound,
       Message?.notUpdate,
-      errorCodes?.action_failed
+      errorCodes?.action_failed,
     );
   }
 
@@ -112,7 +112,7 @@ export const DeleteJudge = async (req) => {
     throw new CustomError(
       statusCodes?.badRequest,
       Message?.inValid,
-      errorCodes?.bad_request
+      errorCodes?.bad_request,
     );
   }
 
@@ -122,7 +122,7 @@ export const DeleteJudge = async (req) => {
     throw new CustomError(
       statusCodes?.notFound,
       Message?.notFound,
-      errorCodes?.not_found
+      errorCodes?.not_found,
     );
   }
 
@@ -145,7 +145,7 @@ export const GetAllJudgesIndex = async (req) => {
     throw new CustomError(
       statusCodes.badRequest,
       "Invalid page number",
-      errorCodes.invalidInput
+      errorCodes.invalidInput,
     );
   }
 
@@ -153,7 +153,7 @@ export const GetAllJudgesIndex = async (req) => {
     throw new CustomError(
       statusCodes.badRequest,
       "Invalid page size",
-      errorCodes.invalidInput
+      errorCodes.invalidInput,
     );
   }
 
@@ -178,7 +178,7 @@ export const GetAllJudgesIndex = async (req) => {
     throw new CustomError(
       statusCodes.notFound,
       Message.notFound,
-      errorCodes.not_found
+      errorCodes.not_found,
     );
   }
 

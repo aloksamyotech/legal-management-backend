@@ -31,5 +31,5 @@ export default {
   NoteById,
   NoteDelete,
   NoteUpdate,
-  NoteFetchpage
+  NoteFetchpage,
 };

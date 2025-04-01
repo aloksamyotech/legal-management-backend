@@ -396,7 +396,7 @@ export const GetAllUsersIndex = async (req) => {
   const companyId = req.user.companyId;
   const { page, limit, search } = req.query;
   const searchCondition = search
-    ? {Name: { $regex: search, $options: "i" } } 
+    ? { Name: { $regex: search, $options: "i" } }
     : {};
 
   const pageNumber = parseInt(page);
@@ -406,7 +406,7 @@ export const GetAllUsersIndex = async (req) => {
     throw new CustomError(
       statusCodes.badRequest,
       "Invalid page number",
-      errorCodes.invalidInput
+      errorCodes.invalidInput,
     );
   }
 
@@ -414,7 +414,7 @@ export const GetAllUsersIndex = async (req) => {
     throw new CustomError(
       statusCodes.badRequest,
       "Invalid page size",
-      errorCodes.invalidInput
+      errorCodes.invalidInput,
     );
   }
 
@@ -439,7 +439,7 @@ export const GetAllUsersIndex = async (req) => {
     throw new CustomError(
       statusCodes.notFound,
       Message.notFound,
-      errorCodes.not_found
+      errorCodes.not_found,
     );
   }
 

@@ -9,7 +9,7 @@ export const AddPractice = async (req) => {
     throw new CustomError(
       statusCodes?.badRequest,
       Message?.Missing_required_field,
-      errorCodes?.bad_request
+      errorCodes?.bad_request,
     );
   }
 
@@ -26,7 +26,7 @@ export const AddPractice = async (req) => {
     throw new CustomError(
       statusCodes?.serviceUnavailable,
       Message?.notCreated,
-      errorCodes?.service_unavailable
+      errorCodes?.service_unavailable,
     );
   }
 
@@ -43,7 +43,7 @@ export const GetAllPractices = async (req) => {
     throw new CustomError(
       statusCodes?.notFound,
       Message?.notFound,
-      errorCodes?.not_found
+      errorCodes?.not_found,
     );
   }
 
@@ -57,7 +57,7 @@ export const GetPractice = async (req) => {
     throw new CustomError(
       statusCodes?.badRequest,
       Message?.inValid,
-      errorCodes?.bad_request
+      errorCodes?.bad_request,
     );
   }
 
@@ -67,7 +67,7 @@ export const GetPractice = async (req) => {
     throw new CustomError(
       statusCodes?.notFound,
       Message?.notFound,
-      errorCodes?.not_found
+      errorCodes?.not_found,
     );
   }
 
@@ -82,21 +82,21 @@ export const UpdatePractice = async (req) => {
     throw new CustomError(
       statusCodes?.badRequest,
       Message?.inValid,
-      errorCodes?.bad_request
+      errorCodes?.bad_request,
     );
   }
 
   const updatedPractice = await PracticeModel.findOneAndUpdate(
     { _id: id, active: true },
     { Title, address, description },
-    { new: true }
+    { new: true },
   );
 
   if (!updatedPractice) {
     throw new CustomError(
       statusCodes?.notFound,
       Message?.notUpdate,
-      errorCodes?.action_failed
+      errorCodes?.action_failed,
     );
   }
 
@@ -110,7 +110,7 @@ export const DeletePractice = async (req) => {
     throw new CustomError(
       statusCodes?.badRequest,
       Message?.inValid,
-      errorCodes?.bad_request
+      errorCodes?.bad_request,
     );
   }
 
@@ -120,7 +120,7 @@ export const DeletePractice = async (req) => {
     throw new CustomError(
       statusCodes?.notFound,
       Message?.notFound,
-      errorCodes?.not_found
+      errorCodes?.not_found,
     );
   }
 
@@ -143,7 +143,7 @@ export const GetAllPracticesIndex = async (req) => {
     throw new CustomError(
       statusCodes.badRequest,
       "Invalid page number",
-      errorCodes.invalidInput
+      errorCodes.invalidInput,
     );
   }
 
@@ -151,7 +151,7 @@ export const GetAllPracticesIndex = async (req) => {
     throw new CustomError(
       statusCodes.badRequest,
       "Invalid page size",
-      errorCodes.invalidInput
+      errorCodes.invalidInput,
     );
   }
 
@@ -176,7 +176,7 @@ export const GetAllPracticesIndex = async (req) => {
     throw new CustomError(
       statusCodes.notFound,
       Message.notFound,
-      errorCodes.not_found
+      errorCodes.not_found,
     );
   }
 
