@@ -13,7 +13,11 @@ const GetAllcaseStage = async (req, res, next) => {
   res.status(statusCodes?.ok).send(CaseStageData);
 };
 const GetAllcaseStagepage = async (req, res, next) => {
-  const CaseStageData = await caseStageService.GetAllCaseStagespage(req, res, next);
+  const CaseStageData = await caseStageService.GetAllCaseStagespage(
+    req,
+    res,
+    next,
+  );
   res.status(statusCodes?.ok).send(CaseStageData);
 };
 const CaseStageDelete = async (req, res, next) => {
