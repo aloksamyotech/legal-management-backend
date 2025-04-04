@@ -1,10 +1,11 @@
 import { Router } from "express";
 import { asyncHandler } from "../utils/asyncWrapper.js";
 import { expenseTypeController } from "../controllers/controllers.js";
-import { upload } from "../utils/multerConfig.js";
+import { jwtMiddleware } from "../middlewares/JWTAuthentication.js";
 const router = Router();
 router.post(
   "/addExpenseType",
+  jwtMiddleware,
   asyncHandler(expenseTypeController.ExpenseTypeAdd),
 );
 router.get(
@@ -13,6 +14,7 @@ router.get(
 );
 router.get(
   "/getAllExpenseType",
+  jwtMiddleware,
   asyncHandler(expenseTypeController.GetAllexpenseType),
 );
 router.delete(

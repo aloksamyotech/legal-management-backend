@@ -3,6 +3,7 @@ import { errorCodes, Message, statusCodes } from "../core/common/constant.js";
 import CustomError from "../utils/exception.js";
 
 export const AddPolicestation = async (req) => {
+  const companyId = req.user.companyId;
   const { Title, Location, Contact } = req.body;
 
   if (!Title) {
@@ -17,6 +18,7 @@ export const AddPolicestation = async (req) => {
     Title,
     Location,
     Contact,
+    companyId,
   });
 
   const createdPolicestation = await newPolicestation.save();
@@ -32,8 +34,14 @@ export const AddPolicestation = async (req) => {
   return createdPolicestation;
 };
 
-export const GetAllPolicestations = async () => {
-  const policestations = await PolicestationModel.find({ active: true });
+export const GetAllPolicestations = async (req) => {
+  const companyId = req.user.companyId;
+  const policestations = await PolicestationModel.find({
+    active: true,
+    companyId,
+  }).sort({
+    createdAt: -1,
+  });
 
   if (!policestations || policestations.length === 0) {
     throw new CustomError(
@@ -130,4 +138,62 @@ export const DeletePolicestation = async (req) => {
   await policestation.save();
 
   return { message: Message?.Delete, policestation };
+};
+export const GetAllPolicestationsIndex = async (req) => {
+  const companyId = req.user.companyId;
+  const { page, limit, search } = req.query;
+  const searchCondition = search
+    ? { Title: { $regex: search, $options: "i" } }
+    : {};
+
+  const pageNumber = parseInt(page);
+  const pageSize = parseInt(limit);
+
+  if (isNaN(pageNumber) || pageNumber <= 0) {
+    throw new CustomError(
+      statusCodes.badRequest,
+      "Invalid page number",
+      errorCodes.invalidInput,
+    );
+  }
+
+  if (isNaN(pageSize) || pageSize <= 0) {
+    throw new CustomError(
+      statusCodes.badRequest,
+      "Invalid page size",
+      errorCodes.invalidInput,
+    );
+  }
+
+  const policestationsQuery = PolicestationModel.find({
+    active: true,
+    companyId,
+    ...searchCondition,
+  }).sort({ createdAt: -1 });
+
+  const totalPolicestations = await PolicestationModel.countDocuments({
+    active: true,
+    companyId,
+    ...searchCondition,
+  });
+
+  const policestations = await policestationsQuery
+    .skip((pageNumber - 1) * pageSize)
+    .limit(pageSize)
+    .exec();
+
+  if (!policestations || policestations.length === 0) {
+    throw new CustomError(
+      statusCodes.notFound,
+      Message.notFound,
+      errorCodes.not_found,
+    );
+  }
+
+  return {
+    policestations,
+    totalPolicestations,
+    page: pageNumber,
+    totalPages: Math.ceil(totalPolicestations / pageSize),
+  };
 };

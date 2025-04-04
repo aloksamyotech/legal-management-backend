@@ -4,7 +4,7 @@ import CustomError from "../utils/exception.js";
 
 export const AddPractice = async (req) => {
   const { Title, address, description } = req.body;
-
+  const companyId = req.user.companyId;
   if (!Title) {
     throw new CustomError(
       statusCodes?.badRequest,
@@ -17,6 +17,7 @@ export const AddPractice = async (req) => {
     Title,
     address,
     description,
+    companyId,
   });
 
   const createdPractice = await newPractice.save();
@@ -32,8 +33,11 @@ export const AddPractice = async (req) => {
   return createdPractice;
 };
 
-export const GetAllPractices = async () => {
-  const practices = await PracticeModel.find({ active: true });
+export const GetAllPractices = async (req) => {
+  const companyId = req.user.companyId;
+  const practices = await PracticeModel.find({ active: true, companyId }).sort({
+    createdAt: -1,
+  });
 
   if (!practices || practices.length === 0) {
     throw new CustomError(
@@ -124,4 +128,62 @@ export const DeletePractice = async (req) => {
   await practice.save();
 
   return { message: Message?.Delete, practice };
+};
+export const GetAllPracticesIndex = async (req) => {
+  const companyId = req.user.companyId;
+  const { page, limit, search } = req.query;
+  const searchCondition = search
+    ? { Title: { $regex: search, $options: "i" } }
+    : {};
+
+  const pageNumber = parseInt(page);
+  const pageSize = parseInt(limit);
+
+  if (isNaN(pageNumber) || pageNumber <= 0) {
+    throw new CustomError(
+      statusCodes.badRequest,
+      "Invalid page number",
+      errorCodes.invalidInput,
+    );
+  }
+
+  if (isNaN(pageSize) || pageSize <= 0) {
+    throw new CustomError(
+      statusCodes.badRequest,
+      "Invalid page size",
+      errorCodes.invalidInput,
+    );
+  }
+
+  const practicesQuery = PracticeModel.find({
+    active: true,
+    companyId,
+    ...searchCondition,
+  }).sort({ createdAt: -1 });
+
+  const totalPractices = await PracticeModel.countDocuments({
+    active: true,
+    companyId,
+    ...searchCondition,
+  });
+
+  const practices = await practicesQuery
+    .skip((pageNumber - 1) * pageSize)
+    .limit(pageSize)
+    .exec();
+
+  if (!practices || practices.length === 0) {
+    throw new CustomError(
+      statusCodes.notFound,
+      Message.notFound,
+      errorCodes.not_found,
+    );
+  }
+
+  return {
+    practices,
+    totalPractices,
+    page: pageNumber,
+    totalPages: Math.ceil(totalPractices / pageSize),
+  };
 };

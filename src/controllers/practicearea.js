@@ -1,5 +1,5 @@
 import * as practiceareaService from "../services/practicearea.js";
-import { Message, statusCodes } from "../core/common/constant.js";
+import { statusCodes } from "../core/common/constant.js";
 const PracticeareaAdd = async (req, res, next) => {
   const PracticeareaData = await practiceareaService.AddPractice(
     req,
@@ -18,6 +18,14 @@ const PracticeareaFetch = async (req, res, next) => {
 };
 const GetAllpracticearea = async (req, res, next) => {
   const PracticeareaData = await practiceareaService.GetAllPractices(
+    req,
+    res,
+    next,
+  );
+  res.status(statusCodes?.ok).send(PracticeareaData);
+};
+const GetAllpracticeareapage = async (req, res, next) => {
+  const PracticeareaData = await practiceareaService.GetAllPracticesIndex(
     req,
     res,
     next,
@@ -47,4 +55,5 @@ export default {
   PracticeareaDelete,
   PracticeareaUpdate,
   GetAllpracticearea,
+  GetAllpracticeareapage,
 };

@@ -19,11 +19,10 @@ const NoteSchema = new mongoose.Schema(
       type: Boolean,
       default: true,
     },
-    Active:{
-      type:Boolean,
-      Default:true,
-
-    }
+    companyId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+    },
   },
   { timestamps: true },
 );

@@ -1,9 +1,14 @@
 import { AdvocateSch } from "../models/Advocate.js";
 import { errorCodes, Message, statusCodes } from "../core/common/constant.js";
 import CustomError from "../utils/exception.js";
+import CaseModel from "../models/Case.js";
+import BlockedRole from "../models/Email-Sch.js";
+import { sendEmail } from "../core/Nodemailer/nodemailer.js";
+import getAccountCreationEmailTemplate from "../core/common/htmlTemplates/accountCreationtemp.js";
 
 // Create an Advocate
 export const AddAdvocate = async (req) => {
+  const companyId = req.user.companyId;
   const {
     name,
     email,
@@ -19,7 +24,7 @@ export const AddAdvocate = async (req) => {
     graduationYear,
     practiceArea,
     languages,
-    skill,
+    Specialization,
     degree,
     notes,
     firms,
@@ -69,7 +74,7 @@ export const AddAdvocate = async (req) => {
     graduationYear,
     practiceArea,
     languages,
-    skill,
+    Specialization,
     degree,
     notes,
     firms,
@@ -77,6 +82,7 @@ export const AddAdvocate = async (req) => {
     duration,
     image,
     About,
+    companyId: companyId,
     active: true,
   });
 
@@ -89,12 +95,52 @@ export const AddAdvocate = async (req) => {
       errorCodes?.service_unavailable,
     );
   }
+  const isBlocked = await BlockedRole.findOne({ role: "advocate", companyId });
+  if (isBlocked?.isBlocked) {
+    await sendEmail(
+      email,
+      "Welcome to Our Company",
+      "",
+      getAccountCreationEmailTemplate(name),
+    );
+  } else {
+    console.log("Email not sent as 'advocate' role is blocked.");
+  }
 
   return createdAdvocate;
 };
 
-export const GetAllAdvocates = async () => {
-  const advocates = await AdvocateSch.find({ active: true });
+// export const GetAllAdvocates = async () => {
+//   const advocates = await AdvocateSch.find({ active: true }).sort({createdAt: -1,});
+//   const newArr = [...advocates]
+//   const res = await Promise.all(
+//     newArr?.map(async (item) => {
+//       const caseByAdv = await CaseModel.find({Active: true, CaseStatus: "Open", Advocate: item?._id})
+//       // console.log("caseByAdv=========", Array.isArray(caseByAdv), item)
+//       if (Array.isArray(caseByAdv)) {
+//         console.log("item=====>", caseByAdv?.length)
+//         item.openCases = caseByAdv?.length
+//       }
+//       // item.openCases = caseByAdv?.length
+//       return item
+//     })
+//   )
+//   if (!advocates || advocates.length === 0) {
+//     throw new CustomError(
+//       statusCodes?.notFound,
+//       Message?.notFound,
+//       errorCodes?.not_found,
+//     );
+//   }
+
+//   // return advocates;
+//   return res
+// };
+export const GetAllAdvocates = async (req) => {
+  const companyId = req.user.companyId;
+  const advocates = await AdvocateSch.find({ active: true, companyId })
+    .sort({ createdAt: -1 })
+    .lean();
 
   if (!advocates || advocates.length === 0) {
     throw new CustomError(
@@ -104,11 +150,24 @@ export const GetAllAdvocates = async () => {
     );
   }
 
-  return advocates;
+  const res = await Promise.all(
+    advocates.map(async (item) => {
+      const caseByAdv = await CaseModel.find({
+        Active: true,
+        CaseStatus: "Open",
+        Advocate: item._id,
+      }).lean();
+
+      item.openCases = caseByAdv.length || 0;
+      return item;
+    }),
+  );
+
+  return Array.isArray(res) ? res : [];
 };
 
 export const GetAdvocateById = async (req) => {
-  const { id } = req?.params;
+  const { id } = req.params;
 
   if (!id) {
     throw new CustomError(
@@ -118,7 +177,10 @@ export const GetAdvocateById = async (req) => {
     );
   }
 
-  const advocate = await AdvocateSch.findOne({ _id: id, active: true });
+  const advocate = await AdvocateSch.findOne({
+    _id: id,
+    active: true,
+  }).populate("practiceArea");
 
   if (!advocate) {
     throw new CustomError(
@@ -131,10 +193,8 @@ export const GetAdvocateById = async (req) => {
   return advocate;
 };
 
-// Update an Advocate
 export const UpdateAdvocate = async (req) => {
   const {
-    certificate,
     name,
     email,
     phone,
@@ -149,15 +209,14 @@ export const UpdateAdvocate = async (req) => {
     graduationYear,
     practiceArea,
     languages,
-    skill,
+    Specialization,
     degree,
     notes,
     firms,
     position,
     duration,
-    image,
     About,
-  } = req?.body;
+  } = req.body;
 
   if (!email) {
     throw new CustomError(
@@ -166,8 +225,16 @@ export const UpdateAdvocate = async (req) => {
       errorCodes?.bad_request,
     );
   }
+  const image =
+    req.files && req.files.image
+      ? `/uploads/${req.files.image[0].filename}`
+      : null;
+  const certificate =
+    req.files && req.files.certificate
+      ? `/uploads/${req.files.certificate[0].filename}`
+      : null;
   const updateData = {
-    certificate,
+    // certificate,
     name,
     email,
     phone,
@@ -182,16 +249,22 @@ export const UpdateAdvocate = async (req) => {
     graduationYear,
     practiceArea,
     languages,
-    skill,
+    Specialization,
     degree,
     notes,
     firms,
     position,
     duration,
     About,
-    image: req.file ? `/uploads/${req.file.filename}` : null,
+    // image,
   };
 
+  if (image) {
+    updateData.image = image;
+  }
+  if (certificate) {
+    updateData.certificate = certificate;
+  }
   const updatedAdvocate = await AdvocateSch.findOneAndUpdate(
     { email: email, active: true },
     updateData,
@@ -210,7 +283,7 @@ export const UpdateAdvocate = async (req) => {
 };
 
 export const DeleteAdvocate = async (req) => {
-  const { id } = req?.params;
+  const { id } = req.params;
 
   if (!id) {
     throw new CustomError(
@@ -234,4 +307,29 @@ export const DeleteAdvocate = async (req) => {
   await advocate.save();
 
   return { message: Message?.Delete, advocate };
+};
+export const GetCaseByAdvocate = async (req) => {
+  const { advocateId } = req.params;
+
+  const cases = await CaseModel.find({
+    Advocate: advocateId,
+    Active: true,
+  }).populate([
+    { path: "Client", select: "Name" },
+    { path: "Matter", select: "Title" },
+    { path: "Judge", select: "Title" },
+    { path: "PoliceStation", select: "Title" },
+    { path: "Court", select: "Title" },
+  ]);
+
+  if (!cases || cases.length === 0) {
+    return {
+      status: statusCodes?.notFound,
+      message: Message?.notFound,
+      errorCode: errorCodes?.not_found,
+      cases: [],
+    };
+  }
+
+  return cases;
 };

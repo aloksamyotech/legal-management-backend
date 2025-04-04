@@ -4,7 +4,7 @@ import CustomError from "../utils/exception.js";
 
 export const AddExpense = async (req) => {
   const { Title, Case, Type, Amount, Description } = req.body;
-
+  const companyId = req.user.companyId;
   // Check for required fields
   if (!Title || !Case || !Type || !Amount) {
     throw new CustomError(
@@ -28,6 +28,7 @@ export const AddExpense = async (req) => {
     Amount,
     Attachment: files || [],
     Description,
+    companyId,
   });
 
   const createdExpense = await newExpense.save();
@@ -43,8 +44,12 @@ export const AddExpense = async (req) => {
   return createdExpense;
 };
 
-export const GetExpense = async () => {
-  const expenses = await ExpenseModel.find({ Active: true }).populate("Type", "Title");
+export const GetExpense = async (req) => {
+  const companyId = req.user.companyId;
+  const expenses = await ExpenseModel.find({ Active: true, companyId })
+    .populate("Type", "Title")
+    .populate("Case", "Title")
+    .sort({ createdAt: -1 });
 
   if (!expenses || expenses.length === 0) {
     throw new CustomError(
@@ -68,7 +73,9 @@ export const GetExpenseById = async (req) => {
     );
   }
 
-  const expense = await ExpenseModel.findOne({ _id: id, Active: true }).populate("Type", "Title");
+  const expense = await ExpenseModel.findOne({ _id: id, Active: true })
+    .populate("Type", "Title")
+    .populate("Case", "Title");
 
   if (!expense) {
     throw new CustomError(
@@ -109,13 +116,17 @@ export const UpdateExpense = async (req) => {
     type: file?.mimetype,
   }));
 
-  if (files) {
+  if (files?.length) {
     updateData.Attachment = files;
   }
 
-  const updatedExpense = await ExpenseModel.findByIdAndUpdate({_id: id}, updateData, {
-    new: true,
-  });
+  const updatedExpense = await ExpenseModel.findByIdAndUpdate(
+    { _id: id },
+    updateData,
+    {
+      new: true,
+    },
+  );
 
   if (!updatedExpense) {
     throw new CustomError(
@@ -127,7 +138,6 @@ export const UpdateExpense = async (req) => {
 
   return updatedExpense;
 };
-
 
 export const DeleteExpense = async (req) => {
   const { id } = req.params;
@@ -143,7 +153,7 @@ export const DeleteExpense = async (req) => {
   const deletedExpense = await ExpenseModel.findByIdAndUpdate(
     id,
     { Active: false },
-    { new: true }
+    { new: true },
   );
 
   if (!deletedExpense) {
@@ -155,4 +165,61 @@ export const DeleteExpense = async (req) => {
   }
 
   return { message: Message.Delete, expense: deletedExpense };
+};
+export const GetExpforpage = async (req) => {
+  const companyId = req.user.companyId;
+  const { page, limit, search } = req.query;
+  const searchCondition = search
+    ? { Title: { $regex: search, $options: "i" } }
+    : {};
+  const pageNumber = parseInt(page);
+  const pageSize = parseInt(limit);
+
+  if (isNaN(pageNumber) || pageNumber <= 0) {
+    throw new CustomError(
+      statusCodes.badRequest,
+      "Invalid page number",
+      errorCodes.invalidInput,
+    );
+  }
+  if (isNaN(pageSize) || pageSize <= 0) {
+    throw new CustomError(
+      statusCodes.badRequest,
+      "Invalid page size",
+      errorCodes.invalidInput,
+    );
+  }
+  const expensesQuery = ExpenseModel.find({
+    Active: true,
+    companyId,
+    ...searchCondition,
+  })
+    .populate("Type", "Title")
+    .populate("Case", "Title")
+    .sort({ createdAt: -1 });
+  const totalExpenses = await ExpenseModel.countDocuments({
+    Active: true,
+    companyId,
+    ...searchCondition,
+  });
+
+  const expenses = await expensesQuery
+    .skip((pageNumber - 1) * pageSize)
+    .limit(pageSize)
+    .exec();
+
+  if (!expenses || expenses.length === 0) {
+    throw new CustomError(
+      statusCodes.notFound,
+      Message.notFound,
+      errorCodes.not_found,
+    );
+  }
+
+  return {
+    expenses,
+    totalExpenses,
+    page: pageNumber,
+    totalPages: Math.ceil(totalExpenses / pageSize),
+  };
 };

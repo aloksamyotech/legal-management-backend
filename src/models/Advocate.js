@@ -54,12 +54,13 @@ const AdvocateSchema = new Schema(
       type: String,
     },
     practiceArea: {
-      type: String,
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Practicearea",
     },
     languages: {
       type: String,
     },
-    skill: {
+    Specialization: {
       type: String,
     },
     degree: {
@@ -86,6 +87,10 @@ const AdvocateSchema = new Schema(
     active: {
       type: Boolean,
       default: true,
+    },
+    companyId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
     },
   },
   { timestamps: true },

@@ -4,7 +4,7 @@ import CustomError from "../utils/exception.js";
 
 export const AddCourt = async (req) => {
   const { Title, address, description } = req.body;
-
+  const companyId = req.user.companyId;
   if (!Title) {
     throw new CustomError(
       statusCodes?.badRequest,
@@ -17,6 +17,7 @@ export const AddCourt = async (req) => {
     Title,
     address,
     description,
+    companyId,
   });
 
   const createdCourt = await newCourt.save();
@@ -32,8 +33,11 @@ export const AddCourt = async (req) => {
   return createdCourt;
 };
 
-export const GetAllCourts = async () => {
-  const courts = await CourtModel.find({ active: true });
+export const GetAllCourts = async (req) => {
+  const companyId = req.user.companyId;
+  const courts = await CourtModel.find({ active: true, companyId }).sort({
+    createdAt: -1,
+  });
   if (!courts || courts.length === 0) {
     throw new CustomError(
       statusCodes?.notFound,
@@ -123,4 +127,63 @@ export const DeleteCourt = async (req) => {
   await court.save();
 
   return { message: Message?.Delete, court };
+};
+
+export const GetAllCourtsIndex = async (req) => {
+  const companyId = req.user.companyId;
+  const { page, limit, search } = req.query;
+  const searchCondition = search
+    ? { Title: { $regex: search, $options: "i" } }
+    : {};
+
+  const pageNumber = parseInt(page);
+  const pageSize = parseInt(limit);
+
+  if (isNaN(pageNumber) || pageNumber <= 0) {
+    throw new CustomError(
+      statusCodes.badRequest,
+      "Invalid page number",
+      errorCodes.invalidInput,
+    );
+  }
+
+  if (isNaN(pageSize) || pageSize <= 0) {
+    throw new CustomError(
+      statusCodes.badRequest,
+      "Invalid page size",
+      errorCodes.invalidInput,
+    );
+  }
+
+  const courtsQuery = CourtModel.find({
+    active: true,
+    companyId,
+    ...searchCondition,
+  }).sort({ createdAt: -1 });
+
+  const totalCourts = await CourtModel.countDocuments({
+    active: true,
+    companyId,
+    ...searchCondition,
+  });
+
+  const courts = await courtsQuery
+    .skip((pageNumber - 1) * pageSize)
+    .limit(pageSize)
+    .exec();
+
+  if (!courts || courts.length === 0) {
+    throw new CustomError(
+      statusCodes.notFound,
+      Message.notFound,
+      errorCodes.not_found,
+    );
+  }
+
+  return {
+    courts,
+    totalCourts,
+    page: pageNumber,
+    totalPages: Math.ceil(totalCourts / pageSize),
+  };
 };

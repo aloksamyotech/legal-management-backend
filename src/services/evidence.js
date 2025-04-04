@@ -1,8 +1,10 @@
 import Evidence from "../models/Evidence.js";
-import { statusCodes, Message } from "../core/common/constant.js";
+import { statusCodes, Message, errorCodes } from "../core/common/constant.js";
+import CustomError from "../utils/exception.js";
 
-export const AddEvidence = async (req, res) => {
-  const { Title, Case, Hearing, Favor, Description } = req?.body;
+export const AddEvidence = async (req) => {
+  const companyId = req.user.companyId;
+  const { Title, Case, Hearing, Favor, Description } = req.body;
 
   const files = req?.files?.map((file) => ({
     name: file?.originalname,
@@ -17,31 +19,36 @@ export const AddEvidence = async (req, res) => {
     Favor,
     Attachment: files || [],
     Description,
+    companyId,
   });
 
   const createdEvidence = await evidence.save();
   return createdEvidence;
 };
 export const GetEvidence = async (req) => {
-  const evidence = await Evidence?.find({ Active: true }).populate("Case",).populate("Hearing");
+  const companyId = req.user.companyId;
+  const evidence = await Evidence?.find({ Active: true, companyId })
+    .populate("Case")
+    .populate("Hearing")
+    .sort({ createdAt: -1 });
 
   if (!evidence || evidence.length === 0) {
     throw new CustomError(
       statusCodes?.notFound,
       Message?.notFound,
-      errorCodes?.not_found
+      errorCodes?.not_found,
     );
   }
 
   return evidence;
 };
-export const DeleteEvidence = async (req, res) => {
+export const DeleteEvidence = async (req) => {
   const { id } = req.params;
 
   const deletedEvidence = await Evidence.findOneAndUpdate(
     { _id: id, Active: true },
     { Active: false },
-    { new: true }
+    { new: true },
   );
 
   if (!deletedEvidence) {
@@ -55,9 +62,9 @@ export const DeleteEvidence = async (req, res) => {
   return deletedEvidence;
 };
 
-export const UpdateEvidence = async (req, res) => {
-  const { id } = req?.params;
-  const { Title, Case, Hearing, Favor, Description } = req?.body;
+export const UpdateEvidence = async (req) => {
+  const { id } = req.params;
+  const { Title, Case, Hearing, Favor, Description } = req.body;
 
   const files = req.files?.map((file) => ({
     name: file.originalname,
@@ -70,14 +77,16 @@ export const UpdateEvidence = async (req, res) => {
     Case,
     Hearing,
     Favor,
-    Attachment: files,
     Description,
   };
 
+  if (files?.length) {
+    updatedData.Attachment = files;
+  }
   const updatedEvidence = await Evidence.findOneAndUpdate(
     { _id: id, Active: true },
     updatedData,
-    { new: true }
+    { new: true },
   );
 
   if (!updatedEvidence) {
@@ -90,20 +99,24 @@ export const UpdateEvidence = async (req, res) => {
 
   return updatedEvidence;
 };
-export const GetEvidenceByCase = async (req, res) => {
+export const GetEvidenceByCase = async (req) => {
   const { caseId } = req.params;
 
-  const evidence = await Evidence.find({ Case: caseId, Active: true }).populate("Hearing","Title");
+  const evidence = await Evidence.find({ Case: caseId, Active: true }).populate(
+    "Hearing",
+    "Title",
+  );
 
   if (!evidence || evidence.length === 0) {
-    throw new CustomError(
-      statusCodes?.notFound,
-      Message?.notFound,
-      errorCodes?.not_found,
-    );
+    return {
+      status: statusCodes?.notFound,
+      message: Message?.notFound,
+      errorCode: errorCodes?.not_found,
+      evidence: [],
+    };
   }
 
-  return evidence
+  return evidence;
 };
 export const GetEvidenceById = async (req) => {
   const { id } = req.params;
@@ -112,21 +125,80 @@ export const GetEvidenceById = async (req) => {
     throw new CustomError(
       statusCodes?.badRequest,
       Message?.inValid,
-      errorCodes?.bad_request
+      errorCodes?.bad_request,
     );
   }
 
   const evidence = await Evidence.findOne({ _id: id, Active: true }).populate([
     { path: "Case", select: "Title" },
-    { path: "Hearing", select: "Title" },]);
+    { path: "Hearing", select: "Title" },
+  ]);
 
   if (!evidence) {
     throw new CustomError(
       statusCodes?.notFound,
       Message?.notFound,
-      errorCodes?.not_found
+      errorCodes?.not_found,
     );
   }
 
   return evidence;
+};
+export const GetAllEvidforPage = async (req) => {
+  const companyId = req.user.companyId;
+  const { page, limit, search } = req.query;
+  const searchCondition = search
+    ? { Title: { $regex: search, $options: "i" } }
+    : {};
+  const pageNumber = parseInt(page);
+  const pageSize = parseInt(limit);
+
+  if (isNaN(pageNumber) || pageNumber <= 0) {
+    throw new CustomError(
+      statusCodes.badRequest,
+      "Invalid page number",
+      errorCodes.invalidInput,
+    );
+  }
+  if (isNaN(pageSize) || pageSize <= 0) {
+    throw new CustomError(
+      statusCodes.badRequest,
+      "Invalid page size",
+      errorCodes.invalidInput,
+    );
+  }
+  const evidenceQuery = Evidence.find({
+    Active: true,
+    companyId,
+    ...searchCondition,
+  })
+    .populate("Case")
+    .populate("Hearing")
+    .sort({ createdAt: -1 });
+
+  const totalEvidence = await Evidence.countDocuments({
+    Active: true,
+    companyId,
+    ...searchCondition,
+  });
+
+  const evidence = await evidenceQuery
+    .skip((pageNumber - 1) * pageSize)
+    .limit(pageSize)
+    .exec();
+
+  if (!evidence || evidence.length === 0) {
+    throw new CustomError(
+      statusCodes.notFound,
+      Message.notFound,
+      errorCodes.not_found,
+    );
+  }
+
+  return {
+    evidence,
+    totalEvidence,
+    page: pageNumber,
+    totalPages: Math.ceil(totalEvidence / pageSize),
+  };
 };

@@ -1,12 +1,17 @@
 import mongoose, { Schema } from "mongoose";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
-const AdminSchema = new Schema(
+
+const UserSchema = new Schema(
   {
     Name: {
       type: String,
       required: true,
       trim: true,
+    },
+    Gender: {
+      type: String,
+      enum: ["male", "female", "other"],
     },
     mobileNumber: {
       type: Number,
@@ -14,7 +19,7 @@ const AdminSchema = new Schema(
     },
     AsignRole: {
       type: String,
-      enum: ["admin", "manager", "company"],
+      enum: ["Admin", "Manager", "Company", "Staff", "Advocate", "Client"],
       required: true,
     },
     email: {
@@ -27,8 +32,30 @@ const AdminSchema = new Schema(
       required: true,
     },
     companyId: {
-      Type: mongoose.Types.ObjectId,
+      type: mongoose.Types.ObjectId,
     },
+    image: {
+      type: String,
+    },
+    CompanyLogo: {
+      type: String,
+    },
+    address: {
+      type: String,
+    },
+    permission: {
+      type: [],
+      default: ["dashboard"],
+    },
+    currency: {
+      type: String,
+      default: "₹",
+    },
+    Active: {
+      type: Boolean,
+      default: true,
+    },
+
     refreshToken: {
       type: String,
     },
@@ -36,28 +63,30 @@ const AdminSchema = new Schema(
   { timestamps: true },
 );
 
-AdminSchema.pre("save", async function (next) {
+UserSchema.pre("save", async function (next) {
   if (!this.isModified("password")) return next();
 
   this.password = await bcrypt.hash(this.password, 10);
   next();
 });
 
-AdminSchema.methods.isPasswordCorrect = async function (password) {
+UserSchema.methods.isPasswordCorrect = async function (password) {
   return await bcrypt.compare(password, this.password);
 };
 
-AdminSchema.methods.generateAccessToken = function () {
+UserSchema.methods.generateAccessToken = function () {
   const payload = {
     _id: this._id,
     email: this.email,
+    companyId: this.companyId,
+    permission: this.permission,
   };
 
   return jwt.sign(payload, process.env.ACCESS_TOKEN_SECRET, {
     expiresIn: process.env.ACCESS_TOKEN_EXPIRY,
   });
 };
-AdminSchema.methods.generateRefreshToken = function () {
+UserSchema.methods.generateRefreshToken = function () {
   const payload = {
     _id: this._id,
   };
@@ -66,4 +95,4 @@ AdminSchema.methods.generateRefreshToken = function () {
     expiresIn: process.env.REFRESH_TOKEN_EXPIRY,
   });
 };
-export const Admin = mongoose.model("Admin", AdminSchema);
+export const User = mongoose.model("User", UserSchema);

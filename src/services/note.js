@@ -4,7 +4,7 @@ import CustomError from "../utils/exception.js";
 
 export const AddNote = async (req) => {
   const { Title, Description, CreatedAt } = req.body;
-
+  const companyId = req.user.companyId;
   if (!Title || !Description) {
     throw new CustomError(
       statusCodes?.badRequest,
@@ -12,7 +12,7 @@ export const AddNote = async (req) => {
       errorCodes?.bad_request,
     );
   }
-console.log(req.files)
+
   const files = req.files?.map((file) => ({
     name: file.originalname,
     url: `/uploads/${file.filename}`,
@@ -25,6 +25,7 @@ console.log(req.files)
     CreatedAt,
     Attachment: files || [],
     Active: true,
+    companyId,
   });
 
   const createdNote = await newNote.save();
@@ -40,8 +41,11 @@ console.log(req.files)
   return createdNote;
 };
 
-export const GetAllNotes = async () => {
-  const notes = await Note.find({ Active: true });
+export const GetAllNotes = async (req) => {
+  const companyId = req.user.companyId;
+  const notes = await Note.find({ Active: true, companyId }).sort({
+    createdAt: -1,
+  });
 
   if (!notes || notes.length === 0) {
     throw new CustomError(
@@ -142,4 +146,63 @@ export const DeleteNote = async (req) => {
   await note.save();
 
   return { message: Message?.Delete, note };
+};
+
+export const GetAllNotesIndex = async (req) => {
+  const companyId = req.user.companyId;
+  const { page, limit, search } = req.query;
+  const searchCondition = search
+    ? { Title: { $regex: search, $options: "i" } }
+    : {};
+
+  const pageNumber = parseInt(page);
+  const pageSize = parseInt(limit);
+
+  if (isNaN(pageNumber) || pageNumber <= 0) {
+    throw new CustomError(
+      statusCodes.badRequest,
+      "Invalid page number",
+      errorCodes.invalidInput,
+    );
+  }
+
+  if (isNaN(pageSize) || pageSize <= 0) {
+    throw new CustomError(
+      statusCodes.badRequest,
+      "Invalid page size",
+      errorCodes.invalidInput,
+    );
+  }
+
+  const notesQuery = Note.find({
+    Active: true,
+    companyId,
+    ...searchCondition,
+  }).sort({ createdAt: -1 });
+
+  const totalNotes = await Note.countDocuments({
+    Active: true,
+    companyId,
+    ...searchCondition,
+  });
+
+  const notes = await notesQuery
+    .skip((pageNumber - 1) * pageSize)
+    .limit(pageSize)
+    .exec();
+
+  if (!notes || notes.length === 0) {
+    throw new CustomError(
+      statusCodes.notFound,
+      Message.notFound,
+      errorCodes.not_found,
+    );
+  }
+
+  return {
+    notes,
+    totalNotes,
+    page: pageNumber,
+    totalPages: Math.ceil(totalNotes / pageSize),
+  };
 };

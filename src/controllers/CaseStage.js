@@ -1,5 +1,5 @@
 import * as caseStageService from "../services/caseStage.js";
-import { Message, statusCodes } from "../core/common/constant.js";
+import { statusCodes } from "../core/common/constant.js";
 const CaseStageAdd = async (req, res, next) => {
   const CaseStageData = await caseStageService.AddCaseStage(req, res, next);
   res.status(statusCodes?.created).send(CaseStageData);
@@ -10,6 +10,14 @@ const CaseStageFetch = async (req, res, next) => {
 };
 const GetAllcaseStage = async (req, res, next) => {
   const CaseStageData = await caseStageService.GetAllCaseStages(req, res, next);
+  res.status(statusCodes?.ok).send(CaseStageData);
+};
+const GetAllcaseStagepage = async (req, res, next) => {
+  const CaseStageData = await caseStageService.GetAllCaseStagespage(
+    req,
+    res,
+    next,
+  );
   res.status(statusCodes?.ok).send(CaseStageData);
 };
 const CaseStageDelete = async (req, res, next) => {
@@ -35,4 +43,5 @@ export default {
   CaseStageDelete,
   CaseStageUpdate,
   GetAllcaseStage,
+  GetAllcaseStagepage,
 };

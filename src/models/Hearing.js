@@ -42,10 +42,21 @@ const HearingSchema = new Schema(
       ref: "Case",
       required: true,
     },
-    Active:{
-      type:Boolean,
-      default:true
-    }
+    Client: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Client",
+      required: true,
+    },
+
+    Active: {
+      type: Boolean,
+      default: true,
+    },
+    companyId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
+    },
   },
   {
     timestamps: true,

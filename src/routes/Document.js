@@ -2,15 +2,29 @@ import { Router } from "express";
 import { asyncHandler } from "../utils/asyncWrapper.js";
 import { documentController } from "../controllers/controllers.js";
 import { upload } from "../utils/multerConfig.js";
+import { jwtMiddleware } from "../middlewares/JWTAuthentication.js";
 const router = Router();
 router.post(
   "/addDocument",
   upload.array("Attachment", 5),
+  jwtMiddleware,
   asyncHandler(documentController.DocumentAdd),
 );
-router.get("/getAllDocument", asyncHandler(documentController.DocumentFetch));
+router.get(
+  "/getAllDocument",
+  jwtMiddleware,
+  asyncHandler(documentController.DocumentFetch),
+);
+router.get(
+  "/getAllDocforpage",
+  jwtMiddleware,
+  asyncHandler(documentController.DocFetchforpage),
+);
 router.get("/getDocument/:id", asyncHandler(documentController.DocumentById));
-router.get("/getDocumentbycase/:caseId", asyncHandler(documentController.GetDocumentByCase));
+router.get(
+  "/getDocumentbycase/:caseId",
+  asyncHandler(documentController.GetDocumentByCase),
+);
 router.put(
   "/updateDocument/:id",
   upload.array("Attachment", 5),

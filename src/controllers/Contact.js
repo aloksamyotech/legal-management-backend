@@ -1,11 +1,15 @@
 import * as contactService from "../services/contact.js";
-import { Message, statusCodes } from "../core/common/constant.js";
+import { statusCodes } from "../core/common/constant.js";
 const ContactAdd = async (req, res, next) => {
   const ContactData = await contactService.AddContact(req, res, next);
   res.status(statusCodes?.created).send(ContactData);
 };
 const ContactFetch = async (req, res, next) => {
   const ContactData = await contactService.GetAllContact(req, res, next);
+  res.status(statusCodes?.ok).send(ContactData);
+};
+const ContactforpageFetch = async (req, res, next) => {
+  const ContactData = await contactService.GetAllContactforpage(req, res, next);
   res.status(statusCodes?.ok).send(ContactData);
 };
 const ContactDelete = async (req, res, next) => {
@@ -22,4 +26,5 @@ export default {
   ContactFetch,
   ContactDelete,
   ContactUpdate,
+  ContactforpageFetch,
 };

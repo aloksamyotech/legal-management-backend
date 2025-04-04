@@ -2,18 +2,39 @@ import { Router } from "express";
 import { asyncHandler } from "../utils/asyncWrapper.js";
 import { clientController } from "../controllers/controllers.js";
 import { upload } from "../utils/multerConfig.js";
+import { jwtMiddleware } from "../middlewares/JWTAuthentication.js";
 const router = Router();
 router.post(
   "/addClient",
   upload.single("image"),
+  jwtMiddleware,
   asyncHandler(clientController.ClientAdd),
 );
-router.get("/getClient", asyncHandler(clientController.ClientFetch));
-router.get("/getAllClient", asyncHandler(clientController.GetAllclient));
-router.delete("/deleteClient", asyncHandler(clientController.ClientDelete));
+router.get("/getClientbyid/:id", asyncHandler(clientController.ClientFetch));
+router.get(
+  "/getAllClient",
+  jwtMiddleware,
+  asyncHandler(clientController.GetAllclient),
+);
+router.get(
+  "/getAllClientIndex",
+  jwtMiddleware,
+  asyncHandler(clientController.GetAllPageClint),
+);
+router.get(
+  "/getCaseByClient/:clientId",
+  asyncHandler(clientController.GetCasebyClientId),
+);
+router.delete("/deleteClient/:id", asyncHandler(clientController.ClientDelete));
 router.put(
   "/updateClient",
   upload.single("image"),
   asyncHandler(clientController.ClientUpdate),
+);
+router.post(
+  "/bulkUpload",
+  upload.single("file"),
+  jwtMiddleware,
+  asyncHandler(clientController.BulkuploadClient),
 );
 export default router;

@@ -8,15 +8,12 @@ const ClientSchema = new Schema(
     },
     city: {
       type: String,
-      required: true,
     },
     state: {
       type: String,
-      required: true,
     },
     zipcode: {
       type: Number,
-      required: true,
     },
     phonenum: {
       type: Number,
@@ -24,7 +21,6 @@ const ClientSchema = new Schema(
     },
     country: {
       type: String,
-      required: true,
     },
     Email: {
       type: String,
@@ -39,6 +35,10 @@ const ClientSchema = new Schema(
     },
     image: {
       type: String,
+    },
+    companyId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
     },
     Active: {
       type: Boolean,
