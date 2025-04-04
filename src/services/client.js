@@ -5,7 +5,8 @@ import CaseModel from "../models/Case.js";
 import BlockedRole from "../models/Email-Sch.js";
 import { sendEmail } from "../core/Nodemailer/nodemailer.js";
 import getAccountCreationEmailTemplate from "../core/common/htmlTemplates/accountCreationtemp.js";
-import xlsx from "xlsx";
+import ExcelJS from "exceljs";
+
 export const AddClient = async (req) => {
   const {
     Name,
@@ -25,7 +26,7 @@ export const AddClient = async (req) => {
     throw new CustomError(
       statusCodes?.conflict,
       Message?.alreadyExist,
-      errorCodes?.already_exist,
+      errorCodes?.already_exist
     );
   }
   const image = req.file ? `/uploads/${req.file.filename}` : null;
@@ -49,7 +50,7 @@ export const AddClient = async (req) => {
     throw new CustomError(
       statusCodes?.serviceUnavailable,
       Message?.serverError,
-      errorCodes?.service_unavailable,
+      errorCodes?.service_unavailable
     );
   }
   const isBlocked = await BlockedRole.findOne({ role: "client", companyId });
@@ -58,7 +59,7 @@ export const AddClient = async (req) => {
       Email,
       "Welcome to Our Company",
       "",
-      getAccountCreationEmailTemplate(Name),
+      getAccountCreationEmailTemplate(Name)
     );
   } else {
     console.log("Email not sent as 'client' role is blocked.");
@@ -74,7 +75,7 @@ export const GetClient = async (req) => {
     throw new CustomError(
       statusCodes?.badRequest,
       Message?.inValid,
-      errorCodes?.bad_request,
+      errorCodes?.bad_request
     );
   }
 
@@ -83,7 +84,7 @@ export const GetClient = async (req) => {
     throw new CustomError(
       statusCodes?.notFound,
       Message?.notFound,
-      errorCodes?.not_found,
+      errorCodes?.not_found
     );
   }
   return client;
@@ -96,7 +97,7 @@ export const DeleteClient = async (req) => {
     throw new CustomError(
       statusCodes?.badRequest,
       Message?.inValid,
-      errorCodes?.bad_request,
+      errorCodes?.bad_request
     );
   }
 
@@ -106,7 +107,7 @@ export const DeleteClient = async (req) => {
     throw new CustomError(
       statusCodes?.notFound,
       Message?.notDeleted,
-      errorCodes?.not_found,
+      errorCodes?.not_found
     );
   }
 
@@ -132,7 +133,7 @@ export const UpdateClient = async (req) => {
     throw new CustomError(
       statusCodes?.badRequest,
       Message?.inValid,
-      errorCodes?.bad_request,
+      errorCodes?.bad_request
     );
   }
   const updateData = {
@@ -151,14 +152,14 @@ export const UpdateClient = async (req) => {
   const updatedClient = await Client.findOneAndUpdate(
     { Email, Active: true },
     updateData,
-    { new: true },
+    { new: true }
   );
 
   if (!updatedClient) {
     throw new CustomError(
       statusCodes?.notFound,
       Message?.notUpdate,
-      errorCodes?.action_failed,
+      errorCodes?.action_failed
     );
   }
 
@@ -175,7 +176,7 @@ export const GetAllClients = async (req) => {
     throw new CustomError(
       statusCodes?.notFound,
       Message?.notFound,
-      errorCodes?.not_found,
+      errorCodes?.not_found
     );
   }
 
@@ -215,18 +216,36 @@ export const ClientBulk = async (req, res) => {
   }
 
   try {
-    const workbook = xlsx.readFile(file);
-    if (!workbook.SheetNames || workbook.SheetNames.length === 0) {
+    const workbook = new ExcelJS.Workbook();
+    await workbook.xlsx.readFile(file);
+
+    if (!workbook.worksheets || workbook.worksheets.length === 0) {
       return res.status(400).json({ message: "No sheets found in the file" });
     }
 
-    const sheetName = workbook.SheetNames[0];
-    const worksheet = workbook.Sheets[sheetName];
-    const data = xlsx.utils.sheet_to_json(worksheet);
+    const worksheet = workbook.worksheets[0];
+    const headers = [];
+    worksheet.getRow(1).eachCell((cell, colNumber) => {
+      headers.push(cell.text.trim());
+    });
+
+    const data = [];
+    worksheet.eachRow((row, rowNumber) => {
+      if (rowNumber === 1) return;
+      const rowData = {};
+
+      row.eachCell((cell, colNumber) => {
+        const columnName = headers[colNumber - 1];
+        rowData[columnName] = cell.text.trim();
+      });
+
+      data.push(rowData);
+    });
 
     if (data.length === 0) {
       return res.status(400).json({ message: "File is empty" });
     }
+
     const emailSet = new Set();
     const filteredData = data
       .map((row) => {
@@ -243,19 +262,20 @@ export const ClientBulk = async (req, res) => {
     if (filteredData.length === 0) {
       return res.status(400).json({ message: "No valid data to insert" });
     }
+
     const bulkInsert = await Client.insertMany(filteredData);
 
     if (!bulkInsert) {
       throw new CustomError(
         statusCodes?.notFound,
         Message?.notFound,
-        errorCodes?.not_found,
+        errorCodes?.not_found
       );
     }
 
     return res
       .status(200)
-      .json({ message: "Bulk upload successfull", data: bulkInsert });
+      .json({ message: "Bulk upload successful", data: bulkInsert });
   } catch (error) {
     console.error(error);
     return res
@@ -271,21 +291,21 @@ export const GetAllClientsIndex = async (req) => {
     ? { Name: { $regex: search, $options: "i" } }
     : {};
 
-  const pageNumber = parseInt(page);
-  const pageSize = parseInt(limit);
-
+    const pageNumber = parseInt(page) || 1;
+    const pageSize = parseInt(limit) || 10;
+  
   if (isNaN(pageNumber) || pageNumber <= 0) {
     throw new CustomError(
       statusCodes.badRequest,
       "Invalid page number",
-      errorCodes.invalidInput,
+      errorCodes.invalidInput
     );
   }
   if (isNaN(pageSize) || pageSize <= 0) {
     throw new CustomError(
       statusCodes.badRequest,
       "Invalid page size",
-      errorCodes.invalidInput,
+      errorCodes.invalidInput
     );
   }
   const clientsQuery = Client.find({
@@ -309,7 +329,7 @@ export const GetAllClientsIndex = async (req) => {
     throw new CustomError(
       statusCodes.notFound,
       Message.notFound,
-      errorCodes.not_found,
+      errorCodes.not_found
     );
   }
 
