@@ -11,7 +11,7 @@ import appRouter from "./src/routes/routes.js";
 const app = express();
 const PORT = (() => {
   const env = process.env.ENV;
-  return env === "development" ? 7205 : 4545;
+  return env === "development" ? 7003 : 4545;
 })();
 
 app.use(express.json());
