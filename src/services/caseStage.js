@@ -1,0 +1,190 @@
+import CaseStageModel from "../models/CaseStage.js";
+import { errorCodes, Message, statusCodes } from "../core/common/constant.js";
+import CustomError from "../utils/exception.js";
+
+export const AddCaseStage = async (req) => {
+  const companyId = req.user.companyId;
+  const { Title, description } = req.body;
+
+  if (!Title) {
+    throw new CustomError(
+      statusCodes?.badRequest,
+      Message?.Missing_required_field,
+      errorCodes?.bad_request,
+    );
+  }
+
+  const newCaseStage = new CaseStageModel({
+    Title,
+    description,
+    companyId,
+  });
+
+  const createdCaseStage = await newCaseStage.save();
+
+  if (!createdCaseStage) {
+    throw new CustomError(
+      statusCodes?.serviceUnavailable,
+      Message?.notCreated,
+      errorCodes?.service_unavailable,
+    );
+  }
+
+  return createdCaseStage;
+};
+
+export const GetAllCaseStages = async (req) => {
+  const companyId = req.user.companyId;
+  const caseStages = await CaseStageModel.find({
+    active: true,
+    companyId,
+  }).sort({
+    createdAt: -1,
+  });
+
+  if (!caseStages || caseStages.length === 0) {
+    throw new CustomError(
+      statusCodes?.notFound,
+      Message?.notFound,
+      errorCodes?.not_found,
+    );
+  }
+
+  return caseStages;
+};
+
+export const GetCaseStage = async (req) => {
+  const { id } = req.params;
+
+  if (!id) {
+    throw new CustomError(
+      statusCodes?.badRequest,
+      Message?.inValid,
+      errorCodes?.bad_request,
+    );
+  }
+
+  const caseStage = await CaseStageModel.findOne({ _id: id, active: true });
+
+  if (!caseStage) {
+    throw new CustomError(
+      statusCodes?.notFound,
+      Message?.notFound,
+      errorCodes?.not_found,
+    );
+  }
+
+  return caseStage;
+};
+
+export const UpdateCaseStage = async (req) => {
+  const { id } = req.params;
+  const { Title, description } = req.body;
+
+  if (!id || !Title) {
+    throw new CustomError(
+      statusCodes?.badRequest,
+      Message?.inValid,
+      errorCodes?.bad_request,
+    );
+  }
+
+  const updatedCaseStage = await CaseStageModel.findOneAndUpdate(
+    { _id: id, active: true },
+    { Title, description },
+    { new: true },
+  );
+
+  if (!updatedCaseStage) {
+    throw new CustomError(
+      statusCodes?.notFound,
+      Message?.notUpdate,
+      errorCodes?.action_failed,
+    );
+  }
+};
+
+export const DeleteCaseStage = async (req) => {
+  const { id } = req.params;
+
+  if (!id) {
+    throw new CustomError(
+      statusCodes?.badRequest,
+      Message?.inValid,
+      errorCodes?.bad_request,
+    );
+  }
+
+  const caseStage = await CaseStageModel.findOne({ _id: id, active: true });
+
+  if (!caseStage) {
+    throw new CustomError(
+      statusCodes?.notFound,
+      Message?.notFound,
+      errorCodes?.not_found,
+    );
+  }
+
+  caseStage.active = false;
+  await caseStage.save();
+
+  return { message: Message?.Delete, caseStage };
+};
+export const GetAllCaseStagespage = async (req) => {
+  const companyId = req.user.companyId;
+  const { page, limit, search } = req.query;
+  const searchCondition = search
+    ? { Title: { $regex: search, $options: "i" } }
+    : {};
+
+  const pageNumber = parseInt(page);
+  const pageSize = parseInt(limit);
+
+  if (isNaN(pageNumber) || pageNumber <= 0) {
+    throw new CustomError(
+      statusCodes.badRequest,
+      "Invalid page number",
+      errorCodes.invalidInput,
+    );
+  }
+
+  if (isNaN(pageSize) || pageSize <= 0) {
+    throw new CustomError(
+      statusCodes.badRequest,
+      "Invalid page size",
+      errorCodes.invalidInput,
+    );
+  }
+
+  const caseStagesQuery = CaseStageModel.find({
+    active: true,
+    companyId,
+    ...searchCondition,
+  }).sort({ createdAt: -1 });
+
+  const totalCaseStages = await CaseStageModel.countDocuments({
+    active: true,
+    companyId,
+    ...searchCondition,
+  });
+
+  const caseStages = await caseStagesQuery
+    .skip((pageNumber - 1) * pageSize)
+    .limit(pageSize)
+    .exec();
+
+  if (!caseStages || caseStages.length === 0) {
+    throw new CustomError(
+      statusCodes.notFound,
+      Message.notFound,
+      errorCodes.not_found,
+    );
+  }
+
+  return {
+    caseStages,
+    totalCaseStages,
+    page: pageNumber,
+    totalPages: Math.ceil(totalCaseStages / pageSize),
+  };
+};

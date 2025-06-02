@@ -1,0 +1,11 @@
+import { Router } from "express";
+import { asyncHandler } from "../utils/asyncWrapper.js";
+import { tagController } from "../controllers/controllers.js";
+import { jwtMiddleware } from "../middlewares/JWTAuthentication.js";
+const router = Router();
+router.post("/addTag", jwtMiddleware, asyncHandler(tagController.TagAdd));
+router.get("/getTag", asyncHandler(tagController.TagFetch));
+router.get("/getAllTag", jwtMiddleware, asyncHandler(tagController.GetAlltag));
+router.delete("/deleteTag/:id", asyncHandler(tagController.TagDelete));
+router.put("/updateTag/:id", asyncHandler(tagController.TagUpdate));
+export default router;

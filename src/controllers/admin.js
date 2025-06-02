@@ -1,0 +1,75 @@
+import * as adminService from "../services/admin.js";
+import { statusCodes } from "../core/common/constant.js";
+
+const adminRegistration = async (req, res, next) => {
+  const adminData = await adminService.registerAdmin(req, res, next);
+  res.status(statusCodes?.created).send(adminData);
+};
+
+const userFetch = async (req, res, next) => {
+  const userData = await adminService.GetAllUsers(req, res, next);
+  res.status(statusCodes?.ok).send(userData);
+};
+const userFetchpage = async (req, res, next) => {
+  const userData = await adminService.GetAllUsersIndex(req, res, next);
+  res.status(statusCodes?.ok).send(userData);
+};
+const companylogo = async (req, res, next) => {
+  const logo = await adminService.Companylogo(req, res, next);
+  res.status(statusCodes?.ok).send(logo);
+};
+const userFetchbyId = async (req, res, next) => {
+  const userData = await adminService.GetUser(req, res, next);
+  res.status(statusCodes?.ok).send(userData);
+};
+const deleteuserbyId = async (req, res, next) => {
+  const userData = await adminService.DeleteUser(req, res, next);
+  res.status(statusCodes?.ok).send(userData);
+};
+const userUpdate = async (req, res, next) => {
+  const userUpdateData = await adminService.UpdateUser(req, res, next);
+  res.status(statusCodes?.ok).send(userUpdateData);
+};
+
+const adminLogin = async (req, res, next) => {
+  const data = await adminService.loginAdmin(req, res, next);
+  res
+    .status(statusCodes?.ok)
+    // .cookie("accessToken", data?.accessToken, data?.options)
+    // .cookie("refreshToken", data?.refreshToken, data?.options)
+    .send({
+      accessToken: data?.accessToken,
+      refreshToken: data?.refreshToken,
+      loginadmin: data?.loginadmin,
+    });
+};
+const permissionUpdate = async (req, res, next) => {
+  const permissionUpdateData = await adminService.UpdateUserPermission(
+    req,
+    res,
+    next,
+  );
+  res.status(statusCodes?.ok).send(permissionUpdateData);
+};
+
+const resetpassword = async (req, res, next) => {
+  const userresetData = await adminService.resetPassword(req, res, next);
+  res.status(statusCodes?.ok).send(userresetData);
+};
+const updateLogo = async (req, res, next) => {
+  const updateLogo = await adminService.Updatelogo(req, res, next);
+  res.status(statusCodes?.ok).send(updateLogo);
+};
+export default {
+  adminRegistration,
+  adminLogin,
+  userFetch,
+  userFetchpage,
+  userFetchbyId,
+  deleteuserbyId,
+  permissionUpdate,
+  companylogo,
+  userUpdate,
+  resetpassword,
+  updateLogo,
+};
