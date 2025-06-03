@@ -40,7 +40,7 @@ export const GetAllJudges = async (req) => {
     createdAt: -1,
   });
 
-  if (!judges || judges.length === 0) {
+  if (!judges || judges?.length === 0) {
     throw new CustomError(
       statusCodes?.notFound,
       Message?.notFound,
@@ -143,17 +143,17 @@ export const GetAllJudgesIndex = async (req) => {
 
   if (isNaN(pageNumber) || pageNumber <= 0) {
     throw new CustomError(
-      statusCodes.badRequest,
+      statusCodes?.badRequest,
       "Invalid page number",
-      errorCodes.invalidInput,
+      errorCodes?.invalidInput,
     );
   }
 
   if (isNaN(pageSize) || pageSize <= 0) {
     throw new CustomError(
-      statusCodes.badRequest,
+      statusCodes?.badRequest,
       "Invalid page size",
-      errorCodes.invalidInput,
+      errorCodes?.invalidInput,
     );
   }
 
@@ -174,11 +174,11 @@ export const GetAllJudgesIndex = async (req) => {
     .limit(pageSize)
     .exec();
 
-  if (!judges || judges.length === 0) {
+  if (!judges || judges?.length === 0) {
     throw new CustomError(
-      statusCodes.notFound,
-      Message.notFound,
-      errorCodes.not_found,
+      statusCodes?.notFound,
+      Message?.notFound,
+      errorCodes?.not_found,
     );
   }
 

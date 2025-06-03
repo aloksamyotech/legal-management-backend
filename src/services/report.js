@@ -50,7 +50,7 @@ export const GetAllHearingRepo = async (req) => {
     .populate("Client", "Name")
     .sort({ createdAt: -1 });
 
-  if (!allhearings || allhearings.length === 0) {
+  if (!allhearings || allhearings?.length === 0) {
     throw new CustomError(
       statusCodes?.notFound,
       Message?.notFound,

@@ -142,7 +142,7 @@ export const GetAllAdvocates = async (req) => {
     .sort({ createdAt: -1 })
     .lean();
 
-  if (!advocates || advocates.length === 0) {
+  if (!advocates || advocates?.length === 0) {
     throw new CustomError(
       statusCodes?.notFound,
       Message?.notFound,
@@ -158,7 +158,7 @@ export const GetAllAdvocates = async (req) => {
         Advocate: item._id,
       }).lean();
 
-      item.openCases = caseByAdv.length || 0;
+      item.openCases = caseByAdv?.length || 0;
       return item;
     }),
   );

@@ -106,7 +106,7 @@ export const GetAllContact = async (req) => {
     createdAt: -1,
   });
 
-  if (!contact || contact.length === 0) {
+  if (!contact || contact?.length === 0) {
     return {
       status: statusCodes?.notFound,
       message: Message?.notFound,
@@ -129,16 +129,16 @@ export const GetAllContactforpage = async (req) => {
 
   if (isNaN(pageNumber) || pageNumber <= 0) {
     throw new CustomError(
-      statusCodes.badRequest,
+      statusCodes?.badRequest,
       "Invalid page number",
-      errorCodes.invalidInput,
+      errorCodes?.invalidInput,
     );
   }
   if (isNaN(pageSize) || pageSize <= 0) {
     throw new CustomError(
-      statusCodes.badRequest,
+      statusCodes?.badRequest,
       "Invalid page size",
-      errorCodes.invalidInput,
+      errorCodes?.invalidInput,
     );
   }
 
@@ -164,7 +164,7 @@ export const GetAllContactforpage = async (req) => {
     .limit(pageSize)
     .exec();
 
-  if (!contacts || contacts.length === 0) {
+  if (!contacts || contacts?.length === 0) {
     return {
       status: statusCodes?.notFound,
       message: Message?.notFound,

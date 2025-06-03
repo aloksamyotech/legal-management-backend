@@ -38,7 +38,7 @@ export const GetAllCourts = async (req) => {
   const courts = await CourtModel.find({ active: true, companyId }).sort({
     createdAt: -1,
   });
-  if (!courts || courts.length === 0) {
+  if (!courts || courts?.length === 0) {
     throw new CustomError(
       statusCodes?.notFound,
       Message?.notFound,
@@ -149,9 +149,9 @@ export const GetAllCourtsIndex = async (req) => {
 
   if (isNaN(pageSize) || pageSize <= 0) {
     throw new CustomError(
-      statusCodes.badRequest,
+      statusCodes?.badRequest,
       "Invalid page size",
-      errorCodes.invalidInput,
+      errorCodes?.invalidInput,
     );
   }
 
@@ -172,11 +172,11 @@ export const GetAllCourtsIndex = async (req) => {
     .limit(pageSize)
     .exec();
 
-  if (!courts || courts.length === 0) {
+  if (!courts || courts?.length === 0) {
     throw new CustomError(
-      statusCodes.notFound,
-      Message.notFound,
-      errorCodes.not_found,
+      statusCodes?.notFound,
+      Message?.notFound,
+      errorCodes?.not_found,
     );
   }
 

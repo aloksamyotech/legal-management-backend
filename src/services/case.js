@@ -128,7 +128,7 @@ export const GetCase = async (req) => {
     ])
     .sort({ createdAt: -1 });
 
-  if (!cases || cases.length === 0) {
+  if (!cases || cases?.length === 0) {
     throw new CustomError(
       statusCodes?.notFound,
       Message?.notFound,
@@ -240,16 +240,16 @@ export const GetCaseforpage = async (req) => {
 
   if (isNaN(pageNumber) || pageNumber <= 0) {
     throw new CustomError(
-      statusCodes.badRequest,
+      statusCodes?.badRequest,
       "Invalid page number",
-      errorCodes.invalidInput,
+      errorCodes?.invalidInput,
     );
   }
   if (isNaN(pageSize) || pageSize <= 0) {
     throw new CustomError(
-      statusCodes.badRequest,
+      statusCodes?.badRequest,
       "Invalid page size",
-      errorCodes.invalidInput,
+      errorCodes?.invalidInput,
     );
   }
 
@@ -279,11 +279,11 @@ export const GetCaseforpage = async (req) => {
     .limit(pageSize)
     .exec();
 
-  if (!cases || cases.length === 0) {
+  if (!cases || cases?.length === 0) {
     throw new CustomError(
-      statusCodes.notFound,
-      Message.notFound,
-      errorCodes.not_found,
+      statusCodes?.notFound,
+      Message?.notFound,
+      errorCodes?.not_found,
     );
   }
 

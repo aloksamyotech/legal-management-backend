@@ -11,7 +11,7 @@ export const AddInvoice = async (req) => {
   const { Case, Advocate, Client, hearings, extraExpenses, PaymentStatus } =
     req.body;
   const companyId = req.user.companyId;
-  if (!Case || !Advocate || !Client || !hearings || hearings.length === 0) {
+  if (!Case || !Advocate || !Client || !hearings || hearings?.length === 0) {
     throw new CustomError(
       statusCodes?.badRequest,
       Message.Missing_required_field,
@@ -95,7 +95,7 @@ export const GetInvoices = async (req) => {
     .populate("Advocate")
     .populate("Client");
 
-  if (!invoices || invoices.length === 0) {
+  if (!invoices || invoices?.length === 0) {
     return {
       status: statusCodes?.notFound,
       message: Message?.notFound,
@@ -127,7 +127,7 @@ export const GetInvoiceById = async (req) => {
       model: "Hearing",
     });
 
-  if (!invoice || invoice.length === 0) {
+  if (!invoice || invoice?.length === 0) {
     return {
       status: statusCodes?.notFound,
       message: Message?.notFound,
@@ -274,7 +274,7 @@ export const GetInvoiceByCaseId = async (req) => {
     .populate("Advocate")
     .populate("Client");
 
-  if (!invoice || invoice.length === 0) {
+  if (!invoice || invoice?.length === 0) {
     return {
       status: statusCodes?.notFound,
       message: Message?.notFound,

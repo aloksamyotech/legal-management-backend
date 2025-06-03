@@ -5,7 +5,7 @@ import CustomError from "../utils/exception.js";
 export const getBlockmail = async (req) => {
   const companyId = req.user.companyId;
   const blockedRoles = await BlockedRole.find({ companyId });
-  if (!blockedRoles || blockedRoles.length === 0) {
+  if (!blockedRoles || blockedRoles?.length === 0) {
     throw new CustomError(
       statusCodes?.notFound,
       Message?.notFound,

@@ -51,7 +51,7 @@ export const GetExpense = async (req) => {
     .populate("Case", "Title")
     .sort({ createdAt: -1 });
 
-  if (!expenses || expenses.length === 0) {
+  if (!expenses || expenses?.length === 0) {
     throw new CustomError(
       statusCodes?.notFound,
       Message?.notFound,
@@ -208,11 +208,11 @@ export const GetExpforpage = async (req) => {
     .limit(pageSize)
     .exec();
 
-  if (!expenses || expenses.length === 0) {
+  if (!expenses || expenses?.length === 0) {
     throw new CustomError(
-      statusCodes.notFound,
-      Message.notFound,
-      errorCodes.not_found,
+      statusCodes?.notFound,
+      Message?.notFound,
+      errorCodes?.not_found,
     );
   }
 

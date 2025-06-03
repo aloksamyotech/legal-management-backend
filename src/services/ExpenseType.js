@@ -41,7 +41,7 @@ export const GetAllExpenseTypes = async (req) => {
     createdAt: -1,
   });
 
-  if (!expenseTypes || expenseTypes.length === 0) {
+  if (!expenseTypes || expenseTypes?.length === 0) {
     throw new CustomError(
       statusCodes?.notFound,
       Message?.notFound,

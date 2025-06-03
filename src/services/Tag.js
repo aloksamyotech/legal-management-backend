@@ -39,7 +39,7 @@ export const GetAllTags = async (req) => {
     createdAt: -1,
   });
 
-  if (!tags || tags.length === 0) {
+  if (!tags || tags?.length === 0) {
     throw new CustomError(
       statusCodes?.notFound,
       Message?.notFound,

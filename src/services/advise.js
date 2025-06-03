@@ -46,7 +46,7 @@ export const GetAdvise = async (req) => {
     .populate("Advocate", "name")
     .populate("Matter", "Title");
 
-  if (!advises || advises.length === 0) {
+  if (!advises || advises?.length === 0) {
     throw new CustomError(
       statusCodes?.notFound,
       Message?.notFound,
@@ -105,7 +105,7 @@ export const UpdateAdvise = async (req) => {
   if (!updatedAdvise) {
     throw new CustomError(
       statusCodes?.notFound,
-      Message.notUpdate,
+      Message?.notUpdate,
       errorCodes?.action_failed,
     );
   }
@@ -167,16 +167,16 @@ export const GetAdvforPagination = async (req) => {
 
   if (isNaN(pageNumber) || pageNumber <= 0) {
     throw new CustomError(
-      statusCodes.badRequest,
+      statusCodes?.badRequest,
       "Invalid page number",
-      errorCodes.invalidInput,
+      errorCodes?.invalidInput,
     );
   }
   if (isNaN(pageSize) || pageSize <= 0) {
     throw new CustomError(
-      statusCodes.badRequest,
+      statusCodes?.badRequest,
       "Invalid page size",
-      errorCodes.invalidInput,
+      errorCodes?.invalidInput,
     );
   }
 
@@ -232,9 +232,9 @@ export const GetAdvforPagination = async (req) => {
 
   if (!advises.length) {
     throw new CustomError(
-      statusCodes.notFound,
-      Message.notFound,
-      errorCodes.not_found,
+      statusCodes?.notFound,
+      Message?.notFound,
+      errorCodes?.not_found,
     );
   }
 

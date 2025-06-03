@@ -32,7 +32,7 @@ export const GetEvidence = async (req) => {
     .populate("Hearing")
     .sort({ createdAt: -1 });
 
-  if (!evidence || evidence.length === 0) {
+  if (!evidence || evidence?.length === 0) {
     throw new CustomError(
       statusCodes?.notFound,
       Message?.notFound,
@@ -107,7 +107,7 @@ export const GetEvidenceByCase = async (req) => {
     "Title",
   );
 
-  if (!evidence || evidence.length === 0) {
+  if (!evidence || evidence?.length === 0) {
     return {
       status: statusCodes?.notFound,
       message: Message?.notFound,
@@ -187,7 +187,7 @@ export const GetAllEvidforPage = async (req) => {
     .limit(pageSize)
     .exec();
 
-  if (!evidence || evidence.length === 0) {
+  if (!evidence || evidence?.length === 0) {
     throw new CustomError(
       statusCodes.notFound,
       Message.notFound,

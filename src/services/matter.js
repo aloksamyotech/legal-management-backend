@@ -39,7 +39,7 @@ export const GetAllMatters = async (req) => {
     createdAt: -1,
   });
 
-  if (!matters || matters.length === 0) {
+  if (!matters || matters?.length === 0) {
     throw new CustomError(
       statusCodes?.notFound,
       Message?.notFound,

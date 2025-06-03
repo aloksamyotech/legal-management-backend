@@ -146,7 +146,7 @@ export const GetAllHearing = async (req) => {
     .populate("Client", "Name")
     .sort({ createdAt: -1 });
 
-  if (!allhearings || allhearings.length === 0) {
+  if (!allhearings || allhearings?.length === 0) {
     throw new CustomError(
       statusCodes?.notFound,
       Message?.notFound,
@@ -218,7 +218,7 @@ export const GetHearingsByCaseId = async (req) => {
 
   const hearings = await HearingModel.find({ Case: caseId, Active: true });
 
-  if (!hearings || hearings.length === 0) {
+  if (!hearings || hearings?.length === 0) {
     return {
       status: statusCodes?.notFound,
       message: Message?.notFound,
@@ -272,11 +272,11 @@ export const GetAllHearingForpage = async (req) => {
     .limit(pageSize)
     .exec();
 
-  if (!hearings || hearings.length === 0) {
+  if (!hearings || hearings?.length === 0) {
     throw new CustomError(
-      statusCodes.notFound,
-      Message.notFound,
-      errorCodes.not_found,
+      statusCodes?.notFound,
+      Message?.notFound,
+      errorCodes?.not_found,
     );
   }
 

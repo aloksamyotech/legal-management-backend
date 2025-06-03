@@ -47,7 +47,7 @@ export const GetAllNotes = async (req) => {
     createdAt: -1,
   });
 
-  if (!notes || notes.length === 0) {
+  if (!notes || notes?.length === 0) {
     throw new CustomError(
       statusCodes?.notFound,
       Message?.notFound,
@@ -160,17 +160,17 @@ export const GetAllNotesIndex = async (req) => {
 
   if (isNaN(pageNumber) || pageNumber <= 0) {
     throw new CustomError(
-      statusCodes.badRequest,
+      statusCodes?.badRequest,
       "Invalid page number",
-      errorCodes.invalidInput,
+      errorCodes?.invalidInput,
     );
   }
 
   if (isNaN(pageSize) || pageSize <= 0) {
     throw new CustomError(
-      statusCodes.badRequest,
+      statusCodes?.badRequest,
       "Invalid page size",
-      errorCodes.invalidInput,
+      errorCodes?.invalidInput,
     );
   }
 
@@ -191,11 +191,11 @@ export const GetAllNotesIndex = async (req) => {
     .limit(pageSize)
     .exec();
 
-  if (!notes || notes.length === 0) {
+  if (!notes || notes?.length === 0) {
     throw new CustomError(
-      statusCodes.notFound,
-      Message.notFound,
-      errorCodes.not_found,
+      statusCodes?.notFound,
+      Message?.notFound,
+      errorCodes?.not_found,
     );
   }
 

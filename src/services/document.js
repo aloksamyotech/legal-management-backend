@@ -47,7 +47,7 @@ export const GetAllDocuments = async (req) => {
     .populate("Case", "Title")
     .sort({ createdAt: -1 });
 
-  if (!documents || documents.length === 0) {
+  if (!documents || documents?.length === 0) {
     throw new CustomError(
       statusCodes?.notFound,
       Message?.notFound,
@@ -159,7 +159,7 @@ export const GetDocumentByCase = async (req) => {
     "Title",
   );
 
-  if (!document || document.length === 0) {
+  if (!document || document?.length === 0) {
     return {
       status: statusCodes?.notFound,
       message: Message?.notFound,
@@ -182,16 +182,16 @@ export const GetAllDocforpage = async (req) => {
 
   if (isNaN(pageNumber) || pageNumber <= 0) {
     throw new CustomError(
-      statusCodes.badRequest,
+      statusCodes?.badRequest,
       "Invalid page number",
-      errorCodes.invalidInput,
+      errorCodes?.invalidInput,
     );
   }
   if (isNaN(pageSize) || pageSize <= 0) {
     throw new CustomError(
-      statusCodes.badRequest,
+      statusCodes?.badRequest,
       "Invalid page size",
-      errorCodes.invalidInput,
+      errorCodes?.invalidInput,
     );
   }
 
@@ -214,11 +214,11 @@ export const GetAllDocforpage = async (req) => {
     .limit(pageSize)
     .exec();
 
-  if (!documents || documents.length === 0) {
+  if (!documents || documents?.length === 0) {
     throw new CustomError(
-      statusCodes.notFound,
-      Message.notFound,
-      errorCodes.not_found,
+      statusCodes?.notFound,
+      Message?.notFound,
+      errorCodes?.not_found,
     );
   }
 

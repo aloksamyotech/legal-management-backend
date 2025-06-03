@@ -172,7 +172,7 @@ export const GetAllClients = async (req) => {
     createdAt: -1,
   });
 
-  if (!clients || clients.length === 0) {
+  if (!clients || clients?.length === 0) {
     throw new CustomError(
       statusCodes?.notFound,
       Message?.notFound,
@@ -196,7 +196,7 @@ export const GetCaseByClient = async (req) => {
     { path: "Court", select: "Title" },
   ]);
 
-  if (!cases || cases.length === 0) {
+  if (!cases || cases?.length === 0) {
     return {
       status: statusCodes?.notFound,
       message: Message?.notFound,
@@ -219,7 +219,7 @@ export const ClientBulk = async (req, res) => {
     const workbook = new ExcelJS.Workbook();
     await workbook.xlsx.readFile(file);
 
-    if (!workbook.worksheets || workbook.worksheets.length === 0) {
+    if (!workbook.worksheets || workbook.worksheets?.length === 0) {
       return res.status(400).json({ message: "No sheets found in the file" });
     }
 
@@ -242,7 +242,7 @@ export const ClientBulk = async (req, res) => {
       data.push(rowData);
     });
 
-    if (data.length === 0) {
+    if (data?.length === 0) {
       return res.status(400).json({ message: "File is empty" });
     }
 
@@ -325,11 +325,11 @@ export const GetAllClientsIndex = async (req) => {
     .limit(pageSize)
     .exec();
 
-  if (!clients || clients.length === 0) {
+  if (!clients || clients?.length === 0) {
     throw new CustomError(
-      statusCodes.notFound,
-      Message.notFound,
-      errorCodes.not_found
+      statusCodes?.notFound,
+      Message?.notFound,
+      errorCodes?.not_found
     );
   }
 
